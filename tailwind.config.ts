@@ -72,19 +72,19 @@ const config = {
           to: { height: "0" },
         },
         expand: {
-          '0%': { maxHeight: '0' },
-          '100%': { maxHeight: '500px' }
+          "0%": { maxHeight: "0" },
+          "100%": { maxHeight: "500px" },
         },
         collapse: {
-          '0%': { maxHeight: '500px' },
-          '100%': { maxHeight: '0' }
-        }
+          "0%": { maxHeight: "500px" },
+          "100%": { maxHeight: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        'expand': 'expand 200ms ease-in forwards',
-        'collapse': 'collapse 200ms ease-in forwards'
+        expand: "expand 200ms ease-in forwards",
+        collapse: "collapse 200ms ease-in forwards",
       },
     },
   },
