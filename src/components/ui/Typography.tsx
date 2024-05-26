@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import React, { forwardRef, ReactNode } from "react";
 
 interface H1Props extends React.HTMLAttributes<HTMLHeadingElement> {
@@ -5,15 +6,16 @@ interface H1Props extends React.HTMLAttributes<HTMLHeadingElement> {
 }
 
 function H1Component(
-  { children, ...props }: H1Props,
+  { children, className, ...props }: H1Props,
   ref: React.Ref<HTMLHeadingElement>,
 ) {
   return (
     <h1
       ref={ref}
-      className={`scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl ${
-        props.className || ""
-      }`}
+      className={cn(
+        "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -27,15 +29,16 @@ interface H2Props extends React.HTMLAttributes<HTMLHeadingElement> {
 }
 
 function H2Component(
-  { children, ...props }: H2Props,
+  { children, className, ...props }: H2Props,
   ref: React.Ref<HTMLHeadingElement>,
 ) {
   return (
     <h2
       ref={ref}
-      className={`scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 ${
-        props.className || ""
-      }`}
+      className={cn(
+        "scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -49,15 +52,16 @@ interface H3Props extends React.HTMLAttributes<HTMLHeadingElement> {
 }
 
 function H3Component(
-  { children, ...props }: H3Props,
+  { children, className, ...props }: H3Props,
   ref: React.Ref<HTMLHeadingElement>,
 ) {
   return (
     <h3
       ref={ref}
-      className={`scroll-m-20 text-2xl font-semibold tracking-tight ${
-        props.className || ""
-      }`}
+      className={cn(
+        "scroll-m-20 text-2xl font-semibold tracking-tight",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -71,15 +75,16 @@ interface H4Props extends React.HTMLAttributes<HTMLHeadingElement> {
 }
 
 function H4Component(
-  { children, ...props }: H4Props,
+  { children, className, ...props }: H4Props,
   ref: React.Ref<HTMLHeadingElement>,
 ) {
   return (
     <h4
       ref={ref}
-      className={`scroll-m-20 text-xl font-semibold tracking-tight ${
-        props.className || ""
-      }`}
+      className={cn(
+        "scroll-m-20 text-xl font-semibold tracking-tight",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -93,15 +98,13 @@ interface PProps extends React.HTMLAttributes<HTMLParagraphElement> {
 }
 
 function PComponent(
-  { children, ...props }: PProps,
+  { children, className, ...props }: PProps,
   ref: React.Ref<HTMLParagraphElement>,
 ) {
   return (
     <p
       ref={ref}
-      className={`leading-7 [&:not(:first-child)]:mt-6 ${
-        props.className || ""
-      }`}
+      className={cn("leading-7 [&:not(:first-child)]:mt-6", className)}
       {...props}
     >
       {children}
