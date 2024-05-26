@@ -6,7 +6,11 @@ import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { ChangeEvent, useEffect, useState } from "react";
 
-export default function LoginForm({ action }: { action: () => Promise<void> }) {
+export default function LoginForm({
+  action,
+}: {
+  action: (formData: FormData) => Promise<any>;
+}) {
   const [form, setForm] = useState<{ email: string; password: string }>({
     email: "",
     password: "",
@@ -49,11 +53,13 @@ export default function LoginForm({ action }: { action: () => Promise<void> }) {
     setForm(newForm);
   };
 
-  const actionWithLoading = async (event: React.FormEvent) => {
+  const actionWithLoading = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
     setShowSpinner(true);
-    await action();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    await action(formData);
     setLoading(false);
   };
 
@@ -63,9 +69,12 @@ export default function LoginForm({ action }: { action: () => Promise<void> }) {
   };
 
   return (
-    <div className="w-1/4 bg-primary p-6">
-      <form onSubmit={actionWithLoading}>
-        <H1>Login</H1>
+    <div className="lg:w-1/4 md:w-7/12 w-10/12 rounded-md bg-primary p-6">
+      <form
+        onSubmit={actionWithLoading}
+        className="flex h-64 flex-col justify-between"
+      >
+        <H1 className="mb-6 border-none text-center text-white">Login</H1>
 
         <Input
           type="email"
@@ -87,11 +96,7 @@ export default function LoginForm({ action }: { action: () => Promise<void> }) {
         {formErrors.password === "" ? null : (
           <span className="input-error-message">{formErrors.password}</span>
         )}
-        <Button
-          type="submit"
-          className="w-full bg-secondary text-primary hover:bg-white"
-          disabled={loading}
-        >
+        <Button type="submit" className="admin-button" disabled={loading}>
           {showSpinner && (
             // EXPLANATION: We need a div here since duration-300 affects animate-spin
             <div
