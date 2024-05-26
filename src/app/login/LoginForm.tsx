@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/Input";
 import { H1 } from "@/components/ui/Typography";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 
 export default function LoginForm({
@@ -24,6 +25,7 @@ export default function LoginForm({
   });
   const [loading, setLoading] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
+  const router = useRouter();
 
   const validateEmail = (email: string) => {
     const emailRegEx =
@@ -59,8 +61,16 @@ export default function LoginForm({
     setShowSpinner(true);
     const form = event.currentTarget;
     const formData = new FormData(form);
-    await action(formData);
+    console.log("here")
+    const response = await action(formData);
+    console.log(response);
     setLoading(false);
+
+    if (response.status === 200) {
+      router.push("/admin");
+    } else {
+      alert(response.message);
+    }
   };
 
   const onTransitionEnd = () => {
@@ -69,7 +79,7 @@ export default function LoginForm({
   };
 
   return (
-    <div className="lg:w-1/4 md:w-7/12 w-10/12 rounded-md bg-primary p-6">
+    <div className="w-10/12 rounded-md bg-primary p-6 md:w-7/12 lg:w-1/4">
       <form
         onSubmit={actionWithLoading}
         className="flex h-64 flex-col justify-between"
