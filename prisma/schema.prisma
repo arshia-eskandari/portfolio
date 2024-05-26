@@ -19,13 +19,13 @@ enum Role {
 }
 
 model About {
-  id        String  @id @default(uuid()) @map("_id") @db.ObjectId
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
   text      String
   resumeUrl String?
 }
 
 model Contact {
-  id        String   @id @default(uuid()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   firstName String
   lastName  String
   email     String
@@ -34,7 +34,7 @@ model Contact {
 }
 
 model Experience {
-  id                       String   @id @default(uuid()) @map("_id") @db.ObjectId
+  id                       String   @id @default(auto()) @map("_id") @db.ObjectId
   jobTitle                 String
   company                  String
   startDate                String
@@ -46,12 +46,12 @@ model Experience {
 }
 
 model Hero {
-  id   String  @id @default(uuid()) @map("_id") @db.ObjectId
+  id   String  @id @default(auto()) @map("_id") @db.ObjectId
   text String?
 }
 
 model Project {
-  id                  String   @id @default(uuid()) @map("_id") @db.ObjectId
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
   urlTitles           String[]
   urls                String[]
   projectTechnologies String[]
@@ -64,7 +64,7 @@ model Project {
 }
 
 model Skills {
-  id     String   @id @default(uuid()) @map("_id") @db.ObjectId
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
   skills String[]
 }
 
@@ -75,13 +75,13 @@ enum SocialNames {
 }
 
 model Social {
-  id   String      @id @default(uuid()) @map("_id") @db.ObjectId
+  id   String      @id @default(auto()) @map("_id") @db.ObjectId
   name SocialNames
   url  String
 }
 
 model User {
-  id        String   @id @default(uuid()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   firstName String
   lastName  String
   email     String   @unique
