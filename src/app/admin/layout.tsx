@@ -9,7 +9,10 @@ import {
   ListCollapse,
   MonitorStop,
   PieChart,
+  LogOut,
 } from "lucide-react";
+import { logout } from "./_actions/logout";
+import { cn } from "@/lib/utils";
 
 export default function AdminLayout({
   children,
@@ -63,9 +66,25 @@ export default function AdminLayout({
             Contact
           </NavLink>
         </Dropdown>
-        <NavLink href="/admin/media" icon={<Camera className="mr-2 h-4 w-4" />}>
-          Media
-        </NavLink>
+        <form
+          action={async () => {
+            "use server";
+            await logout();
+          }}
+        >
+          <button
+            type="submit"
+            className={cn(
+              "focus-visible:bg-secondary focus-visible:text-secondary",
+              "hover:bg-secondary hover:text-secondary-foreground",
+              "flex items-center rounded-sm p-4",
+              "w-full",
+            )}
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            Logout
+          </button>
+        </form>
       </Sidebar>
       <div className="mx-10 my-6 w-full">{children}</div>
     </div>
