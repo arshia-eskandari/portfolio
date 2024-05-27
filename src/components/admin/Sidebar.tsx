@@ -10,7 +10,7 @@ export function Sidebar({ children }: { children: ReactNode }) {
     <nav
       className={cn(
         "flex flex-col justify-start",
-        "h-full w-64",
+        "h-full w-80",
         "bg-primary px-4 pt-6 text-primary-foreground",
       )}
     >
@@ -88,7 +88,9 @@ export const Dropdown: React.FC<DropdownProps> = ({
         />
       </button>
       {isOpen && (
-        <div className={cn(`overflow-hidden ${animation} pl-6`)}>{children}</div>
+        <div className={cn(`overflow-hidden ${animation} pl-6`)}>
+          {children}
+        </div>
       )}
     </div>
   );
