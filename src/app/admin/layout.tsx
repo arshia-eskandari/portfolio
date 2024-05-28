@@ -1,4 +1,4 @@
-import { Dropdown, NavLink, Sidebar } from "../../components/admin/Sidebar";
+import { Dropdown, NavLink, Sidebar } from "@/components/admin/Sidebar";
 import {
   Camera,
   CircleUserRound,
@@ -86,7 +86,7 @@ export default function AdminLayout({
           </button>
         </form>
       </Sidebar>
-      <div className="mx-10 my-6 w-full">{children}</div>
+      <div className="my-6 ml-28 mr-4 w-full md:mx-6">{children}</div>
     </div>
   );
 }
