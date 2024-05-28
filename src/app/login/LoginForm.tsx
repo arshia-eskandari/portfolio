@@ -1,11 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { H1 } from "@/components/ui/Typography";
+import { H2 } from "@/components/ui/Typography";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 export default function LoginForm({
   action,
@@ -61,7 +61,7 @@ export default function LoginForm({
     setShowSpinner(true);
     const form = event.currentTarget;
     const formData = new FormData(form);
-    console.log("here")
+    console.log("here");
     const response = await action(formData);
     console.log(response);
     setLoading(false);
@@ -84,7 +84,7 @@ export default function LoginForm({
         onSubmit={actionWithLoading}
         className="flex h-64 flex-col justify-between"
       >
-        <H1 className="mb-6 border-none text-center text-white">Login</H1>
+        <H2 className="mb-6 border-none text-center text-white">Login</H2>
 
         <Input
           type="email"
