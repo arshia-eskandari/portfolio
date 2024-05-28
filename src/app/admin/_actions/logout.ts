@@ -1,8 +1,8 @@
+"use server";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
 export async function logout() {
-  "use server";
   const cookiesObj = cookies();
 
   const token = cookiesObj.get("token")?.value || null;

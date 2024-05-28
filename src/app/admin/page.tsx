@@ -1,9 +1,14 @@
-import { H1, H3 } from "../../components/ui/Typography";
+import { H2 } from "@/components/ui/Typography";
+import { getUser } from "./_actions/jwt";
+import {capitalizeFirstLetter} from "@/lib/string"
 
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
+  const user = await getUser();
   return (
     <div className="">
-      <H1>Welcome Back</H1>
+      <H2>{`Welcome Back ${capitalizeFirstLetter(
+        user?.firstName,
+      )} ${capitalizeFirstLetter(user?.lastName)}`}</H2>
       <div className="my-6"></div>
     </div>
   );
