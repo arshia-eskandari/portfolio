@@ -100,13 +100,13 @@ export function Sidebar({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    console.log({isOpen, md})
+    console.log({ isOpen, md });
   }, [isOpen, md]);
 
   return (
     <nav
       className={cn(
-        "flex h-full flex-col justify-start bg-primary px-4 pt-6 text-primary-foreground",
+        "z-100 flex h-full flex-col justify-start bg-primary px-4 pt-6 text-primary-foreground",
         isOpen ? "absolute w-full" : "absolute w-20",
         "md:relative md:w-80",
         "transition-all duration-300 ease-in-out",
