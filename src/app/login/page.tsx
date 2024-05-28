@@ -1,5 +1,5 @@
-import { login } from "./login";
-import LoginForm from "./LoginForm";
+import { login } from "./_actions/login";
+import LoginForm from "./_components/LoginForm";
 
 export default async function Login() {
   return (
