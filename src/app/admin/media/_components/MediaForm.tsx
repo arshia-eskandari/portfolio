@@ -28,7 +28,7 @@ export default function MediaForm({
     const response = await action(formData);
     setLoading(false);
 
-    if (response.status === 200) {
+    if (response.status === 201) {
     } else {
       setErrorMssg(response.message);
     }
