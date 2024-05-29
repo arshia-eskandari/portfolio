@@ -1,13 +1,10 @@
 "use client";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/Button";
-import { useFormStatus } from "react-dom";
-import { AlertCircle, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { ErrorAlert } from "@/components/ui/ErrorAlert";
+import { useRouter } from "next/navigation";
 
 export default function MediaForm({
   action,
@@ -17,6 +14,7 @@ export default function MediaForm({
   const [loading, setLoading] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
   const [errorMssg, setErrorMssg] = useState<string>("");
+  const router = useRouter();
 
   const actionWithLoading = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -29,6 +27,7 @@ export default function MediaForm({
     setLoading(false);
 
     if (response.status === 201) {
+      router.refresh();
     } else {
       setErrorMssg(response.message);
     }
