@@ -4,6 +4,7 @@ import { verifyPassword } from "@/lib/password";
 import { cookies } from "next/headers";
 import { SignJWT } from "jose";
 import { nanoid } from "nanoid";
+import { Role } from "@prisma/client";
 
 export async function login(formData: FormData) {
   const email = formData.get("email")?.toString();
@@ -29,7 +30,7 @@ export async function login(formData: FormData) {
       return { status: 400, message: "Incorrect email or password." };
     }
 
-    if (user.role !== "admin") {
+    if (user.role !== Role.ADMIN) {
       return { status: 401, message: "Unauthorized." };
     }
 

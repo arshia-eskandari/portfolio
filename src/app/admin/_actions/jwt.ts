@@ -1,4 +1,5 @@
 import db from "@/db/db";
+import { Role } from "@prisma/client";
 import { jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -8,7 +9,7 @@ export async function isAuthenticated(token: string) {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const { payload } = await jwtVerify(token, secret);
 
-    if (payload.role !== "admin") {
+    if (payload.role !== Role.ADMIN) {
       return { isValid: false, userId: undefined };
     }
 
