@@ -79,12 +79,22 @@ const config = {
           "0%": { maxHeight: "500px" },
           "100%": { maxHeight: "0" },
         },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        "fade-out": {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         expand: "expand 200ms ease-in forwards",
         collapse: "collapse 200ms ease-in forwards",
+        "fade-in": "fade-in 0.3s ease-in-out",
+        "fade-out": 'fade-out 0.3s ease-in-out',
       },
     },
   },
