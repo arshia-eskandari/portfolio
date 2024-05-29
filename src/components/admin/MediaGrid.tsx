@@ -1,52 +1,32 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { Media } from "@prisma/client";
 import Image from "next/image";
 
-function Thumbnail({ file }: { file: Media }) {
-  const fileExtension = file.filePath.split(".").pop()?.toLowerCase();
-
-  switch (fileExtension) {
-    case "jpg":
-    case "png":
-    case "gif":
-      return (
-        <Image
-          src={file.filePath}
-          alt={file.name}
-          layout="responsive"
-          width={100}
-          height={100}
-        />
-      );
-    case "pdf":
-      return (
-        <div className="flex h-full items-center justify-center">PDF Icon</div>
-      );
-    case "mp4":
-    case "mov":
-      return (
-        <div className="flex h-full items-center justify-center">
-          Video Icon
-        </div>
-      );
-    default:
-      return <div>Unknown File Type</div>;
-  }
+interface MediaGridProps {
+  media: Media[];
 }
 
-type MediaGridProps = {
-  mediaFiles: Media[];
-};
-
-function MediaGrid({ mediaFiles }: MediaGridProps) {
+function MediaGrid({ media }: MediaGridProps) {
   return (
-    <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 lg:grid-cols-4">
-      {mediaFiles.map((file) => (
-        <div key={file.id} className="relative">
-          {/* Handle different file types differently */}
-          <Thumbnail file={file} />
-          <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 p-2 text-white">
-            {file.name}
+    <div className="w-full flex justify-between flex-wrap md:gap-x-[4.5%] pt-3">
+      {media.map((medium) => (
+        <div
+          key={medium.id}
+          // EXPLANATION: The CSS trick for creating squares uses percentage-based padding calculated from 
+          // the parent's width. By setting both the width and padding-bottom of an element to the same percentage,
+          // the element's height matches its width, forming a square. This takes advantage of CSS's rule that 
+          // percentage paddings are relative to the width, allowing for responsive square elements.
+          className="relative cursor-pointer hover:opacity-80 w-full pb-[100%] sm:w-1/2 md:w-[30%] md:pb-[30%]"
+        >
+          <Image
+            src={medium.url}
+            alt={medium.name}
+            fill
+            style={{objectFit:"cover"}}
+          />
+          <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-1 text-sm text-white">
+            {medium.name}
           </div>
         </div>
       ))}
