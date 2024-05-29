@@ -1,8 +1,7 @@
 import { H2 } from "../../../components/ui/Typography";
-import { Label } from "@/components/ui/label";
 import MediaForm from "./_components/MediaForm";
-import { addMedia, getMedia } from "./_actions/media";
-import MediaGrid from "@/components/admin/MediaGrid";
+import { addMedia, deleteMedia, getMedia } from "./_actions/media";
+import MediaGrid from "@/app/admin/media/_components/MediaGrid";
 
 export default async function AdminMedia() {
   const media = await getMedia();
@@ -11,7 +10,7 @@ export default async function AdminMedia() {
       <H2>Media</H2>
       <MediaForm action={addMedia} />
       <div className="my-3">
-        <MediaGrid media={media} />
+        <MediaGrid media={media} action={deleteMedia} />
       </div>
     </div>
   );

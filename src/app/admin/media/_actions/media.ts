@@ -1,8 +1,11 @@
 "use server";
 import db from "@/db/db";
 import { z } from "zod";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3Client } from "@/aws/s3";
+
+const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
+const AWS_REGION = process.env.AWS_REGION;
 
 const fileSchema = z.instanceof(File, { message: "Required" });
 
@@ -21,32 +24,6 @@ export async function getMedia() {
   }
 }
 
-// export async function addMedia(formData: FormData) {
-//   try {
-//     const result = addSchema.safeParse(Object.fromEntries(formData.entries()));
-//     if (result.success === false) {
-//       return result.error.formErrors.fieldErrors;
-//     }
-//     const data = result.data;
-//     await fs.mkdir("public/media", { recursive: true });
-//     const filePath = `/media/${crypto.randomUUID()}-${data.file.name}`;
-//     await fs.writeFile(
-//       `public${filePath}`,
-//       Buffer.from(await data.file.arrayBuffer()),
-//     );
-
-//     await db.media.create({
-//       data: {
-//         name: data.file.name,
-//         filePath,
-//       },
-//     });
-//     return { status: 201, message: "Media successfully created" };
-//   } catch (error) {
-//     console.log("🚀 ~ addMedia ~ error:", error);
-//   }
-// }
-
 export async function addMedia(formData: FormData) {
   try {
     const result = addSchema.safeParse(Object.fromEntries(formData.entries()));
@@ -61,19 +38,20 @@ export async function addMedia(formData: FormData) {
     )}`;
 
     const command = new PutObjectCommand({
-      Bucket: process.env.S3_BUCKET_NAME,
+      Bucket: S3_BUCKET_NAME,
       Key: fileKey,
       Body: Buffer.from(await data.file.arrayBuffer()),
     });
 
     await s3Client.send(command);
 
-    const url = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
+    const url = `https://${S3_BUCKET_NAME}.s3.${AWS_REGION}.amazonaws.com/${fileKey}`;
 
     await db.media.create({
       data: {
         name: data.file.name,
         url,
+        fileKey,
       },
     });
 
@@ -81,5 +59,65 @@ export async function addMedia(formData: FormData) {
   } catch (error) {
     console.log("🚀 ~ addMedia ~ error:", error);
     return { status: 500, message: "Failed to upload media" };
+  }
+}
+
+export async function deleteMedia(formData: FormData) {
+  try {
+    let deleteCount = 0;
+    let totalAttempted = 0;
+    const failedIds: { [key: string]: boolean } = {};
+
+    for (const [id] of formData.entries()) {
+      try {
+        totalAttempted++;
+        const medium = await db.media.findUnique({
+          where: {
+            id,
+          },
+        });
+
+        if (medium) {
+          const { fileKey } = medium;
+
+          const command = new DeleteObjectCommand({
+            Bucket: S3_BUCKET_NAME,
+            Key: fileKey,
+          });
+
+          await s3Client.send(command);
+
+          await db.media.delete({
+            where: { id },
+          });
+          deleteCount++;
+        }
+      } catch (error) {
+        console.log(
+          `🚀 ~ deleteMultipleMedia ~ error for medium with id ${id}:`,
+          error,
+        );
+        console.error(`Failed to delete file: `, error);
+        failedIds[id] = true;
+      }
+    }
+
+    const failedDeletes = totalAttempted - deleteCount;
+
+    if (failedDeletes === 0) {
+      return { status: 204, message: "Media successfully deleted from S3" };
+    }
+
+    if (failedDeletes === totalAttempted) {
+      throw new Error("Failed to delete media");
+    }
+
+    return {
+      status: 207,
+      message: `${deleteCount} out of ${totalAttempted} files were successfully deleted, failed to delete ${failedDeletes} files.`,
+    };
+  } catch (error) {
+    console.log("🚀 ~ deleteMedia ~ error:", error);
+    return { status: 500, message: "Failed to delete media" };
   }
 }
