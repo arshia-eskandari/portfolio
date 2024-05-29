@@ -3,6 +3,7 @@ import db from "@/db/db";
 import { z } from "zod";
 import { DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3Client } from "@/aws/s3";
+import { MediaType } from "@prisma/client";
 
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
 const AWS_REGION = process.env.AWS_REGION;
@@ -37,6 +38,34 @@ export async function addMedia(formData: FormData) {
       "",
     )}`;
 
+    const extension = data?.file?.name?.split(".")?.pop()?.toLowerCase();
+    let mediaType: MediaType;
+
+    switch (extension) {
+      case "jpg":
+      case "jpeg":
+      case "png":
+      case "gif":
+      case "bmp":
+      case "svg":
+        mediaType = "IMAGE";
+        break;
+      case "mp4":
+      case "mov":
+      case "avi":
+      case "wmv":
+      case "flv":
+      case "webm":
+      case "mkv":
+        mediaType = "VIDEO";
+        break;
+      case "pdf":
+        mediaType = "PDF";
+        break;
+      default:
+        return { status: 415, message: "Unsupported file type" };
+    }
+
     const command = new PutObjectCommand({
       Bucket: S3_BUCKET_NAME,
       Key: fileKey,
@@ -52,6 +81,7 @@ export async function addMedia(formData: FormData) {
         name: data.file.name,
         url,
         fileKey,
+        mediaType,
       },
     });
 
