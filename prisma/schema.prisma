@@ -14,8 +14,8 @@ datasource db {
 }
 
 enum Role {
-  admin
-  user
+  ADMIN
+  USER
 }
 
 model About {
@@ -69,9 +69,9 @@ model Skills {
 }
 
 enum SocialNames {
-  linkedin
-  github
-  telegram
+  LINKEDIN
+  GITHUB
+  TELEGRAM
 }
 
 model Social {
@@ -91,10 +91,17 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
+enum MediaType {
+  IMAGE
+  VIDEO
+  PDF
+}
+
 model Media {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   url       String
   fileKey   String
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  mediaType MediaType
 }
