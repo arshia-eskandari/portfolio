@@ -19,8 +19,8 @@ enum Role {
 }
 
 model About {
-  id             String  @id @default(auto()) @map("_id") @db.ObjectId
-  text           String
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  text      String
   resumeUrl String?
 }
 
@@ -34,15 +34,15 @@ model Contact {
 }
 
 model Experience {
-  id                            String   @id @default(auto()) @map("_id") @db.ObjectId
-  jobTitle                      String
-  company                       String
-  startDate                     String
-  endDate                       String
-  achievements                  String[]
-  responsibilities              String[]
+  id                       String   @id @default(auto()) @map("_id") @db.ObjectId
+  jobTitle                 String
+  company                  String
+  startDate                String
+  endDate                  String
+  achievements             String[]
+  responsibilities         String[]
   recommendationLetterUrls String[]
-  location                      String
+  location                 String
 }
 
 model Hero {
@@ -52,8 +52,8 @@ model Hero {
 
 model Project {
   id                  String   @id @default(auto()) @map("_id") @db.ObjectId
-  urlTitles      String[]
-  urls           String[]
+  urlTitles           String[]
+  urls                String[]
   projectTechnologies String[]
   projectTitle        String
   objective           String
@@ -94,6 +94,7 @@ model User {
 model Media {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  url  String
+  url       String
+  fileKey   String
   createdAt DateTime @default(now())
 }
