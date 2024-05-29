@@ -21,7 +21,7 @@ enum Role {
 model About {
   id             String  @id @default(auto()) @map("_id") @db.ObjectId
   text           String
-  resumeFilePath String?
+  resumeUrl String?
 }
 
 model Contact {
@@ -41,7 +41,7 @@ model Experience {
   endDate                       String
   achievements                  String[]
   responsibilities              String[]
-  recommendationLetterFilePaths String[]
+  recommendationLetterUrls String[]
   location                      String
 }
 
@@ -52,8 +52,8 @@ model Hero {
 
 model Project {
   id                  String   @id @default(auto()) @map("_id") @db.ObjectId
-  filePathTitles      String[]
-  filePaths           String[]
+  urlTitles      String[]
+  urls           String[]
   projectTechnologies String[]
   projectTitle        String
   objective           String
@@ -94,6 +94,6 @@ model User {
 model Media {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  filePath  String
+  url  String
   createdAt DateTime @default(now())
 }
