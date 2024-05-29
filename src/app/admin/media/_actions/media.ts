@@ -1,8 +1,8 @@
 "use server";
 import db from "@/db/db";
 import { z } from "zod";
-import fs from "fs/promises";
-import s3 from "aws-sdk/clients/s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { s3Client } from "@/aws/s3";
 
 const fileSchema = z.instanceof(File, { message: "Required" });
 
@@ -55,21 +55,25 @@ export async function addMedia(formData: FormData) {
     }
     const data = result.data;
 
-    const fileKey = `media/${crypto.randomUUID()}-${data.file.name}`;
-    const params = {
+    const fileKey = `media/${crypto.randomUUID()}-${data.file.name.replace(
+      / /g,
+      "",
+    )}`;
+
+    const command = new PutObjectCommand({
       Bucket: process.env.S3_BUCKET_NAME,
       Key: fileKey,
-      Body: data.file.stream(), // Use the file stream for upload
-      ACL: "public-read", // Optional: set file access permissions
-    };
+      Body: Buffer.from(await data.file.arrayBuffer()),
+    });
 
-    // TODO: fix the following
-    const uploadResult = await s3.upload(params).promise();
+    await s3Client.send(command);
+
+    const url = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
 
     await db.media.create({
       data: {
         name: data.file.name,
-        filePath: uploadResult.Location, // Save the URL returned from S3
+        url,
       },
     });
 
