@@ -86,7 +86,9 @@ export default function AdminLayout({
           </button>
         </form>
       </Sidebar>
-      <div className="my-6 ml-28 mr-4 w-full md:mx-6">{children}</div>
+      <div className="my-6 ml-28 mr-4 h-full w-full md:ml-[250px]">
+        <div className="md:ml-6">{children}</div>
+      </div>
     </div>
   );
 }
