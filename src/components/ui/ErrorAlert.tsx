@@ -11,7 +11,7 @@ export function ErrorAlert({ errorMssg }: { errorMssg: string }) {
           className={cn(
             "absolute bg-red-600 text-white",
             "left-1/2 top-[3rem] w-11/12 -translate-x-1/2 -translate-y-1/2",
-            "z-10 md:bottom-5 md:left-5 md:top-auto md:w-1/2 md:-translate-x-0 md:-translate-y-0",
+            "z-[1001] md:bottom-5 md:left-5 md:top-auto md:w-1/2 md:-translate-x-0 md:-translate-y-0",
           )}
         >
           <AlertCircle className="h-4 w-4" color="white" />

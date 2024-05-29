@@ -106,9 +106,9 @@ export function Sidebar({ children }: { children: ReactNode }) {
   return (
     <nav
       className={cn(
-        "z-100 flex h-full flex-col justify-start bg-primary px-4 pt-6 text-primary-foreground",
-        isOpen ? "absolute w-full" : "absolute w-20",
-        "md:relative md:w-80",
+        "z-[1000] flex h-screen flex-col justify-start bg-primary px-4 pt-6 text-primary-foreground",
+        isOpen ? "fixed w-full" : "fixed w-20",
+        "md:fixed md:w-[250px]",
         "transition-all duration-300 ease-in-out",
       )}
     >
