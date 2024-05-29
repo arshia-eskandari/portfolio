@@ -11,7 +11,6 @@ export default async function AdminMedia() {
       <H2>Media</H2>
       <MediaForm action={addMedia} />
       <div className="my-3">
-        <Label>Uploaded Files</Label>
         <MediaGrid media={media} />
       </div>
     </div>
