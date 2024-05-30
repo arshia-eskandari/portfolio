@@ -7,9 +7,16 @@ import { SubmitButton } from "../../../../components/ui/SubmitButton";
 import { Checkbox } from "../../../../components/ui/Checkbox";
 import { ErrorAlert } from "../../../../components/ui/ErrorAlert";
 import { useRouter } from "next/navigation";
-import { Download } from "lucide-react";
+import {
+  Download,
+  FileImage,
+  SlidersHorizontal,
+  File,
+  FileVideo,
+} from "lucide-react";
 import ReactPlayer from "react-player";
 import PDFViewer from "@/components/ui/PdfViewer";
+import { Button } from "@/components/ui/Button";
 
 interface MediaGridProps {
   media: Media[];
@@ -22,6 +29,7 @@ function MediaGrid({ media, action }: MediaGridProps) {
   const [errorMssg, setErrorMssg] = useState<string>("");
   const [selectedMedia, setSelectedMedia] = useState<Media | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [filterIndex, setFilterIndex] = useState<number>(0);
   const router = useRouter();
 
   const onTransitionEnd = () => {
@@ -58,6 +66,11 @@ function MediaGrid({ media, action }: MediaGridProps) {
     setTimeout(() => {
       setSelectedMedia(null);
     }, 300); // Match the duration of the fadeOut animation
+  };
+
+  const nextFilter = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    setFilterIndex(filterIndex + 1 === 4 ? 0 : filterIndex + 1);
   };
 
   const renderMediaContent = (medium: Media) => {
@@ -109,66 +122,96 @@ function MediaGrid({ media, action }: MediaGridProps) {
           Deleted Selected Files
         </SubmitButton>
       </div>
+      <div className="flex w-full transform items-center justify-start pb-6">
+        <Button
+          type="button"
+          onClick={nextFilter}
+          className="transition-transform"
+        >
+          {filterIndex === 0 ? (
+            <SlidersHorizontal />
+          ) : filterIndex === 1 ? (
+            <FileImage />
+          ) : filterIndex === 2 ? (
+            <File />
+          ) : (
+            <FileVideo />
+          )}
+        </Button>
+      </div>
       <div className="mb-3 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {media.map((medium) => (
-          <div
-            onClick={() => handleImageClick(medium)}
-            key={medium.id}
-            // EXPLANATION: The CSS trick for creating squares uses percentage-based padding calculated from
-            // the parent's width. By setting both the width and padding-bottom of an element to the same percentage,
-            // the element's height matches its width, forming a square. This takes advantage of CSS's rule that
-            // percentage paddings are relative to the width, allowing for responsive square elements.
-            className="relative w-full cursor-pointer pb-[100%] hover:opacity-80"
-          >
-            <Checkbox
-              name={medium.id}
-              id={medium.id}
-              value={medium.id}
-              className="absolute right-2 top-2 z-20 bg-white"
-              // EXPLANATION: When clicking on the checkbox the modal should not appear
-              onClick={(e) => e.stopPropagation()}
-            />
-            {medium.mediaType === MediaType.VIDEO ? (
-              <Image
-                src={"/vid.svg"}
-                alt={medium.name}
-                fill
-                className="bg-zinc-500"
-                style={{ objectFit: "cover" }}
-              />
-            ) : medium.mediaType === MediaType.PDF ? (
-              <Image
-                src={"/pdf.svg"}
-                alt={medium.name}
-                fill
-                className="bg-zinc-500"
-                style={{ objectFit: "cover" }}
-              />
-            ) : (
-              <Image
-                src={medium.url}
-                alt={medium.name}
-                fill
-                style={{ objectFit: "cover" }}
-              />
-            )}
+        {media
+          .filter((medium) => {
+            switch (filterIndex) {
+              case 0:
+                return true;
+              case 1:
+                return medium.mediaType === MediaType.IMAGE;
+              case 2:
+                return medium.mediaType === MediaType.PDF;
+              case 3:
+                return medium.mediaType === MediaType.VIDEO;
+            }
+          })
+          .map((medium) => (
             <div
-              className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-1 text-sm text-white"
-              // EXPLANATION: When clicking on the checkbox the modal should not appear
-              onClick={(e) => e.stopPropagation()}
+              onClick={() => handleImageClick(medium)}
+              key={medium.id}
+              // EXPLANATION: The CSS trick for creating squares uses percentage-based padding calculated from
+              // the parent's width. By setting both the width and padding-bottom of an element to the same percentage,
+              // the element's height matches its width, forming a square. This takes advantage of CSS's rule that
+              // percentage paddings are relative to the width, allowing for responsive square elements.
+              className="relative w-full cursor-pointer pb-[100%] hover:opacity-80"
             >
-              <a
-                href={medium.url}
+              <Checkbox
+                name={medium.id}
+                id={medium.id}
+                value={medium.id}
+                className="absolute right-2 top-2 z-20 bg-white"
                 // EXPLANATION: When clicking on the checkbox the modal should not appear
                 onClick={(e) => e.stopPropagation()}
-                className="flex"
+              />
+              {medium.mediaType === MediaType.VIDEO ? (
+                <Image
+                  src={"/vid.svg"}
+                  alt={medium.name}
+                  fill
+                  className="bg-zinc-500"
+                  style={{ objectFit: "cover" }}
+                />
+              ) : medium.mediaType === MediaType.PDF ? (
+                <Image
+                  src={"/pdf.svg"}
+                  alt={medium.name}
+                  fill
+                  className="bg-zinc-500"
+                  style={{ objectFit: "cover" }}
+                />
+              ) : (
+                <Image
+                  src={medium.url}
+                  alt={medium.name}
+                  fill
+                  style={{ objectFit: "cover" }}
+                />
+              )}
+              <div
+                className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-1 text-sm text-white"
+                // EXPLANATION: When clicking on the checkbox the modal should not appear
+                onClick={(e) => e.stopPropagation()}
               >
-                <Download className="mx-3 inline-block" />
-                {medium.name}
-              </a>
+                <a
+                  href={medium.url}
+                  // EXPLANATION: When clicking on the checkbox the modal should not appear
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex"
+                >
+                  <Download className="mx-3 inline-block" />
+                  {medium.name}
+                </a>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
       <ErrorAlert errorMssg={errorMssg} />
       {selectedMedia && (
