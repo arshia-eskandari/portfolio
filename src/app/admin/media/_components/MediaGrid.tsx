@@ -60,13 +60,13 @@ function MediaGrid({ media, action }: MediaGridProps) {
     }, 300); // Match the duration of the fadeOut animation
   };
 
-  const renderMediaContent = (media: Media) => {
-    switch (media.mediaType) {
+  const renderMediaContent = (medium: Media) => {
+    switch (medium.mediaType) {
       case MediaType.IMAGE:
         return (
           <Image
-            src={media.url}
-            alt={media.name}
+            src={medium.url}
+            alt={medium.name}
             width={800}
             height={600}
             style={{ objectFit: "contain" }}
@@ -74,9 +74,9 @@ function MediaGrid({ media, action }: MediaGridProps) {
         );
       case MediaType.VIDEO:
         return (
-          <div className="flex h-[600px] w-[350px] md:w-[650px] items-center justify-center">
+          <div className="flex h-[600px] w-[350px] items-center justify-center md:w-[650px]">
             <ReactPlayer
-              url={media.url}
+              url={medium.url}
               controls={true}
               width="100%"
               height="100%"
@@ -85,10 +85,7 @@ function MediaGrid({ media, action }: MediaGridProps) {
           </div>
         );
       case MediaType.PDF:
-        return (
-          <PDFViewer fileUrl={media.url} />
-       
-        );
+        return <PDFViewer fileUrl={medium.url} />;
       default:
         return null;
     }
