@@ -8,6 +8,7 @@ import { Checkbox } from "../../../../components/ui/Checkbox";
 import { ErrorAlert } from "../../../../components/ui/ErrorAlert";
 import { useRouter } from "next/navigation";
 import { Download } from "lucide-react";
+import ReactPlayer from "react-player";
 
 interface MediaGridProps {
   media: Media[];
@@ -72,15 +73,15 @@ function MediaGrid({ media, action }: MediaGridProps) {
         );
       case MediaType.VIDEO:
         return (
-          <video width="800" height="600" controls>
-            <source src={media.url} type="video/mp4" />
-            <source
-              src={media.url.replace(".mp4", ".webm")}
-              type="video/webm"
+          <div className="flex h-[600px] w-[350px] md:w-[650px] items-center justify-center">
+            <ReactPlayer
+              url={media.url}
+              controls={true}
+              width="100%"
+              height="100%"
+              style={{ backgroundColor: "black", alignSelf: "center" }}
             />
-            <source src={media.url.replace(".mp4", ".ogg")} type="video/ogg" />
-            Your browser does not support the video tag.
-          </video>
+          </div>
         );
       case MediaType.PDF:
         return (
@@ -133,24 +134,44 @@ function MediaGrid({ media, action }: MediaGridProps) {
               // EXPLANATION: When clicking on the checkbox the modal should not appear
               onClick={(e) => e.stopPropagation()}
             />
-            {medium.mediaType === MediaType.IMAGE ? (
+            {medium.mediaType === MediaType.VIDEO ? (
+              <Image
+                src={"/vid.svg"}
+                alt={medium.name}
+                fill
+                className="bg-zinc-500"
+                style={{ objectFit: "cover" }}
+              />
+            ) : medium.mediaType === MediaType.PDF ? (
+              <Image
+                src={"/pdf.svg"}
+                alt={medium.name}
+                fill
+                className="bg-zinc-500"
+                style={{ objectFit: "cover" }}
+              />
+            ) : (
               <Image
                 src={medium.url}
                 alt={medium.name}
                 fill
                 style={{ objectFit: "cover" }}
               />
-            ) : (
-                <Image
-                src={'/pdf-svg.svg'}
-                alt={medium.name}
-                fill
-                className="bg-zinc-500"
-                style={{ objectFit: "cover" }}
-              />
             )}
-            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-1 text-sm text-white">
-              {medium.name}
+            <div
+              className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-1 text-sm text-white"
+              // EXPLANATION: When clicking on the checkbox the modal should not appear
+              onClick={(e) => e.stopPropagation()}
+            >
+              <a
+                href={medium.url}
+                // EXPLANATION: When clicking on the checkbox the modal should not appear
+                onClick={(e) => e.stopPropagation()}
+                className="flex"
+              >
+                <Download className="mx-3 inline-block" />
+                {medium.name}
+              </a>
             </div>
           </div>
         ))}
@@ -158,7 +179,7 @@ function MediaGrid({ media, action }: MediaGridProps) {
       <ErrorAlert errorMssg={errorMssg} />
       {selectedMedia && (
         <div
-          className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 ${
+          className={`fixed inset-0 z-[2000] flex items-center justify-center bg-black bg-opacity-75 ${
             isVisible ? "animate-fade-in" : "animate-fade-out"
           }`}
           onClick={closeModal}
