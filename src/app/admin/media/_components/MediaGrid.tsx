@@ -1,12 +1,13 @@
 "use client";
 import React, { useState } from "react";
-import { Media } from "@prisma/client";
+import { Media, MediaType } from "@prisma/client";
 import Image from "next/image";
 import { Label } from "../../../../components/ui/label";
 import { SubmitButton } from "../../../../components/ui/SubmitButton";
 import { Checkbox } from "../../../../components/ui/Checkbox";
 import { ErrorAlert } from "../../../../components/ui/ErrorAlert";
 import { useRouter } from "next/navigation";
+import { Download } from "lucide-react";
 
 interface MediaGridProps {
   media: Media[];
@@ -17,7 +18,7 @@ function MediaGrid({ media, action }: MediaGridProps) {
   const [loading, setLoading] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
   const [errorMssg, setErrorMssg] = useState<string>("");
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedMedia, setSelectedMedia] = useState<Media | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
 
@@ -45,16 +46,54 @@ function MediaGrid({ media, action }: MediaGridProps) {
     }
   };
 
-  const handleImageClick = (url: string) => {
-    setSelectedImage(url);
+  const handleImageClick = (media: Media) => {
+    setSelectedMedia(media);
     setIsVisible(true);
   };
 
   const closeModal = () => {
     setIsVisible(false);
     setTimeout(() => {
-      setSelectedImage(null);
+      setSelectedMedia(null);
     }, 300); // Match the duration of the fadeOut animation
+  };
+
+  const renderMediaContent = (media: Media) => {
+    switch (media.mediaType) {
+      case MediaType.IMAGE:
+        return (
+          <Image
+            src={media.url}
+            alt={media.name}
+            width={800}
+            height={600}
+            style={{ objectFit: "contain" }}
+          />
+        );
+      case MediaType.VIDEO:
+        return (
+          <video width="800" height="600" controls>
+            <source src={media.url} type="video/mp4" />
+            <source
+              src={media.url.replace(".mp4", ".webm")}
+              type="video/webm"
+            />
+            <source src={media.url.replace(".mp4", ".ogg")} type="video/ogg" />
+            Your browser does not support the video tag.
+          </video>
+        );
+      case MediaType.PDF:
+        return (
+          <embed
+            src={media.url}
+            type="application/pdf"
+            width={800}
+            height={600}
+          />
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -78,13 +117,13 @@ function MediaGrid({ media, action }: MediaGridProps) {
       <div className="mb-3 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {media.map((medium) => (
           <div
-            onClick={() => handleImageClick(medium.url)}
+            onClick={() => handleImageClick(medium)}
             key={medium.id}
             // EXPLANATION: The CSS trick for creating squares uses percentage-based padding calculated from
             // the parent's width. By setting both the width and padding-bottom of an element to the same percentage,
             // the element's height matches its width, forming a square. This takes advantage of CSS's rule that
             // percentage paddings are relative to the width, allowing for responsive square elements.
-            className="relative w-full cursor-pointer pb-[100%] hover:opacity-80 "
+            className="relative w-full cursor-pointer pb-[100%] hover:opacity-80"
           >
             <Checkbox
               name={medium.id}
@@ -94,12 +133,22 @@ function MediaGrid({ media, action }: MediaGridProps) {
               // EXPLANATION: When clicking on the checkbox the modal should not appear
               onClick={(e) => e.stopPropagation()}
             />
-            <Image
-              src={medium.url}
-              alt={medium.name}
-              fill
-              style={{ objectFit: "cover" }}
-            />
+            {medium.mediaType === MediaType.IMAGE ? (
+              <Image
+                src={medium.url}
+                alt={medium.name}
+                fill
+                style={{ objectFit: "cover" }}
+              />
+            ) : (
+                <Image
+                src={'/pdf-svg.svg'}
+                alt={medium.name}
+                fill
+                className="bg-zinc-500"
+                style={{ objectFit: "cover" }}
+              />
+            )}
             <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-1 text-sm text-white">
               {medium.name}
             </div>
@@ -107,7 +156,7 @@ function MediaGrid({ media, action }: MediaGridProps) {
         ))}
       </div>
       <ErrorAlert errorMssg={errorMssg} />
-      {selectedImage && (
+      {selectedMedia && (
         <div
           className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 ${
             isVisible ? "animate-fade-in" : "animate-fade-out"
@@ -115,13 +164,7 @@ function MediaGrid({ media, action }: MediaGridProps) {
           onClick={closeModal}
         >
           <div className="relative" onClick={(e) => e.stopPropagation()}>
-            <Image
-              src={selectedImage}
-              alt="Selected"
-              width={800} // Adjust the width and height as needed
-              height={600} // Adjust the width and height as needed
-              style={{ objectFit: "contain" }}
-            />
+            {renderMediaContent(selectedMedia)}
           </div>
         </div>
       )}
