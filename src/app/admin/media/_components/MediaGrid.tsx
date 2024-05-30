@@ -9,6 +9,7 @@ import { ErrorAlert } from "../../../../components/ui/ErrorAlert";
 import { useRouter } from "next/navigation";
 import { Download } from "lucide-react";
 import ReactPlayer from "react-player";
+import PDFViewer from "@/components/ui/PdfViewer";
 
 interface MediaGridProps {
   media: Media[];
@@ -85,12 +86,8 @@ function MediaGrid({ media, action }: MediaGridProps) {
         );
       case MediaType.PDF:
         return (
-          <embed
-            src={media.url}
-            type="application/pdf"
-            width={800}
-            height={600}
-          />
+          <PDFViewer fileUrl={media.url} />
+       
         );
       default:
         return null;
