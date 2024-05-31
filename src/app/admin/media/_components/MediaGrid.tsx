@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Media, MediaType } from "@prisma/client";
 import Image from "next/image";
-import { Label } from "../../../../components/ui/label";
 import { SubmitButton } from "../../../../components/ui/SubmitButton";
 import { Checkbox } from "../../../../components/ui/Checkbox";
 import { ErrorAlert } from "../../../../components/ui/ErrorAlert";
@@ -17,6 +16,7 @@ import {
 import ReactPlayer from "react-player";
 import PDFViewer from "@/components/ui/PdfViewer";
 import { Button } from "@/components/ui/Button";
+import { H4 } from "@/components/ui/Typography";
 
 interface MediaGridProps {
   media: Media[];
@@ -110,9 +110,9 @@ function MediaGrid({ media, action }: MediaGridProps) {
       onSubmit={actionWithLoading}
     >
       <div className="flex w-full items-center justify-between py-3">
-        <Label htmlFor="file" className="hover:cursor-pointer">
+        <H4>
           Uploaded Files
-        </Label>
+        </H4>
         <SubmitButton
           loading={loading}
           showSpinner={showSpinner}

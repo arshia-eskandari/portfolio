@@ -1,10 +1,10 @@
 "use client";
 import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { ErrorAlert } from "@/components/ui/ErrorAlert";
 import { useRouter } from "next/navigation";
+import { H4 } from "@/components/ui/Typography";
 
 export default function MediaForm({
   action,
@@ -46,9 +46,7 @@ export default function MediaForm({
   return (
     <form className="my-3" onSubmit={actionWithLoading}>
       <div className="flex w-full items-center justify-between">
-        <Label htmlFor="file" className="hover:cursor-pointer">
-          Upload New File
-        </Label>
+        <H4>Upload New File</H4>
         <SubmitButton
           loading={loading}
           showSpinner={showSpinner}

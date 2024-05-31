@@ -1,8 +1,9 @@
 "use client";
 import { ErrorAlert } from "@/components/ui/ErrorAlert";
+import { Label } from "@/components/ui/Label";
 import { SubmitButton } from "@/components/ui/SubmitButton";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/Textarea";
+import { H4 } from "@/components/ui/Typography";
 import { cn } from "@/lib/utils";
 import { Hero } from "@prisma/client";
 import { useRouter } from "next/navigation";
@@ -79,9 +80,7 @@ export default function HeroForm({
   return (
     <form className="my-3" onSubmit={actionWithLoading}>
       <div className="flex w-full items-center justify-between py-3">
-        <Label htmlFor="text" className="mb-3 hover:cursor-pointer">
-          Hero Text
-        </Label>
+        <H4 className="mb-3">Hero Section</H4>
         <SubmitButton
           loading={loading}
           showSpinner={showSpinner}
@@ -95,8 +94,11 @@ export default function HeroForm({
         id="text"
         name="text"
         value={form.text}
+        placeholder="Enter hero text here"
         onChange={(e) => onInputChange("text", e)}
-        className={cn(formErrors.text === "" ? "" : "input-error")}
+        className={cn(
+          formErrors.text === "" ? "" : "input-error focus-visible:ring-0 ring-0",
+        )}
       />
       {formErrors.text === "" ? null : (
         <span className="input-error-message">{formErrors.text}</span>
