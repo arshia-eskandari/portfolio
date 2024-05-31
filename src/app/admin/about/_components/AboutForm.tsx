@@ -99,14 +99,18 @@ export default function AboutForm({
         </SubmitButton>
       </div>
 
-      {/* TODO: add default value */}
-      <Select>
+      <Select
+        name="resumeUrl"
+        defaultValue={
+          pdfMedia?.find((m) => m.url === about.resumeUrl)?.url || "null"
+        }
+      >
         <SelectTrigger className="my-3 w-[180px]">
-          <SelectValue placeholder="Resume" />
+          <SelectValue placeholder="Select Resume" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem value="null">None</SelectItem>
+            <SelectItem value="null">Select Resume</SelectItem>
             {pdfMedia.map(({ name, url }) => (
               <SelectItem value={url} key={name}>
                 {name}
