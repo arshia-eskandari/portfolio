@@ -24,7 +24,7 @@ export async function addHero(formData: FormData) {
     if (result.success === false) {
       return {
         status: 400,
-        message: "The hero text must be 10 to 150 characters",
+        message: "Invalid hero text",
       };
     }
     const { id, text } = result.data;
@@ -53,6 +53,6 @@ export async function addHero(formData: FormData) {
     };
   } catch (error) {
     console.log("🚀 ~ getHero ~ error:", error);
-    return { status: 500, message: "Failed to upload media" };
+    return { status: 500, message: "Failed to upload hero text" };
   }
 }
