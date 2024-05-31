@@ -15,6 +15,7 @@ import {
   SelectTrigger,
 } from "@/components/ui/Select";
 import { H4 } from "@/components/ui/Typography";
+import { Label } from "@/components/ui/Label";
 
 export default function AboutForm({
   about,
@@ -99,13 +100,14 @@ export default function AboutForm({
         </SubmitButton>
       </div>
 
+      <Label htmlFor="resumeUrl" className="my-3 block">Resume</Label>
       <Select
         name="resumeUrl"
         defaultValue={
           pdfMedia?.find((m) => m.url === about.resumeUrl)?.url || "null"
         }
       >
-        <SelectTrigger className="my-3 w-[180px]">
+        <SelectTrigger className="my-3 w-[180px]" id="resumeUrl">
           <SelectValue placeholder="Select Resume" />
         </SelectTrigger>
         <SelectContent>
@@ -119,6 +121,7 @@ export default function AboutForm({
           </SelectGroup>
         </SelectContent>
       </Select>
+      <Label htmlFor="text" className="my-3 block">About Text</Label>
       <Textarea
         id="text"
         name="text"

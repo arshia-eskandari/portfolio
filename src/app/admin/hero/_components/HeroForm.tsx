@@ -90,6 +90,7 @@ export default function HeroForm({
         </SubmitButton>
       </div>
 
+      <Label htmlFor="text" className="my-3 block">Hero Text</Label>
       <Textarea
         id="text"
         name="text"
@@ -97,7 +98,9 @@ export default function HeroForm({
         placeholder="Enter hero text here"
         onChange={(e) => onInputChange("text", e)}
         className={cn(
-          formErrors.text === "" ? "" : "input-error focus-visible:ring-0 ring-0",
+          formErrors.text === ""
+            ? ""
+            : "input-error ring-0 focus-visible:ring-0",
         )}
       />
       {formErrors.text === "" ? null : (
