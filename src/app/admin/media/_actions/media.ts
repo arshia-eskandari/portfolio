@@ -29,7 +29,7 @@ export async function addMedia(formData: FormData) {
   try {
     const result = addSchema.safeParse(Object.fromEntries(formData.entries()));
     if (result.success === false) {
-      return result.error.formErrors.fieldErrors;
+      return { status: 400, message: "No file was uploaded" };
     }
     const data = result.data;
 
