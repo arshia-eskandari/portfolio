@@ -96,7 +96,6 @@ export async function deleteMedia(formData: FormData) {
   try {
     let deleteCount = 0;
     let totalAttempted = 0;
-    const failedIds: { [key: string]: boolean } = {};
 
     for (const [id] of formData.entries()) {
       try {
@@ -127,8 +126,6 @@ export async function deleteMedia(formData: FormData) {
           `🚀 ~ deleteMultipleMedia ~ error for medium with id ${id}:`,
           error,
         );
-        console.error(`Failed to delete file: `, error);
-        failedIds[id] = true;
       }
     }
 
@@ -144,7 +141,7 @@ export async function deleteMedia(formData: FormData) {
 
     return {
       status: 207,
-      message: `${deleteCount} out of ${totalAttempted} files were successfully deleted, failed to delete ${failedDeletes} files.`,
+      message: `${deleteCount} out of ${totalAttempted} file(s) were successfully deleted, failed to delete ${failedDeletes} file(s).`,
     };
   } catch (error) {
     console.log("🚀 ~ deleteMedia ~ error:", error);

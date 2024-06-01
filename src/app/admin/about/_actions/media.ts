@@ -1,3 +1,4 @@
+"use server"
 import db from "@/db/db";
 import { MediaType } from "@prisma/client";
 
