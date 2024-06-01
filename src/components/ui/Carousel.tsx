@@ -211,6 +211,7 @@ const CarouselPrevious = React.forwardRef<
       ref={ref}
       variant={variant}
       size={size}
+      type="button"
       className={cn(
         "absolute flex h-8 w-8 items-center justify-center rounded-full",
         orientation === "horizontal"
@@ -240,6 +241,7 @@ const CarouselNext = React.forwardRef<
       ref={ref}
       variant={variant}
       size={size}
+      type="button"
       className={cn(
         "absolute flex h-8 w-8 items-center justify-center rounded-full",
         orientation === "horizontal"
