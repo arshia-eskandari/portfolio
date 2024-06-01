@@ -1,3 +1,4 @@
+import { MOCK_CONTACTS } from "@/data/mock";
 import { H2 } from "../../../components/ui/Typography";
 import { getSocials, updateSocials } from "./_action/social";
 import ContactForm from "./_components/ContactForm";
@@ -9,7 +10,7 @@ export default async function AdminContact() {
     <div className="">
       <H2>Contact</H2>
       <SocialsForm socials={socials} action={updateSocials} />
-      <ContactForm contacts={[]} action={async () => {"use server"}} />
+      <ContactForm contacts={MOCK_CONTACTS} action={async () => {"use server"}} />
     </div>
   );
 }
