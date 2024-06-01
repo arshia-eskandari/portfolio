@@ -1,23 +1,25 @@
 "use client";
 import { ErrorAlert } from "@/components/ui/ErrorAlert";
 import { SubmitButton } from "@/components/ui/SubmitButton";
-import { cn } from "@/lib/utils";
-import { Social, Contact, SocialNames } from "@prisma/client";
+import { Contact } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
-import { H4 } from "@/components/ui/Typography";
+import { H4, P } from "@/components/ui/Typography";
 import { Label } from "@/components/ui/Label";
-import { Input } from "@/components/ui/Input";
-import Image from "next/image";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/Carousel";
 
 export default function ContactForm({
-  socials,
-  action,
   contacts,
+  action,
 }: {
-  socials: Social[];
-  action: (formData: FormData) => Promise<any>;
   contacts: Contact[];
+  action: (formData: FormData) => Promise<any>;
 }) {
   const [form, setForm] = useState<{
     githubUrl: string;
@@ -85,29 +87,6 @@ export default function ContactForm({
 
   useEffect(() => {
     if (errorMssg !== "") setErrorMssg("");
-    const newForm = {
-      githubUrl: "",
-      linkedinUrl: "",
-      telegramUrl: "",
-      emailAddress: "",
-    };
-    socials.forEach((social) => {
-      switch (social.name) {
-        case SocialNames.GITHUB:
-          newForm.githubUrl = social.url;
-          break;
-        case SocialNames.LINKEDIN:
-          newForm.linkedinUrl = social.url;
-          break;
-        case SocialNames.TELEGRAM:
-          newForm.telegramUrl = social.url;
-          break;
-        case SocialNames.EMAIL:
-          newForm.emailAddress = social.url;
-          break;
-      }
-    });
-    setForm(newForm);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -118,8 +97,8 @@ export default function ContactForm({
 
   return (
     <form className="my-3" onSubmit={actionWithLoading}>
-      <div className="flex w-full items-center justify-between py-3">
-        <H4>Socials Section</H4>
+      <div className="relative flex w-full items-center justify-between py-3">
+        <H4>Contact Section</H4>
         <SubmitButton
           loading={loading}
           showSpinner={showSpinner}
@@ -129,111 +108,31 @@ export default function ContactForm({
         </SubmitButton>
       </div>
 
-      <Label htmlFor="linkedinUrl" className="my-3 flex items-end">
-        <Image
-          src={"/linkedin.svg"}
-          alt="linkedin"
-          width={15}
-          height={15}
-          className="mr-3 inline-block"
-        />
-        LinkedIn
-      </Label>
-      <Input
-        type="text"
-        name="linkedinUrl"
-        id="linkedinUrl"
-        value={form.linkedinUrl}
-        onChange={(e) => onInputChange("linkedinUrl", e)}
-        className={cn(
-          formErrors.linkedinUrl === "" ? "" : "input-error",
-          "w-full md:w-1/2",
-        )}
-        placeholder="LinkedIn URL"
-      />
-      {formErrors.linkedinUrl === "" ? null : (
-        <span className="input-error-message">{formErrors.linkedinUrl}</span>
-      )}
-      <ErrorAlert errorMssg={errorMssg} />
-
-      <Label htmlFor="githubUrl" className="my-3 flex items-end">
-        <Image
-          src={"/github.svg"}
-          alt="linkedin"
-          width={15}
-          height={15}
-          className="mr-3 inline-block"
-        />
-        Github
-      </Label>
-      <Input
-        type="text"
-        name="githubUrl"
-        id="githubUrl"
-        value={form.githubUrl}
-        onChange={(e) => onInputChange("githubUrl", e)}
-        className={cn(
-          formErrors.githubUrl === "" ? "" : "input-error",
-          "w-full md:w-1/2",
-        )}
-        placeholder="Github URL"
-      />
-      {formErrors.githubUrl === "" ? null : (
-        <span className="input-error-message">{formErrors.githubUrl}</span>
-      )}
-      <ErrorAlert errorMssg={errorMssg} />
-
-      <Label htmlFor="telegramUrl" className="my-3 flex items-end">
-        <Image
-          src={"/telegram.svg"}
-          alt="linkedin"
-          width={15}
-          height={15}
-          className="mr-3 inline-block"
-        />
-        Telegram
-      </Label>
-      <Input
-        type="text"
-        name="telegramUrl"
-        id="telegramUrl"
-        value={form.telegramUrl}
-        onChange={(e) => onInputChange("telegramUrl", e)}
-        className={cn(
-          formErrors.telegramUrl === "" ? "" : "input-error",
-          "w-full md:w-1/2",
-        )}
-        placeholder="Telegram URL"
-      />
-      {formErrors.telegramUrl === "" ? null : (
-        <span className="input-error-message">{formErrors.telegramUrl}</span>
-      )}
-
-      <Label htmlFor="emailAddress" className="my-3 flex items-end">
-        <Image
-          src={"/email.svg"}
-          alt="linkedin"
-          width={15}
-          height={15}
-          className="mr-3 inline-block"
-        />
-        Email
-      </Label>
-      <Input
-        type="text"
-        name="emailAddress"
-        id="emailAddress"
-        value={form.emailAddress}
-        onChange={(e) => onInputChange("emailAddress", e)}
-        className={cn(
-          formErrors.emailAddress === "" ? "" : "input-error",
-          "w-full md:w-1/2",
-        )}
-        placeholder="Email address"
-      />
-      {formErrors.emailAddress === "" ? null : (
-        <span className="input-error-message">{formErrors.emailAddress}</span>
-      )}
+      {/* EXPLANATION: The buttons consume 6rem of the width in total */}
+      {/* EXPLANATION: Without the max width the screen gets a scroll effect */}
+      {/* <Carousel className="w-full md:w-[calc(40rem)] md:max-w-[50%] relative overflow-hidden"> */}
+      {/* EXPLANATION: For vertical carousels add something similar to className="-mt-1 h-[200px]" */}
+      <div className="relative w-full">
+        <Carousel className="absolute w-[calc(100%-6rem)]">
+          <CarouselContent className="relative]">
+            {Array.from({ length: 20 }).map((_, index) => (
+              <CarouselItem className="relative" key={index}>
+                <div className="border-[1px]">
+                  <P>Name: Arshia Eskandari</P>
+                  <div className="break-all">
+                    Email: arshia.eskandari.3000@gmail.com
+                  </div>
+                  <P>Date: 2024-06-01</P>
+                  <P>Message: This is a test.</P>
+                  <Label className="block">Test</Label>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="hidden md:flex" />
+          <CarouselNext className="hidden md:flex" />
+        </Carousel>
+      </div>
       <ErrorAlert errorMssg={errorMssg} />
     </form>
   );
