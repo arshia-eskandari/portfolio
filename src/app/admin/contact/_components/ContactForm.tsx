@@ -8,6 +8,7 @@ import { H4, P } from "@/components/ui/Typography";
 import { Label } from "@/components/ui/Label";
 import {
   Carousel,
+  type CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
@@ -47,6 +48,22 @@ export default function ContactForm({
   const [showSpinner, setShowSpinner] = useState(false);
   const router = useRouter();
   const [errorMssg, setErrorMssg] = useState<string>("");
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
 
   const validateUrl = (text: string) => {
     return text.length <= 100;
@@ -109,11 +126,12 @@ export default function ContactForm({
       </div>
 
       {/* EXPLANATION: The buttons consume 6rem of the width in total */}
-      {/* EXPLANATION: Without the max width the screen gets a scroll effect */}
-      {/* <Carousel className="w-full md:w-[calc(40rem)] md:max-w-[50%] relative overflow-hidden"> */}
-      {/* EXPLANATION: For vertical carousels add something similar to className="-mt-1 h-[200px]" */}
       <div className="relative w-full">
-        <Carousel className="absolute w-[calc(100%-6rem)]">
+        <Carousel
+          className="absolute w-full md:w-[calc(100%-6rem)]"
+          setApi={setApi}
+        >
+          {/* EXPLANATION: For vertical carousels add something similar to className="-mt-1 h-[200px]" */}
           <CarouselContent className="relative]">
             {Array.from({ length: 20 }).map((_, index) => (
               <CarouselItem className="relative" key={index}>
@@ -131,6 +149,9 @@ export default function ContactForm({
           </CarouselContent>
           <CarouselPrevious className="hidden md:flex" />
           <CarouselNext className="hidden md:flex" />
+          <div className="py-2 text-center text-sm text-muted-foreground">
+            Slide {current} of {count}
+          </div>
         </Carousel>
       </div>
       <ErrorAlert errorMssg={errorMssg} />
