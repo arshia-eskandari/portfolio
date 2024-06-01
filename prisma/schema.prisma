@@ -24,12 +24,18 @@ model About {
   resumeUrl String?
 }
 
+enum Status {
+  PENDING
+  RESPONDED
+}
+
 model Contact {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   firstName String
   lastName  String
   email     String
   message   String
+  status    Status   @default(PENDING)
   createdAt DateTime @default(now())
 }
 
