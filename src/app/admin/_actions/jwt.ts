@@ -1,3 +1,4 @@
+"use server"
 import db from "@/db/db";
 import { Role } from "@prisma/client";
 import { jwtVerify } from "jose";
