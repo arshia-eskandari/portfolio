@@ -19,6 +19,7 @@ import { formatReadableDate } from "@/lib/time";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Button } from "@/components/ui/Button";
 import { MailCheck, MailWarning, Mails } from "lucide-react";
+import { Input } from "@/components/ui/Input";
 
 export default function ContactForm({
   contacts,
@@ -38,6 +39,7 @@ export default function ContactForm({
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
   const [filterIndex, setFilterIndex] = useState<number>(0);
+  const [search, setSearch] = useState<string>("");
 
   const nextFilter = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -83,6 +85,7 @@ export default function ContactForm({
 
   useEffect(() => {
     if (errorMssg !== "") setErrorMssg("");
+    if (search !== "") setSearch("");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -126,13 +129,20 @@ export default function ContactForm({
             <MailCheck />
           )}
         </Button>
+
+        <Input
+          type="text"
+          onChange={(e) => setSearch(e.currentTarget.value)}
+          placeholder="Search..."
+          className="ml-3 w-2/3 md:w-1/3"
+        ></Input>
       </div>
 
       {/* EXPLANATION: The buttons consume 6rem of the width in total */}
       <div className="relative w-full">
         <Carousel
           // EXPLANATION: Force re-render on filter change for the accurate counts
-          key={filterIndex}
+          key={filterIndex + search}
           className="absolute w-full md:w-[calc(100%-6rem)]"
           setApi={setApi}
         >
@@ -148,6 +158,15 @@ export default function ContactForm({
                   case 2:
                     return status === Status.PENDING;
                 }
+              })
+              .filter(({ firstName, lastName, email, message }) => {
+                const lowerCasedSearch = search.toLowerCase();
+                return (
+                  email.includes(lowerCasedSearch) ||
+                  message.includes(lowerCasedSearch) ||
+                  firstName.includes(lowerCasedSearch) ||
+                  lastName.includes(lowerCasedSearch)
+                );
               })
               .map(
                 (
