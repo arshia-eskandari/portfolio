@@ -27,28 +27,9 @@ export default function ContactForm({
   contacts: Contact[];
   action: (formData: FormData) => Promise<any>;
 }) {
-  const [form, setForm] = useState<{
-    githubUrl: string;
-    linkedinUrl: string;
-    telegramUrl: string;
-    emailAddress: string;
-  }>({
-    githubUrl: "",
-    linkedinUrl: "",
-    telegramUrl: "",
-    emailAddress: "",
-  });
-  const [formErrors, setFormErrors] = useState<{
-    githubUrl: string;
-    linkedinUrl: string;
-    telegramUrl: string;
-    emailAddress: string;
-  }>({
-    githubUrl: "",
-    linkedinUrl: "",
-    telegramUrl: "",
-    emailAddress: "",
-  });
+  const [checkState, setCheckState] = useState<{
+    [key: string]: Status;
+  }>({});
   const [loading, setLoading] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
   const router = useRouter();
@@ -76,34 +57,21 @@ export default function ContactForm({
     });
   }, [api]);
 
-  const validateUrl = (text: string) => {
-    return text.length <= 100;
-  };
-
-  const onInputChange = (
-    type: "githubUrl" | "linkedinUrl" | "telegramUrl" | "emailAddress",
-    e: ChangeEvent<HTMLInputElement>,
-  ) => {
-    setFormErrors({
-      ...formErrors,
-      [type]: !validateUrl(e.target.value)
-        ? "The url must be less than 100 characters"
-        : validateUrl(e.target.value)
-          ? ""
-          : formErrors[type],
-    });
-    const newForm = { ...form, [type]: e.target.value };
-    setForm(newForm);
-  };
-
   const actionWithLoading = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setErrorMssg("");
     setLoading(true);
     setShowSpinner(true);
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-    const response = await action(formData);
+    const formData = new FormData();
+    let changedCount = 0;
+    contacts.forEach(({ id, status }) => {
+      if (checkState[id] !== status) {
+        formData.append(id, checkState[id]);
+        changedCount++;
+      }
+    });
+    let response = { status: 200, message: "No contacts were changed" };
+    if (changedCount) response = await action(formData);
     setLoading(false);
 
     if (response.status === 200 || response.status === 201) {
@@ -117,6 +85,14 @@ export default function ContactForm({
     if (errorMssg !== "") setErrorMssg("");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const newCheckState: { [key: string]: Status } = {};
+    contacts.forEach(({ id, status }) => {
+      newCheckState[id] = status;
+    });
+    setCheckState(newCheckState);
+  }, [contacts]);
 
   const onTransitionEnd = () => {
     // EXPLANATION: Hide spinner only after the fade-out transition
@@ -192,20 +168,6 @@ export default function ContactForm({
                     key={index}
                   >
                     <div className="border-[1px] p-3">
-                      <Label
-                        htmlFor={id}
-                        className="mr-3 mt-6 break-all text-base font-bold"
-                      >
-                        Responded:
-                      </Label>
-                      <Checkbox
-                        name={id}
-                        id={id}
-                        value={id}
-                        className="bg-white"
-                        // EXPLANATION: When clicking on the checkbox the modal should not appear
-                        onClick={(e) => e.stopPropagation()}
-                      />
                       <P className="break-all font-bold">Name:</P>
                       <P className="break-all [&:not(:first-child)]:mt-2">{`${capitalizeFirstLetter(
                         firstName,
@@ -219,9 +181,32 @@ export default function ContactForm({
                         {formatReadableDate(createdAt)}
                       </P>
                       <P className="break-all font-bold">Message:</P>
-                      <P className="break-all [&:not(:first-child)]:mt-2">
+                      <P className="mb-6 break-all [&:not(:first-child)]:mt-2">
                         {message}
                       </P>
+                      <Label
+                        htmlFor={id}
+                        className="mr-3 mt-6 break-all text-base font-bold"
+                      >
+                        Responded:
+                      </Label>
+                      <Checkbox
+                        id={id}
+                        defaultChecked={status === Status.RESPONDED}
+                        className="bg-white"
+                        // EXPLANATION: When clicking on the checkbox the modal should not appear
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const newCheckState: { [key: string]: Status } = {
+                            ...checkState,
+                          };
+                          newCheckState[id] =
+                            checkState[id] === Status.PENDING
+                              ? Status.RESPONDED
+                              : Status.PENDING;
+                          setCheckState(newCheckState);
+                        }}
+                      />
                     </div>
                   </CarouselItem>
                 ),
