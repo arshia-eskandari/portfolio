@@ -21,7 +21,6 @@ export async function getSkills() {
 export async function addSkills(formData: FormData) {
   try {
     const result = addSchema.safeParse(Object.fromEntries(formData.entries()));
-    console.log(formData, result.error)
     if (result.success === false) {
       return {
         status: 400,
