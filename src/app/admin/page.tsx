@@ -24,8 +24,11 @@ export default async function AdminDashboard() {
         <div className="p-3">
           <P>{`You have ${pendingContacts?.length || 0} pending inquiries.`}</P>
           <P className="[&:not(:first-child)]:mt-2">
-            Click <Link href="admin/contacts">Contacts</Link> to see more
-            details.
+            Click{" "}
+            <Link href="admin/contact" className="text-[#3B82F6] underline">
+              Contact
+            </Link>{" "}
+            to see more details.
           </P>
         </div>
       </fieldset>
