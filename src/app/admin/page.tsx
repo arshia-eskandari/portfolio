@@ -14,7 +14,7 @@ export default async function AdminDashboard() {
         user?.firstName,
       )} ${capitalizeFirstLetter(user?.lastName)}`}</H2>
       <div className="my-6"></div>
-      <fieldset className="rounded-sm border-[1px]">
+      <fieldset className="rounded-sm border-[4px]">
         <legend className="ml-3">
           <div className="flex items-center justify-between">
             <Mail className="ml-3 mr-3 inline-block" />
