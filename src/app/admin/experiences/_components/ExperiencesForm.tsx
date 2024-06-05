@@ -8,12 +8,15 @@ import { DatePickerWithRange } from "@/components/ui/DateRange";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { SearchInput } from "@/components/ui/SearchInput";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { Textarea } from "@/components/ui/Textarea";
+import { H4 } from "@/components/ui/Typography";
 import { formatDate } from "@/lib/time";
 import { cn } from "@/lib/utils";
 import { Experience, Media } from "@prisma/client";
 import { addDays } from "date-fns";
 import { X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 
@@ -27,6 +30,10 @@ export default function ExperiencesForm({
   action: (formData: FormData) => Promise<any>;
   pdfMedia: Media[];
 }) {
+  const [loading, setLoading] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(false);
+  const router = useRouter();
+  const [errorMssg, setErrorMssg] = useState<string>("");
   const [form, setForm] = useState<{
     achievements: string;
     responsibilities: string;
@@ -46,12 +53,14 @@ export default function ExperiencesForm({
     jobTitle: string;
     company: string;
     location: string;
+    startDate: string;
   }>({
     achievements: "",
     responsibilities: "",
     jobTitle: "",
     company: "",
     location: "",
+    startDate: "",
   });
   const [pdfMediaMap, setPdfMediaMap] = useState<Map<Media, boolean>>(
     new Map(),
@@ -138,6 +147,7 @@ export default function ExperiencesForm({
           : type === "location" && validateText(e.target.value, 10, 30)
             ? ""
             : formErrors.location,
+      startDate: formErrors.startDate,
     });
     const newForm = { ...form, [type]: e.target.value };
     setForm(newForm);
@@ -155,17 +165,70 @@ export default function ExperiencesForm({
     setPdfMediaMap(newPdfMediaMap);
   };
 
+  const actionWithLoading = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setErrorMssg("");
+    setLoading(true);
+    setShowSpinner(true);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    if (!date?.from) {
+      return setFormErrors({
+        ...formErrors,
+        startDate: "Start date cannot be empty",
+      });
+    }
+    formData.append("startDate", date?.from?.toISOString());
+    formData.append("endDate", date?.to ? date?.to?.toISOString() : "");
+    const recommendationLetterUrls = [...pdfMediaMap]
+      .reduce((prev, [medium, isSelected]) => {
+        if (isSelected) {
+          return [...prev, medium.url];
+        }
+        return prev;
+      }, [] as string[])
+      .join(",");
+    formData.append("recommendationLetterUrls", recommendationLetterUrls);
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+    if (experience.id) formData.append("id", experience.id);
+    const response = await action(formData);
+    setLoading(false);
+
+    if (response.status === 200 || response.status === 201) {
+      router.refresh();
+    } else {
+      setErrorMssg(response.message);
+    }
+  };
+
+  const onTransitionEnd = () => {
+    // EXPLANATION: Hide spinner only after the fade-out transition
+    setShowSpinner(false);
+  };
+
   return (
-    <form action="">
+    <form onSubmit={actionWithLoading}>
       <AccordionItem value="item-1" className="rounded-sm bg-slate-200 p-3">
-        <AccordionTrigger className="no-underline">{`${
-          experience.jobTitle
-        }  |  ${experience.company}  |  ${experience.location}  |  ${formatDate(
-          experience.startDate,
-        )} - ${
-          experience.endDate ? formatDate(experience.endDate) : "Present"
-        }`}</AccordionTrigger>
+        <AccordionTrigger className="no-underline">
+          {`${experience.jobTitle}  |  ${experience.company}  |  ${
+            experience.location
+          }  |  ${formatDate(experience.startDate)} - ${
+            experience.endDate ? formatDate(experience.endDate) : "Present"
+          }`}
+        </AccordionTrigger>
         <AccordionContent className="px-3">
+          <div className="flex w-full items-center justify-between py-3">
+            <H4>Experience Details</H4>
+            <SubmitButton
+              loading={loading}
+              showSpinner={showSpinner}
+              onTransitionEnd={onTransitionEnd}
+            >
+              Save
+            </SubmitButton>
+          </div>
           <Label htmlFor="jobTitle" className="my-3 block">
             Job Title
           </Label>
@@ -232,6 +295,9 @@ export default function ExperiencesForm({
             Dates
           </Label>
           <DatePickerWithRange date={date} setDate={setDate} id="date" />
+          {formErrors.startDate === "" ? null : (
+            <span className="input-error-message">{formErrors.startDate}</span>
+          )}
           <Label htmlFor="achievements" className="my-3 block">
             Achievements
           </Label>
