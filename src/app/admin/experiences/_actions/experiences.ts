@@ -114,3 +114,17 @@ export async function updateExperience(formData: FormData) {
     return { status: 500, message: "Failed to update experience details" };
   }
 }
+
+export async function deleteExperience(id: string) {
+  try {
+    console.log("called")
+    await db.experience.delete({ where: { id } });
+    return {
+      status: 200,
+      message: "Experience successfully deleted",
+    };
+  } catch (error) {
+    console.log("🚀 ~ deleteExperience ~ error:", error);
+    return { status: 500, message: "Failed to delete experience" };
+  }
+}

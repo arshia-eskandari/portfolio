@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/Accordion";
+import { Button } from "@/components/ui/Button";
 import { DatePickerWithRange } from "@/components/ui/DateRange";
 import { ErrorAlert } from "@/components/ui/ErrorAlert";
 import { Input } from "@/components/ui/Input";
@@ -24,11 +25,12 @@ import { DateRange } from "react-day-picker";
 export default function ExperiencesForm({
   experience,
   action,
+  deleteAction,
   pdfMedia,
 }: {
-  // TODO: Make optional params required
   experience: Experience;
   action: (formData: FormData) => Promise<any>;
+  deleteAction: (id: string) => Promise<any>;
   pdfMedia: Media[];
 }) {
   const [loading, setLoading] = useState(false);
@@ -225,13 +227,37 @@ export default function ExperiencesForm({
         <AccordionContent className="px-3">
           <div className="flex w-full items-center justify-between py-3">
             <H4>Experience Details</H4>
-            <SubmitButton
-              loading={loading}
-              showSpinner={showSpinner}
-              onTransitionEnd={onTransitionEnd}
-            >
-              Save
-            </SubmitButton>
+            <div>
+              <SubmitButton
+                type="button"
+                variant="destructive"
+                className="mr-3"
+                loading={loading}
+                showSpinner={showSpinner}
+                onTransitionEnd={onTransitionEnd}
+                onClick={async (e) => {
+                  e.preventDefault();
+                  setErrorMssg("");
+                  setLoading(true);
+                  setShowSpinner(true);
+                  const response = await deleteAction(experience.id);
+                  if (response.status === 200 || response.status === 201) {
+                    router.refresh();
+                  } else {
+                    setErrorMssg(response.message);
+                  }
+                }}
+              >
+                Delete
+              </SubmitButton>
+              <SubmitButton
+                loading={loading}
+                showSpinner={showSpinner}
+                onTransitionEnd={onTransitionEnd}
+              >
+                Save
+              </SubmitButton>
+            </div>
           </div>
           <Label htmlFor="jobTitle" className="my-3 block">
             Job Title
