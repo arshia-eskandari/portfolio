@@ -1,8 +1,8 @@
 import { Accordion } from "@/components/ui/Accordion";
 import ExperiencesForm from "./_components/ExperiencesForm";
-import { H2, H4 } from "@/components/ui/Typography";
+import { H2 } from "@/components/ui/Typography";
 import { getPDFMedia } from "./_actions/media";
-import { addDefaultExperience, getExperiences } from "./_actions/experiences";
+import { addDefaultExperience, getExperiences, updateExperience } from "./_actions/experiences";
 import DefaultExperienceForm from "./_components/DefaultExperienceForm";
 
 export default async function Experiences() {
@@ -17,10 +17,7 @@ export default async function Experiences() {
           <ExperiencesForm
             pdfMedia={pdfMedia}
             experience={experience}
-            action={async () => {
-              "use server";
-              return "d";
-            }}
+            action={updateExperience}
             key={experience.id}
           />
         ))}
