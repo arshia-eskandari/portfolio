@@ -4,19 +4,18 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/Accordion";
+import { DatePickerWithRange } from "@/components/ui/DateRange";
+import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/Select";
+import { SearchInput } from "@/components/ui/SearchInput";
 import { Textarea } from "@/components/ui/Textarea";
+import { formatDate } from "@/lib/time";
 import { cn } from "@/lib/utils";
 import { Experience, Media } from "@prisma/client";
-import { ChangeEvent, useState } from "react";
+import { addDays } from "date-fns";
+import { X } from "lucide-react";
+import { ChangeEvent, useEffect, useState } from "react";
+import { DateRange } from "react-day-picker";
 
 export default function ExperiencesForm({
   experience,
@@ -24,32 +23,89 @@ export default function ExperiencesForm({
   pdfMedia,
 }: {
   // TODO: Make optional params required
-  experience?: Experience;
-  action?: (formData: FormData) => Promise<any>;
+  experience: Experience;
+  action: (formData: FormData) => Promise<any>;
   pdfMedia: Media[];
 }) {
   const [form, setForm] = useState<{
     achievements: string;
-    experiences: string;
+    responsibilities: string;
+    jobTitle: string;
+    company: string;
+    location: string;
   }>({
     achievements: "",
-    experiences: "",
+    responsibilities: "",
+    jobTitle: "",
+    company: "",
+    location: "",
   });
   const [formErrors, setFormErrors] = useState<{
     achievements: string;
-    experiences: string;
+    responsibilities: string;
+    jobTitle: string;
+    company: string;
+    location: string;
   }>({
     achievements: "",
-    experiences: "",
+    responsibilities: "",
+    jobTitle: "",
+    company: "",
+    location: "",
+  });
+  const [pdfMediaMap, setPdfMediaMap] = useState<Map<Media, boolean>>(
+    new Map(),
+  );
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: new Date(2024, 0, 20),
+    to: addDays(new Date(2024, 0, 20), 20),
   });
 
-  const validateText = (text: string) => {
-    return text.length >= 10 && text.length <= 1000;
+  useEffect(() => {
+    const {
+      achievements,
+      responsibilities,
+      jobTitle,
+      company,
+      location,
+      startDate,
+      endDate,
+    } = experience;
+    setForm({
+      achievements: achievements.join(","),
+      responsibilities: responsibilities.join(","),
+      jobTitle,
+      company,
+      location,
+    });
+    setDate({ from: startDate, to: endDate || undefined });
+  }, [experience]);
+
+  useEffect(() => {
+    const newPdfMediaMap: Map<Media, boolean> = new Map();
+    pdfMedia.forEach((m) => {
+      if (experience?.recommendationLetterUrls?.includes(m.url)) {
+        newPdfMediaMap.set(m, true);
+      } else {
+        newPdfMediaMap.set(m, false);
+      }
+    });
+    setPdfMediaMap(newPdfMediaMap);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pdfMedia]);
+
+  const validateText = (text: string, lowerBound = 10, upperBound = 1000) => {
+    return text.length >= lowerBound && text.length <= upperBound;
   };
 
   const onInputChange = (
-    type: "achievements" | "experiences",
-    e: ChangeEvent<HTMLTextAreaElement>,
+    type:
+      | "achievements"
+      | "responsibilities"
+      | "jobTitle"
+      | "company"
+      | "location",
+    e: ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLInputElement>,
   ) => {
     setFormErrors({
       achievements:
@@ -58,49 +114,124 @@ export default function ExperiencesForm({
           : type === "achievements" && validateText(e.target.value)
             ? ""
             : formErrors.achievements,
-      experiences:
-        type === "experiences" && !validateText(e.target.value)
-          ? "The experiences must be 10 to 1000 characters"
-          : type === "experiences" && validateText(e.target.value)
+      responsibilities:
+        type === "responsibilities" && !validateText(e.target.value)
+          ? "The responsibilities must be 10 to 1000 characters"
+          : type === "responsibilities" && validateText(e.target.value)
             ? ""
-            : formErrors.experiences,
+            : formErrors.responsibilities,
+      jobTitle:
+        type === "jobTitle" && !validateText(e.target.value, 10, 30)
+          ? "The jobTitle must be 10 to 30 characters"
+          : type === "jobTitle" && validateText(e.target.value, 10, 30)
+            ? ""
+            : formErrors.jobTitle,
+      company:
+        type === "company" && !validateText(e.target.value, 10, 30)
+          ? "The company must be 10 to 30 characters"
+          : type === "company" && validateText(e.target.value, 10, 30)
+            ? ""
+            : formErrors.company,
+      location:
+        type === "location" && !validateText(e.target.value, 10, 30)
+          ? "The location must be 10 to 30 characters"
+          : type === "location" && validateText(e.target.value, 10, 30)
+            ? ""
+            : formErrors.location,
     });
     const newForm = { ...form, [type]: e.target.value };
     setForm(newForm);
   };
 
+  const getMediaArray = (selectType: boolean) => {
+    return [...pdfMediaMap]
+      .filter(([_, isSelected]) => isSelected === selectType)
+      .map(([m]) => m);
+  };
+
+  const updateMedium = (medium: Media, isSelected: boolean) => {
+    const newPdfMediaMap: Map<Media, boolean> = new Map(pdfMediaMap);
+    newPdfMediaMap.set(medium, isSelected);
+    setPdfMediaMap(newPdfMediaMap);
+  };
+
   return (
     <form action="">
       <AccordionItem value="item-1" className="rounded-sm bg-slate-200 p-3">
-        <AccordionTrigger className="no-underline">{`${"Job Title"}  |  ${"Company 1"}  |  ${"Location"}  |  ${"2022"}-${"Present"}`}</AccordionTrigger>
+        <AccordionTrigger className="no-underline">{`${
+          experience.jobTitle
+        }  |  ${experience.company}  |  ${experience.location}  |  ${formatDate(
+          experience.startDate,
+        )} - ${
+          experience.endDate ? formatDate(experience.endDate) : "Present"
+        }`}</AccordionTrigger>
         <AccordionContent className="px-3">
-          <Label htmlFor="resumeUrl" className="my-3 block">
-            Resume
+          <Label htmlFor="jobTitle" className="my-3 block">
+            Job Title
           </Label>
-          <Select
-            name="resumeUrl"
-            defaultValue={
-              pdfMedia?.find(
-                (m) => experience?.recommendationLetterUrls?.includes(m.url),
-              )?.url || "null"
-            }
-            // TODO: Figure out multiple selects
-            // multiple
-          >
-            <SelectTrigger className="my-3 w-[180px]" id="resumeUrl">
-              <SelectValue placeholder="Select Resume" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="null">Select Resume</SelectItem>
-                {pdfMedia.map(({ name, url }) => (
-                  <SelectItem value={url} key={name}>
-                    {name}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <Input
+            type="text"
+            id="jobTitle"
+            name="jobTitle"
+            className="w-full lg:w-1/3"
+            value={form.jobTitle}
+            onChange={(e) => onInputChange("jobTitle", e)}
+          />
+          {formErrors.jobTitle === "" ? null : (
+            <span className="input-error-message">{formErrors.jobTitle}</span>
+          )}
+          <Label htmlFor="company" className="my-3 block">
+            Company Name
+          </Label>
+          <Input
+            type="text"
+            id="company"
+            name="company"
+            className="w-full lg:w-1/3"
+            value={form.company}
+            onChange={(e) => onInputChange("company", e)}
+          />
+          {formErrors.company === "" ? null : (
+            <span className="input-error-message">{formErrors.company}</span>
+          )}
+          <Label htmlFor="location" className="my-3 block">
+            Location
+          </Label>
+          <Input
+            type="text"
+            id="location"
+            name="location"
+            className="w-full lg:w-1/3"
+            value={form.location}
+            onChange={(e) => onInputChange("location", e)}
+          />
+          {formErrors.location === "" ? null : (
+            <span className="input-error-message">{formErrors.location}</span>
+          )}
+          <Label htmlFor="rec" className="my-3 block">
+            Recommendation Letters
+          </Label>
+          <SearchInput
+            id="rec"
+            items={getMediaArray(false)}
+            itemClickHandler={(medium: Media) => updateMedium(medium, true)}
+          />
+          <div className="my-3">
+            {getMediaArray(true).map((medium) => (
+              <span key={medium.id} className="flex items-center justify-start">
+                <X
+                  color="red"
+                  className="w-content mr-3 inline-block hover:cursor-pointer"
+                  onClick={() => updateMedium(medium, false)}
+                />
+                {medium.name}
+              </span>
+            ))}
+          </div>
+          <Label htmlFor="date" className="my-3 block">
+            Dates
+          </Label>
+          <DatePickerWithRange date={date} setDate={setDate} id="date" />
           <Label htmlFor="achievements" className="my-3 block">
             Achievements
           </Label>
@@ -109,7 +240,7 @@ export default function ExperiencesForm({
             name="achievements"
             value={form.achievements}
             onChange={(e) => onInputChange("achievements", e)}
-            placeholder="* Add achievements in the bulletpoint format."
+            placeholder="Enter achievements in comma-separated format"
             className={cn(
               formErrors.achievements === ""
                 ? ""
@@ -122,24 +253,24 @@ export default function ExperiencesForm({
             </span>
           )}
 
-          <Label htmlFor="experiences" className="my-3 block">
-            Experiences
+          <Label htmlFor="responsibilities" className="my-3 block">
+            Responsibilities
           </Label>
           <Textarea
-            id="experiences"
-            name="experiences"
-            value={form.experiences}
-            onChange={(e) => onInputChange("experiences", e)}
-            placeholder="* Add experiences in the bulletpoint format."
+            id="responsibilities"
+            name="responsibilities"
+            value={form.responsibilities}
+            onChange={(e) => onInputChange("responsibilities", e)}
+            placeholder="Enter responsibilities in comma-separated format"
             className={cn(
-              formErrors.experiences === ""
+              formErrors.responsibilities === ""
                 ? ""
                 : "input-error ring-0 focus-visible:ring-0",
             )}
           />
-          {formErrors.experiences === "" ? null : (
+          {formErrors.responsibilities === "" ? null : (
             <span className="input-error-message">
-              {formErrors.experiences}
+              {formErrors.responsibilities}
             </span>
           )}
         </AccordionContent>

@@ -17,3 +17,10 @@ export function formatReadableDate(date: Date): string {
     second: "2-digit",
   });
 }
+
+export function formatDate(date: Date): string {
+  return date.toLocaleString("en-US", {
+    year: "numeric",
+    month: "short",
+  });
+}

@@ -1,4 +1,4 @@
-import { Contact, Status } from "@prisma/client";
+import { Contact, Status, Media, MediaType } from "@prisma/client";
 
 export const MOCK_CONTACTS: Contact[] = [
   {
@@ -66,5 +66,40 @@ export const MOCK_CONTACTS: Contact[] = [
       "I saw your presentation at the conference. Could we discuss potential partnership opportunities?",
     status: Status.PENDING,
     createdAt: new Date("2024-06-03T09:00:00"),
+  },
+];
+
+export const MOCK_PDF_FILES: Media[] = [
+  {
+    id: "1",
+    name: "Annual Report 2023",
+    url: "https://example.com/annual-report-2023.pdf",
+    fileKey: "2023-annual-report",
+    createdAt: new Date("2023-01-05T14:48:00.000Z"),
+    mediaType: MediaType.PDF,
+  },
+  {
+    id: "2",
+    name: "User Guide",
+    url: "https://example.com/user-guide.pdf",
+    fileKey: "user-guide",
+    createdAt: new Date("2023-03-12T09:22:00.000Z"),
+    mediaType: MediaType.PDF,
+  },
+  {
+    id: "3",
+    name: "Financial Analysis Q2",
+    url: "https://example.com/financial-analysis-q2.pdf",
+    fileKey: "financial-analysis-q2",
+    createdAt: new Date("2023-04-15T11:30:00.000Z"),
+    mediaType: MediaType.PDF,
+  },
+  {
+    id: "4",
+    name: "Project Proposal",
+    url: "https://example.com/project-proposal.pdf",
+    fileKey: "project-proposal",
+    createdAt: new Date("2023-05-20T16:45:00.000Z"),
+    mediaType: MediaType.PDF,
   },
 ];

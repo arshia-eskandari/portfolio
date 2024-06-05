@@ -43,8 +43,8 @@ model Experience {
   id                       String   @id @default(auto()) @map("_id") @db.ObjectId
   jobTitle                 String
   company                  String
-  startDate                String
-  endDate                  String
+  startDate                DateTime
+  endDate                  DateTime?
   achievements             String[]
   responsibilities         String[]
   recommendationLetterUrls String[]
