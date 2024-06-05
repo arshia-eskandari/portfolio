@@ -4,6 +4,7 @@ import { z } from "zod";
 import { DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3Client } from "@/aws/s3";
 import { MediaType } from "@prisma/client";
+import { removeItem } from "@/lib/array";
 
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
 const AWS_REGION = process.env.AWS_REGION;
@@ -92,6 +93,66 @@ export async function addMedia(formData: FormData) {
   }
 }
 
+export async function deleteUsedMedia(url: string) {
+  const experiences = await db.experience.findMany({
+    where: {
+      recommendationLetterUrls: {
+        has: url,
+      },
+    },
+  });
+
+  const experienceUpdatePromises = experiences.map((res) => {
+    const newRecommendationLetterUrls = removeItem(
+      res.recommendationLetterUrls,
+      url,
+    ).result;
+    return db.experience.update({
+      where: { id: res.id },
+      data: { recommendationLetterUrls: newRecommendationLetterUrls },
+    });
+  });
+
+  await Promise.all(experienceUpdatePromises);
+
+  const projects = await db.project.findMany({
+    where: {
+      urls: {
+        has: url,
+      },
+    },
+  });
+
+  const projectsUpdatePromises = projects.map((res) => {
+    const { result: newUrls, index } = removeItem(res.urls, url);
+    const newUrlTitles =
+      index === -1
+        ? res.urlTitles
+        : removeItem(res.urlTitles, res.urlTitles[index]).result;
+    return db.project.update({
+      where: { id: res.id },
+      data: { urls: newUrls, urlTitles: newUrlTitles },
+    });
+  });
+
+  await Promise.all(projectsUpdatePromises);
+
+  const about = await db.about.findMany({
+    where: {
+      resumeUrl: url,
+    },
+  });
+
+  const aboutUpdatePromises = about.map((res) => {
+    return db.about.update({
+      where: { id: res.id },
+      data: { resumeUrl: null },
+    });
+  });
+
+  await Promise.all(aboutUpdatePromises);
+}
+
 export async function deleteMedia(formData: FormData) {
   try {
     let deleteCount = 0;
@@ -107,6 +168,7 @@ export async function deleteMedia(formData: FormData) {
         });
 
         if (medium) {
+          await deleteUsedMedia(medium.url);
           const { fileKey } = medium;
 
           const command = new DeleteObjectCommand({
