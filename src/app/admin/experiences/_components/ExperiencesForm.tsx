@@ -35,6 +35,8 @@ export default function ExperiencesForm({
 }) {
   const [loading, setLoading] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [showDeleteSpinner, setShowDeleteSpinner] = useState(false);
   const router = useRouter();
   const [errorMssg, setErrorMssg] = useState<string>("");
   const [form, setForm] = useState<{
@@ -232,14 +234,14 @@ export default function ExperiencesForm({
                 type="button"
                 variant="destructive"
                 className="mr-3"
-                loading={loading}
-                showSpinner={showSpinner}
+                loading={deleteLoading}
+                showSpinner={showDeleteSpinner}
                 onTransitionEnd={onTransitionEnd}
                 onClick={async (e) => {
                   e.preventDefault();
                   setErrorMssg("");
-                  setLoading(true);
-                  setShowSpinner(true);
+                  setDeleteLoading(true);
+                  setShowDeleteSpinner(true);
                   const response = await deleteAction(experience.id);
                   if (response.status === 200 || response.status === 201) {
                     router.refresh();
