@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/Accordion";
 import { DatePickerWithRange } from "@/components/ui/DateRange";
+import { ErrorAlert } from "@/components/ui/ErrorAlert";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { SearchInput } from "@/components/ui/SearchInput";
@@ -103,8 +104,11 @@ export default function ExperiencesForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pdfMedia]);
 
-  const validateText = (text: string, lowerBound = 10, upperBound = 1000) => {
-    return text.length >= lowerBound && text.length <= upperBound;
+  const validateText = (text: string, lowerBound = 5, upperBound = 1000) => {
+    return (
+      text.replace(/ /g, "").length >= lowerBound &&
+      text.replace(/ /g, "").length <= upperBound
+    );
   };
 
   const onInputChange = (
@@ -130,21 +134,21 @@ export default function ExperiencesForm({
             ? ""
             : formErrors.responsibilities,
       jobTitle:
-        type === "jobTitle" && !validateText(e.target.value, 10, 30)
-          ? "The jobTitle must be 10 to 30 characters"
-          : type === "jobTitle" && validateText(e.target.value, 10, 30)
+        type === "jobTitle" && !validateText(e.target.value, 5, 30)
+          ? "The jobTitle must be 5 to 30 characters"
+          : type === "jobTitle" && validateText(e.target.value, 5, 30)
             ? ""
             : formErrors.jobTitle,
       company:
-        type === "company" && !validateText(e.target.value, 10, 30)
-          ? "The company must be 10 to 30 characters"
-          : type === "company" && validateText(e.target.value, 10, 30)
+        type === "company" && !validateText(e.target.value, 5, 30)
+          ? "The company must be 5 to 30 characters"
+          : type === "company" && validateText(e.target.value, 5, 30)
             ? ""
             : formErrors.company,
       location:
-        type === "location" && !validateText(e.target.value, 10, 30)
-          ? "The location must be 10 to 30 characters"
-          : type === "location" && validateText(e.target.value, 10, 30)
+        type === "location" && !validateText(e.target.value, 5, 30)
+          ? "The location must be 5 to 30 characters"
+          : type === "location" && validateText(e.target.value, 5, 30)
             ? ""
             : formErrors.location,
       startDate: formErrors.startDate,
@@ -189,10 +193,7 @@ export default function ExperiencesForm({
       }, [] as string[])
       .join(",");
     formData.append("recommendationLetterUrls", recommendationLetterUrls);
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-    if (experience.id) formData.append("id", experience.id);
+    formData.append("id", experience.id);
     const response = await action(formData);
     setLoading(false);
 
@@ -210,7 +211,10 @@ export default function ExperiencesForm({
 
   return (
     <form onSubmit={actionWithLoading}>
-      <AccordionItem value="item-1" className="rounded-sm bg-slate-200 p-3">
+      <AccordionItem
+        value={experience.id}
+        className="rounded-sm bg-slate-200 p-3"
+      >
         <AccordionTrigger className="no-underline">
           {`${experience.jobTitle}  |  ${experience.company}  |  ${
             experience.location
@@ -341,6 +345,7 @@ export default function ExperiencesForm({
           )}
         </AccordionContent>
       </AccordionItem>
+      <ErrorAlert errorMssg={errorMssg} />
     </form>
   );
 }
