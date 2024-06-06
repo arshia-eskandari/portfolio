@@ -237,6 +237,7 @@ export default function ExperiencesForm({
                 loading={deleteLoading}
                 showSpinner={showDeleteSpinner}
                 onTransitionEnd={onTransitionEnd}
+                disabled={loading}
                 onClick={async (e) => {
                   e.preventDefault();
                   setErrorMssg("");
@@ -256,6 +257,7 @@ export default function ExperiencesForm({
                 loading={loading}
                 showSpinner={showSpinner}
                 onTransitionEnd={onTransitionEnd}
+                disabled={deleteLoading}
               >
                 Save
               </SubmitButton>

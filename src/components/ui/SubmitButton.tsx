@@ -11,12 +11,18 @@ export function SubmitButton({
   className,
   showSpinner,
   loading,
+  disabled,
   children,
   onTransitionEnd,
   ...props
 }: SubmitButtonProps) {
   return (
-    <Button type="submit" className={className} disabled={loading} {...props}>
+    <Button
+      type="submit"
+      className={className}
+      disabled={loading || disabled}
+      {...props}
+    >
       {showSpinner && (
         // EXPLANATION: We need a div here since duration-300 affects animate-spin
         <div
