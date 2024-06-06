@@ -64,7 +64,7 @@ model Project {
   projectTitle        String
   objective           String
   keyResults          String[]
-  experienceId        String?  @db.ObjectId
+  experienceId        String?
   media               String[]
 }
 
