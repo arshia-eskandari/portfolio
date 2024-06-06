@@ -73,6 +73,13 @@ export async function updateExperience(formData: FormData) {
       recommendationLetterUrls,
     } = result.data;
 
+    if (!(await db.experience.findFirst({ where: { id } }))) {
+      return {
+        status: 404,
+        message: "Experience not found",
+      };
+    }
+
     for (const url of recommendationLetterUrls.split(",")) {
       if (!db.media.findFirst({ where: { url } })) {
         return {
