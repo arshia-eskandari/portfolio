@@ -119,8 +119,11 @@ export function Sidebar({ children }: { children: ReactNode }) {
         {isOpen ? <X /> : <Menu />}
       </button>
 
-      {isOpen && !md ? (
-        <div className="mt-4 flex flex-col">
+      {!md ? (
+        <div
+          key={`${isOpen}`}
+          className={cn("mt-4", isOpen ? "flex flex-col" : "hidden")}
+        >
           {React.Children.map(
             React.Children.toArray(children),
             enhanceChildren,
