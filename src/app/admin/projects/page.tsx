@@ -7,6 +7,7 @@ import {
   addDefaultProject,
   deleteProject,
   getProjects,
+  updateProject,
 } from "./_actions/projects";
 import DefaultProjectForm from "./_components/DefaultProjectForm";
 
@@ -23,9 +24,7 @@ export default async function Experiences() {
           <ProjectsForm
             media={media}
             experiences={experiences}
-            action={async (formData: FormData) => {
-              "use server";
-            }}
+            action={updateProject}
             deleteAction={deleteProject}
             project={project}
             key={project.id}

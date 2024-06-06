@@ -128,9 +128,9 @@ export default function ProjectsForm({
   ) => {
     setFormErrors({
       projectTitle:
-        type === "projectTitle" && !validateText(e.target.value)
+        type === "projectTitle" && !validateText(e.target.value, 5, 100)
           ? "The url titles must be 5 to 100 characters"
-          : type === "projectTitle" && validateText(e.target.value)
+          : type === "projectTitle" && validateText(e.target.value, 5, 100)
             ? ""
             : formErrors.projectTitle,
       urlTitles:
@@ -152,15 +152,15 @@ export default function ProjectsForm({
             ? ""
             : formErrors.projectTechnologies,
       objective:
-        type === "objective" && !validateText(e.target.value, 5, 30)
-          ? "The objective must be 5 to 30 characters"
-          : type === "objective" && validateText(e.target.value, 5, 30)
+        type === "objective" && !validateText(e.target.value, 5, 150)
+          ? "The objective must be 5 to 150 characters"
+          : type === "objective" && validateText(e.target.value, 5, 150)
             ? ""
             : formErrors.objective,
       keyResults:
-        type === "keyResults" && !validateText(e.target.value, 5, 30)
-          ? "The key results must be 5 to 30 characters"
-          : type === "keyResults" && validateText(e.target.value, 5, 30)
+        type === "keyResults" && !validateText(e.target.value, 5, 1000)
+          ? "The key results must be 5 to 1000 characters"
+          : type === "keyResults" && validateText(e.target.value, 5, 1000)
             ? ""
             : formErrors.keyResults,
     });
@@ -197,12 +197,8 @@ export default function ProjectsForm({
       .join(",");
     formData.append("media", media);
     formData.append("id", project.id);
-    for (const [key, value] of formData.entries()) {
-      console.log({ key, value });
-    }
     const response = await action(formData);
     setLoading(false);
-    return;
 
     if (response.status === 200 || response.status === 201) {
       router.refresh();
@@ -295,6 +291,9 @@ export default function ProjectsForm({
               </span>
             ))}
           </div>
+          <Label htmlFor="experienceId" className="my-3 block">
+            Experience
+          </Label>
           <Select
             name="experienceId"
             defaultValue={
@@ -342,7 +341,7 @@ export default function ProjectsForm({
             name="urlTitles"
             value={form.urlTitles}
             onChange={(e) => onInputChange("urlTitles", e)}
-            placeholder="Enter urlTitles in comma-separated format"
+            placeholder="Enter url titles in comma-separated format"
             className={cn(
               formErrors.urlTitles === ""
                 ? ""
@@ -360,7 +359,7 @@ export default function ProjectsForm({
             name="projectTechnologies"
             value={form.projectTechnologies}
             onChange={(e) => onInputChange("projectTechnologies", e)}
-            placeholder="Enter projectTechnologies in comma-separated format"
+            placeholder="Enter project technologies in comma-separated format"
             className={cn(
               formErrors.projectTechnologies === ""
                 ? ""
@@ -398,7 +397,7 @@ export default function ProjectsForm({
             name="keyResults"
             value={form.keyResults}
             onChange={(e) => onInputChange("keyResults", e)}
-            placeholder="Enter keyResults in comma-separated format"
+            placeholder="Enter key results in comma-separated format"
             className={cn(
               formErrors.keyResults === ""
                 ? ""
