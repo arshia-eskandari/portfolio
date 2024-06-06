@@ -127,13 +127,13 @@ export default function ExperiencesForm({
     setFormErrors({
       achievements:
         type === "achievements" && !validateText(e.target.value)
-          ? "The achievements must be 10 to 1000 characters"
+          ? "The achievements must be 5 to 1000 characters"
           : type === "achievements" && validateText(e.target.value)
             ? ""
             : formErrors.achievements,
       responsibilities:
         type === "responsibilities" && !validateText(e.target.value)
-          ? "The responsibilities must be 10 to 1000 characters"
+          ? "The responsibilities must be 5 to 1000 characters"
           : type === "responsibilities" && validateText(e.target.value)
             ? ""
             : formErrors.responsibilities,

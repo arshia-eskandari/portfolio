@@ -30,11 +30,11 @@ export async function addDefaultExperience() {
     });
     return {
       status: 201,
-      message: "About details successfully created",
+      message: "Default experience details successfully created",
     };
   } catch (error) {
     console.log("🚀 ~ addDefaultExperience ~ error:", error);
-    return { status: 500, message: "Failed to upload about details" };
+    return { status: 500, message: "Failed to generate experience details" };
   }
 }
 
@@ -117,7 +117,6 @@ export async function updateExperience(formData: FormData) {
 
 export async function deleteExperience(id: string) {
   try {
-    console.log("called")
     await db.experience.delete({ where: { id } });
     return {
       status: 200,
