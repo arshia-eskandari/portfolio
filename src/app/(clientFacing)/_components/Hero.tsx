@@ -8,7 +8,7 @@ export default async function Hero() {
   return (
     <main id="hero" className="relative h-[calc(100vh-72px)] overflow-hidden">
       <Trapezoids />
-      <div className="absolute flex h-full flex-col items-start justify-center p-3">
+      <div className="absolute flex h-full flex-col items-start justify-center p-3 w-full md:w-1/2">
         <H1>{hero.title}</H1>
         <P className="block my-3">{hero.text}</P>
         <div>
