@@ -101,7 +101,7 @@ export default function HeroForm({
         </SubmitButton>
       </div>
 
-      <Label htmlFor="text" className="my-3 block">
+      <Label htmlFor="title" className="my-3 block">
         Hero Title
       </Label>
       <Input
