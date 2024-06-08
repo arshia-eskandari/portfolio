@@ -114,12 +114,12 @@ export async function updateProject(formData: FormData) {
     await db.project.update({
       where: { id },
       data: {
-        urlTitles: urlTitlesArray,
-        urls: urlArray,
-        projectTechnologies: projectTechnologies?.split(",") || [],
-        projectTitle,
-        objective,
-        keyResults: keyResults?.split(",") || [],
+        urlTitles: urlTitlesArray?.map(x => x.trim()),
+        urls: urlArray?.map(x => x.trim()),
+        projectTechnologies: projectTechnologies?.split(",")?.map(x => x.trim()) || [],
+        projectTitle: projectTitle?.trim(),
+        objective: objective?.trim(),
+        keyResults: keyResults?.split(",")?.map(x => x.trim()) || [],
         media: mediaArray,
         experienceId,
       },

@@ -1,20 +1,21 @@
-"use server"
+"use server";
 import db from "@/db/db";
 import { z } from "zod";
 
 const addSchema = z.object({
   id: z.string().optional(),
-  text: z.string().min(10).max(150),
+  text: z.string().min(5).max(1000),
+  title: z.string().min(5).max(150),
 });
 
 export async function getHero() {
   try {
     const hero = await db.hero.findFirst();
 
-    return hero || { id: null, text: null };
+    return hero || { id: null, text: null, title: null };
   } catch (error) {
     console.log("🚀 ~ getHero ~ error:", error);
-    return { id: null, text: null };
+    return { id: null, text: null, title: null };
   }
 }
 
@@ -27,10 +28,11 @@ export async function addHero(formData: FormData) {
         message: "Invalid hero text",
       };
     }
-    const { id, text } = result.data;
+    const { id, title, text } = result.data;
     if (!id || !(await db.hero.findUnique({ where: { id } }))) {
       await db.hero.create({
         data: {
+          title,
           text,
         },
       });
@@ -44,6 +46,7 @@ export async function addHero(formData: FormData) {
         id,
       },
       data: {
+        title,
         text,
       },
     });

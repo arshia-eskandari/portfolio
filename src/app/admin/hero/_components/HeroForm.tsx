@@ -1,5 +1,6 @@
 "use client";
 import { ErrorAlert } from "@/components/ui/ErrorAlert";
+import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { Textarea } from "@/components/ui/Textarea";
@@ -13,15 +14,18 @@ export default function HeroForm({
   hero,
   action,
 }: {
-  hero: Hero | { id: null; text: null };
+  hero: Hero | { id: null; text: null; title: null };
   action: (formData: FormData) => Promise<any>;
 }) {
-  const [form, setForm] = useState<{ text: string }>({
+  const [form, setForm] = useState<{ title: string; text: string }>({
+    title: "",
     text: "",
   });
   const [formErrors, setFormErrors] = useState<{
+    title: string;
     text: string;
   }>({
+    title: "",
     text: "",
   });
   const [loading, setLoading] = useState(false);
@@ -29,15 +33,24 @@ export default function HeroForm({
   const router = useRouter();
   const [errorMssg, setErrorMssg] = useState<string>("");
 
-  const validateText = (text: string) => {
-    return text.length >= 10 && text.length <= 150;
+  const validateText = (text: string, lowerBound = 5, upperBound = 1000) => {
+    return text.trim().length >= lowerBound && text.trim().length <= upperBound;
   };
 
-  const onInputChange = (type: "text", e: ChangeEvent<HTMLTextAreaElement>) => {
+  const onInputChange = (
+    type: "text" | "title",
+    e: ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLInputElement>,
+  ) => {
     setFormErrors({
+      title:
+        type === "title" && !validateText(e.target.value, 5, 150)
+          ? "The hero title must be 5 to 150 characters"
+          : type === "title" && validateText(e.target.value, 5, 150)
+            ? ""
+            : formErrors.title,
       text:
         type === "text" && !validateText(e.target.value)
-          ? "The hero text must be 10 to 150 characters"
+          ? "The hero text must be 5 to 1000 characters"
           : type === "text" && validateText(e.target.value)
             ? ""
             : formErrors.text,
@@ -66,9 +79,7 @@ export default function HeroForm({
 
   useEffect(() => {
     if (errorMssg !== "") setErrorMssg("");
-    if (hero.text) {
-      setForm({ text: hero.text });
-    }
+    setForm({ text: hero?.text || "", title: hero?.title || "" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -90,7 +101,23 @@ export default function HeroForm({
         </SubmitButton>
       </div>
 
-      <Label htmlFor="text" className="my-3 block">Hero Text</Label>
+      <Label htmlFor="text" className="my-3 block">
+        Hero Title
+      </Label>
+      <Input
+        type="text"
+        id="title"
+        name="title"
+        className="w-full lg:w-1/3"
+        value={form.title}
+        onChange={(e) => onInputChange("title", e)}
+      />
+      {formErrors.title === "" ? null : (
+        <span className="input-error-message">{formErrors.title}</span>
+      )}
+      <Label htmlFor="text" className="my-3 block">
+        Hero Text
+      </Label>
       <Textarea
         id="text"
         name="text"

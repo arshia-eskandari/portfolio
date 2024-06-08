@@ -52,8 +52,9 @@ model Experience {
 }
 
 model Hero {
-  id   String  @id @default(auto()) @map("_id") @db.ObjectId
-  text String?
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  title String?
+  text  String?
 }
 
 model Project {
