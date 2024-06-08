@@ -7,10 +7,7 @@ import React, { cloneElement, useEffect } from "react";
 import { ComponentProps, ReactNode, useState } from "react";
 
 export function Sidebar({ children }: { children: ReactNode }) {
-  // Define the breakpoint for 'md' (typically 768px for Tailwind CSS)
   const mdBreakpoint = 768;
-
-  // Initialize isOpen based on the initial window width
   const [isOpen, setIsOpen] = useState(true);
   const [md, setMd] = useState(true);
 
@@ -26,14 +23,12 @@ export function Sidebar({ children }: { children: ReactNode }) {
       }
     };
 
-    // Add event listener
     window.addEventListener("resize", handleResize);
 
-    // Clean up function
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []); // Dependencies are empty to set up and tear down the listener once
+  }, []);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
