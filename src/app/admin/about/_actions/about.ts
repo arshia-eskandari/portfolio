@@ -4,6 +4,7 @@ import { z } from "zod";
 
 const addSchema = z.object({
   id: z.string().optional(),
+  title: z.string().min(5).max(150),
   text: z.string().min(10).max(1000),
   resumeUrl: z.string().optional(),
 });
@@ -12,10 +13,10 @@ export async function getAbout() {
   try {
     const about = await db.about.findFirst();
 
-    return about || { id: null, text: null, resumeUrl: null };
+    return about || { id: null, title: null, text: null, resumeUrl: null };
   } catch (error) {
     console.log("🚀 ~ getAbout ~ error:", error);
-    return { id: null, text: null, resumeUrl: null };
+    return { id: null, title: null, text: null, resumeUrl: null };
   }
 }
 
@@ -28,7 +29,7 @@ export async function addAbout(formData: FormData) {
         message: "Invalid about text or resume url",
       };
     }
-    const { id, text, resumeUrl } = result.data;
+    const { id, title, text, resumeUrl } = result.data;
     if (!(await db.media.findFirst({ where: { url: resumeUrl } }))) {
       return {
         status: 400,
@@ -38,6 +39,7 @@ export async function addAbout(formData: FormData) {
     if (!id || !(await db.about.findUnique({ where: { id } }))) {
       await db.about.create({
         data: {
+          title,
           text,
           resumeUrl,
         },
@@ -52,6 +54,7 @@ export async function addAbout(formData: FormData) {
         id,
       },
       data: {
+        title,
         text,
         resumeUrl,
       },

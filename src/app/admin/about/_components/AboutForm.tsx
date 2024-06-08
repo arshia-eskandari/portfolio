@@ -16,22 +16,26 @@ import {
 } from "@/components/ui/Select";
 import { H4 } from "@/components/ui/Typography";
 import { Label } from "@/components/ui/Label";
+import { Input } from "@/components/ui/Input";
 
 export default function AboutForm({
   about,
   action,
   pdfMedia,
 }: {
-  about: About | { id: null; text: null; resumeUrl: null };
+  about: About | { id: null; title: null; text: null; resumeUrl: null };
   action: (formData: FormData) => Promise<any>;
   pdfMedia: Media[];
 }) {
-  const [form, setForm] = useState<{ text: string }>({
+  const [form, setForm] = useState<{ title: string; text: string }>({
+    title: "",
     text: "",
   });
   const [formErrors, setFormErrors] = useState<{
+    title: string;
     text: string;
   }>({
+    title: "",
     text: "",
   });
   const [loading, setLoading] = useState(false);
@@ -39,15 +43,24 @@ export default function AboutForm({
   const router = useRouter();
   const [errorMssg, setErrorMssg] = useState<string>("");
 
-  const validateText = (text: string) => {
-    return text.length >= 10 && text.length <= 1000;
+  const validateText = (text: string, lowerBound = 5, upperBound = 1000) => {
+    return text.trim().length >= lowerBound && text.trim().length <= upperBound;
   };
 
-  const onInputChange = (type: "text", e: ChangeEvent<HTMLTextAreaElement>) => {
+  const onInputChange = (
+    type: "text" | "title",
+    e: ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLInputElement>,
+  ) => {
     setFormErrors({
+      title:
+        type === "title" && !validateText(e.target.value, 5, 150)
+          ? "The hero title must be 5 to 150 characters"
+          : type === "title" && validateText(e.target.value, 5, 150)
+            ? ""
+            : formErrors.title,
       text:
         type === "text" && !validateText(e.target.value)
-          ? "The hero text must be 10 to 1000 characters"
+          ? "The about text must be 5 to 1000 characters"
           : type === "text" && validateText(e.target.value)
             ? ""
             : formErrors.text,
@@ -76,9 +89,7 @@ export default function AboutForm({
 
   useEffect(() => {
     if (errorMssg !== "") setErrorMssg("");
-    if (about.text) {
-      setForm({ text: about.text });
-    }
+    setForm({ text: about?.text || "", title: about?.title || "" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -100,7 +111,23 @@ export default function AboutForm({
         </SubmitButton>
       </div>
 
-      <Label htmlFor="resumeUrl" className="my-3 block">Resume</Label>
+      <Label htmlFor="title" className="my-3 block">
+        About Title
+      </Label>
+      <Input
+        type="text"
+        id="title"
+        name="title"
+        className="w-full lg:w-1/3"
+        value={form.title}
+        onChange={(e) => onInputChange("title", e)}
+      />
+      {formErrors.title === "" ? null : (
+        <span className="input-error-message">{formErrors.title}</span>
+      )}
+      <Label htmlFor="resumeUrl" className="my-3 block">
+        Resume
+      </Label>
       <Select
         name="resumeUrl"
         defaultValue={
@@ -121,7 +148,9 @@ export default function AboutForm({
           </SelectGroup>
         </SelectContent>
       </Select>
-      <Label htmlFor="text" className="my-3 block">About Text</Label>
+      <Label htmlFor="text" className="my-3 block">
+        About Text
+      </Label>
       <Textarea
         id="text"
         name="text"
