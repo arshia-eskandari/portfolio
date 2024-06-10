@@ -7,9 +7,11 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <About />
-      <Skills />
-      <Experiences />
+      <div className="mx-auto max-w-6xl px-5">
+        <About />
+        <Skills />
+        <Experiences />
+      </div>
     </>
   );
 }
