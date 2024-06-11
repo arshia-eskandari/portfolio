@@ -72,11 +72,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* @apply layer1;
-    width: 100%;
-    aspect-ratio: 960/540;
-    background-size: cover;
-    background-repeat: repeat-y; */
   }
 }
 
@@ -152,4 +147,11 @@ input:-webkit-autofill:active {
 
 .hero-text {
   @apply text-black md:text-white lg:text-black;
+}
+
+.content {
+  background-image: url("../../public/body-bg.svg");
+  width: 100%;
+  background-size: 100% auto;
+  background-repeat: repeat-y;
 }

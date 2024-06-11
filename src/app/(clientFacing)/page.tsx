@@ -7,10 +7,12 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <div className="mx-auto max-w-6xl px-5">
-        <About />
-        <Skills />
-        <Experiences />
+      <div className="content">
+        <div className="max-w-[1280px] mx-auto">
+          <About />
+          <Skills />
+          <Experiences />
+        </div>
       </div>
     </>
   );
