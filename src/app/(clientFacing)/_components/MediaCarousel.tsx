@@ -117,7 +117,7 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
 
   return (
     <div
-      className="relative h-[500px] lg:w-1/2 overflow-hidden rounded-sm"
+      className="relative h-[500px] overflow-hidden rounded-sm lg:w-1/2"
       ref={containerRef}
     >
       <div
@@ -168,13 +168,13 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
         ))}
       </div>
       <button
-        className="absolute left-0 top-1/2 z-10 h-full -translate-y-1/2 transform p-2 pr-6 text-white shadow-lg hover:shadow-left-inner"
+        className="absolute left-0 top-1/2 z-10 hidden h-full -translate-y-1/2 transform p-2 pr-6 text-white shadow-lg hover:shadow-left-inner lg:block"
         onClick={handlePrev}
       >
         <ChevronLeft />
       </button>
       <button
-        className="absolute right-0 top-1/2 z-10 h-full -translate-y-1/2 transform p-2 pl-6 text-white shadow-lg hover:shadow-right-inner"
+        className="absolute right-0 top-1/2 z-10 hidden h-full -translate-y-1/2 transform p-2 pl-6 text-white shadow-lg hover:shadow-right-inner lg:block"
         onClick={handleNext}
       >
         <ChevronRight />
