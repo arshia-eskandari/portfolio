@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import React, { useState, useRef } from "react";
 import ReactPlayer from "react-player";
 
@@ -26,11 +27,15 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
 
   const handleMouseUp = () => {
     setIsDragging(false);
-    const threshold = containerRef.current ? containerRef.current.offsetWidth / 4 : 0;
+    const threshold = containerRef.current
+      ? containerRef.current.offsetWidth / 4
+      : 0;
     if (translateX > threshold) {
       setCurrentMediaIndex((prevIndex) => Math.max(prevIndex - 1, 0));
     } else if (translateX < -threshold) {
-      setCurrentMediaIndex((prevIndex) => Math.min(prevIndex + 1, media.length - 1));
+      setCurrentMediaIndex((prevIndex) =>
+        Math.min(prevIndex + 1, media.length - 1),
+      );
     }
     setTranslateX(0);
   };
@@ -40,15 +45,28 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
   };
 
   const handleNext = () => {
-    setCurrentMediaIndex((prevIndex) => Math.min(prevIndex + 1, media.length - 1));
+    setCurrentMediaIndex((prevIndex) =>
+      Math.min(prevIndex + 1, media.length - 1),
+    );
   };
 
   return (
-    <div className="relative h-[500px] w-1/2 overflow-hidden rounded-sm" ref={containerRef}>
+    <div
+      className="relative h-[500px] w-1/2 overflow-hidden rounded-sm"
+      ref={containerRef}
+    >
       <div
-        className="flex transition-transform duration-300 ease-out"
+        className={cn(
+          "flex transition-transform duration-300 ease-out",
+          isDragging ? "cursor-grabbing" : "cursor-grab",
+        )}
         style={{
-          transform: `translateX(${-currentMediaIndex * 100 + (isDragging ? translateX / containerRef?.current?.offsetWidth * 100 : 0)}%)`,
+          transform: `translateX(${
+            -currentMediaIndex * 100 +
+            (isDragging
+              ? (translateX / (containerRef.current?.offsetWidth ?? 1)) * 100
+              : 0)
+          }%)`,
         }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
