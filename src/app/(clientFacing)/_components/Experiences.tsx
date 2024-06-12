@@ -6,9 +6,9 @@ import ExperienceDetails from "./Experience";
 export default async function Experiences () {
   const experiences = await getExperiences();
   return (
-    <div className="p-3 my-12">
+    <div className="my-12">
 
-    <H2 className="text-center">Experiences</H2>
+    <H2 className="text-center pt-6 pb-6">Experiences</H2>
     <Accordion type="single" collapsible className="my-3 w-full">
       {experiences.map((experience) => (
         <ExperienceDetails

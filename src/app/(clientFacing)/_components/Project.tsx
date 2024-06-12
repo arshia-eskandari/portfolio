@@ -38,7 +38,7 @@ export default function ProjectDisplay({
   return (
     <div
       className={cn(
-        "mx-auto my-8 flex w-full rounded border p-4 shadow-lg flex-col lg:flex-row",
+        "mx-auto my-6 flex w-full rounded border p-4 shadow-lg flex-col lg:flex-row",
         index % 2 === 0 ? "" : "lg:flex-row-reverse",
       )}
     >

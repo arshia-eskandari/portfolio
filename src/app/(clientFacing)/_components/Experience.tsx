@@ -19,7 +19,7 @@ export default function ExperienceDetails({
       <AccordionItem
         id={experience.id}
         value={experience.id}
-        className="rounded-sm bg-slate-200 p-3"
+        className="rounded-lg bg-[#222B58] p-3 my-6 text-white"
       >
         <AccordionTrigger className="no-underline">
           {`${experience.jobTitle}  |  ${experience.company}  |  ${

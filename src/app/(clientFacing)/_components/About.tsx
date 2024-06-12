@@ -7,7 +7,7 @@ export default async function About() {
   const about = await getAbout();
   return (
     <div id="about" className="relative my-12">
-      <H2 className="text-center">{about.title}</H2>
+      <H2 className="text-center pt-6 pb-6 mb-6">{about.title}</H2>
       <div
         // EXPLANATION: A grid and padding bottom of 100% are required to adjust the size of next images
         className="mt-3 grid w-full grid-cols-1 gap-0 sm:grid-cols-2 lg:grid-cols-2"

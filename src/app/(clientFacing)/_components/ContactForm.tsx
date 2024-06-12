@@ -123,14 +123,17 @@ export default function Contact({
   };
 
   return (
-    <form className="my-12 flex flex-col bg-[#5664AB] p-6 rounded-lg shadow-lg" onSubmit={actionWithLoading}>
-      <H2 className="text-center mb-6 pt-6 text-white">Contact</H2>
+    <form
+      className="my-12 flex flex-col rounded-lg bg-[#5664AB] shadow-lg"
+      onSubmit={actionWithLoading}
+    >
+      <H2 className="mb-6 pt-6 pb-6 text-center text-white">Contact</H2>
 
-      <div className="flex">
-      <div className="hidden lg:flex w-1/2 items-center justify-center">
-        <Mailbox className="text-white" width={300} height={300}/>
+      <div className="flex p-6">
+        <div className="hidden w-1/2 items-center justify-center lg:flex">
+          <Mailbox className="text-white" width={300} height={300} />
         </div>
-        <div className="w-full lg:mr-[5%] lg:w-[45%] min-h-[240px]">
+        <div className="min-h-[240px] w-full lg:mr-[5%] lg:w-[45%]">
           <Label htmlFor="firstName" className="my-3 block text-white">
             First Name
           </Label>
@@ -194,14 +197,14 @@ export default function Contact({
           {formErrors.message === "" ? null : (
             <span className="input-error-message">{formErrors.message}</span>
           )}
-      <SubmitButton
-        loading={loading}
-        showSpinner={showSpinner}
-        onTransitionEnd={onTransitionEnd}
-        className="my-6 w-full"
-      >
-        Submit
-      </SubmitButton>
+          <SubmitButton
+            loading={loading}
+            showSpinner={showSpinner}
+            onTransitionEnd={onTransitionEnd}
+            className="my-6 w-full"
+          >
+            Submit
+          </SubmitButton>
         </div>
       </div>
 

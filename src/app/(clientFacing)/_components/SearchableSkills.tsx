@@ -15,19 +15,19 @@ export default function SearchableSkills({
 
   return (
     <div>
-      <div className="p-3">
+      <div className="py-3 px-[1px]">
         <Input
           type="text"
-          placeholder="Search skills..."
+          placeholder="Search skills here"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full rounded border"
         />
       </div>
-      <div className="flex flex-wrap justify-center gap-4 px-3">
+      <div className="flex flex-wrap justify-start gap-4">
         {filteredSkills.length > 0 ? (
           filteredSkills.map((skill, index) => (
-            <div key={index} className="rounded bg-gray-200 p-4 shadow">
+            <div key={index} className="rounded-lg bg-[#222B58] p-4 shadow text-white">
               {skill}
             </div>
           ))
