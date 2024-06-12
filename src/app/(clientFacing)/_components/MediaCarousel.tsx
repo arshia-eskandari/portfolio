@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useState, useRef } from "react";
 import ReactPlayer from "react-player";
 
@@ -56,13 +57,23 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
   };
 
   const handlePrev = () => {
-    setCurrentMediaIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+    setCurrentMediaIndex((prevIndex) => {
+      if (prevIndex === 0) {
+        return media.length - 1;
+      } else {
+        return prevIndex - 1;
+      }
+    });
   };
 
   const handleNext = () => {
-    setCurrentMediaIndex((prevIndex) =>
-      Math.min(prevIndex + 1, media.length - 1),
-    );
+    setCurrentMediaIndex((prevIndex) => {
+      if (prevIndex === media.length - 1) {
+        return 0;
+      } else {
+        return prevIndex + 1;
+      }
+    });
   };
 
   return (
@@ -115,18 +126,18 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
         ))}
       </div>
       <button
-        className="absolute left-0 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-white p-2 shadow-lg"
+        className="hover:shadow-left-inner absolute left-0 top-1/2 z-10 h-full -translate-y-1/2 transform p-2 pr-6 text-white shadow-lg"
         onClick={handlePrev}
       >
-        &lt;
+        <ChevronLeft />
       </button>
       <button
-        className="absolute right-0 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-white p-2 shadow-lg"
+        className="hover:shadow-right-inner absolute right-0 top-1/2 z-10 h-full -translate-y-1/2 transform p-2 pl-6 text-white shadow-lg"
         onClick={handleNext}
       >
-        &gt;
+        <ChevronRight />
       </button>
-      <div className="absolute bottom-5 left-5 z-20 text-white">
+      <div className="absolute left-5 top-5 z-20 text-white">
         {currentMediaIndex + 1}/{media.length}
       </div>
     </div>

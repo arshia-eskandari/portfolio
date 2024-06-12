@@ -19,6 +19,11 @@ const config = {
       },
     },
     extend: {
+      boxShadow: {
+        'white-spread': 'inset 0 0 15px 10px white',
+        'right-inner': 'inset -15px 0 20px -10px white',
+        'left-inner': 'inset 15px 0 20px -10px white'
+      },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
