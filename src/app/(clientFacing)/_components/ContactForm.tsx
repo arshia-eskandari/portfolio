@@ -17,6 +17,7 @@ import {
 import { H2, H4 } from "@/components/ui/Typography";
 import { Label } from "@/components/ui/Label";
 import { Input } from "@/components/ui/Input";
+import { Mail, Mailbox } from "lucide-react";
 
 export default function Contact({
   action,
@@ -122,12 +123,15 @@ export default function Contact({
   };
 
   return (
-    <form className="my-12 flex flex-col" onSubmit={actionWithLoading}>
-      <H2 className="text-center">Contact</H2>
+    <form className="my-12 flex flex-col bg-[#5664AB] p-6 rounded-lg shadow-lg" onSubmit={actionWithLoading}>
+      <H2 className="text-center mb-6 pt-6 text-white">Contact</H2>
 
       <div className="flex">
+      <div className="hidden lg:flex w-1/2 items-center justify-center">
+        <Mailbox className="text-white" width={300} height={300}/>
+        </div>
         <div className="w-full lg:mr-[5%] lg:w-[45%] min-h-[240px]">
-          <Label htmlFor="firstName" className="my-3 block">
+          <Label htmlFor="firstName" className="my-3 block text-white">
             First Name
           </Label>
           <Input
@@ -142,7 +146,7 @@ export default function Contact({
             <span className="input-error-message">{formErrors.firstName}</span>
           )}
 
-          <Label htmlFor="lastName" className="my-3 block">
+          <Label htmlFor="lastName" className="my-3 block text-white">
             Last Name
           </Label>
           <Input
@@ -157,7 +161,7 @@ export default function Contact({
             <span className="input-error-message">{formErrors.lastName}</span>
           )}
 
-          <Label htmlFor="email" className="my-3 block">
+          <Label htmlFor="email" className="my-3 block text-white">
             Email
           </Label>
           <Input
@@ -171,10 +175,7 @@ export default function Contact({
           {formErrors.email === "" ? null : (
             <span className="input-error-message">{formErrors.email}</span>
           )}
-        </div>
-
-        <div className="w-full lg:w-1/2 h-[240px]">
-          <Label htmlFor="text" className="my-3 block">
+          <Label htmlFor="text" className="my-3 block text-white">
             Message
           </Label>
           <Textarea
@@ -193,17 +194,17 @@ export default function Contact({
           {formErrors.message === "" ? null : (
             <span className="input-error-message">{formErrors.message}</span>
           )}
-        </div>
-      </div>
-
       <SubmitButton
         loading={loading}
         showSpinner={showSpinner}
         onTransitionEnd={onTransitionEnd}
-        className="my-6 mx-auto"
+        className="my-6 w-full"
       >
         Submit
       </SubmitButton>
+        </div>
+      </div>
+
       <ErrorAlert errorMssg={errorMssg} />
     </form>
   );
