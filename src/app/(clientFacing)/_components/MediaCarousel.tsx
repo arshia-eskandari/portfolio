@@ -76,6 +76,45 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
     });
   };
 
+  const handleTouchStart = (event: React.TouchEvent) => {
+    const touch = event.touches[0];
+    setDragStartX(touch.clientX);
+    setIsDragging(true);
+  };
+
+  const handleTouchMove = (event: React.TouchEvent) => {
+    if (isDragging && event.touches && event.touches.length > 0) {
+      const touch = event.touches[0];
+      const dx = touch.clientX - dragStartX;
+      let newTranslateX = translateX + dx;
+
+      // Prevent dragging beyond the first and last items
+      if (currentMediaIndex === 0 && newTranslateX > 0) newTranslateX = 0;
+      if (currentMediaIndex === media.length - 1 && newTranslateX < 0)
+        newTranslateX = 0;
+
+      setTranslateX(newTranslateX);
+      setDragStartX(touch.clientX);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    const threshold = containerRef.current
+      ? containerRef.current.offsetWidth / 4
+      : 0;
+
+    if (translateX > threshold && currentMediaIndex > 0) {
+      setCurrentMediaIndex(currentMediaIndex - 1);
+    } else if (
+      translateX < -threshold &&
+      currentMediaIndex < media.length - 1
+    ) {
+      setCurrentMediaIndex(currentMediaIndex + 1);
+    }
+    setTranslateX(0);
+  };
+
   return (
     <div
       className="relative h-[500px] w-1/2 overflow-hidden rounded-sm"
@@ -96,8 +135,11 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
         }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseUp} // Consider ending drag if mouse leaves the component area
+        onMouseLeave={handleMouseUp}
         onMouseUp={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         {media.map((mediaUrl) => (
           <div key={mediaUrl} className="h-[500px] min-w-full flex-shrink-0">
@@ -126,13 +168,13 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
         ))}
       </div>
       <button
-        className="hover:shadow-left-inner absolute left-0 top-1/2 z-10 h-full -translate-y-1/2 transform p-2 pr-6 text-white shadow-lg"
+        className="absolute left-0 top-1/2 z-10 h-full -translate-y-1/2 transform p-2 pr-6 text-white shadow-lg hover:shadow-left-inner"
         onClick={handlePrev}
       >
         <ChevronLeft />
       </button>
       <button
-        className="hover:shadow-right-inner absolute right-0 top-1/2 z-10 h-full -translate-y-1/2 transform p-2 pl-6 text-white shadow-lg"
+        className="absolute right-0 top-1/2 z-10 h-full -translate-y-1/2 transform p-2 pl-6 text-white shadow-lg hover:shadow-right-inner"
         onClick={handleNext}
       >
         <ChevronRight />
