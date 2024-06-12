@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 
 interface MediaCarouselProps {
@@ -13,6 +13,31 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [translateX, setTranslateX] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [details, setDetails] = useState({ browser: "", isIphone: false });
+
+  useEffect(() => {
+    const userAgent = navigator.userAgent;
+
+    // Detecting the browser
+    let browser = "Other";
+    if (/chrome|chromium|crios/i.test(userAgent)) {
+      browser = "Chrome";
+    } else if (
+      /safari/i.test(userAgent) &&
+      !/chrome|chromium|crios/i.test(userAgent)
+    ) {
+      browser = "Safari";
+    } else if (/firefox|fxios/i.test(userAgent)) {
+      browser = "Firefox";
+    } else if (/edg/i.test(userAgent)) {
+      browser = "Edge";
+    }
+
+    // Detecting if the device is an iPhone
+    const isIphone = /iPhone/i.test(userAgent);
+
+    setDetails({ browser, isIphone });
+  }, []);
 
   const handleMouseDown = (event: React.MouseEvent) => {
     setDragStartX(event.clientX);
@@ -117,7 +142,7 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
 
   return (
     <div
-      className="relative h-[500px] overflow-hidden rounded-sm lg:w-1/2"
+      className="relative h-[500px] overflow-hidden rounded-sm lg:w-1/2 bg-black"
       ref={containerRef}
     >
       <div
@@ -158,7 +183,7 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
                 <ReactPlayer
                   url={mediaUrl}
                   controls={true}
-                  width="100%"
+                  width={details.isIphone ? "330px" : "100%"}
                   height="100%"
                   style={{ backgroundColor: "black", alignSelf: "center" }}
                 />
