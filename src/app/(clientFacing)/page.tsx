@@ -1,4 +1,5 @@
 import About from "./_components/About";
+import Contact from "./_components/ContactForm";
 import Experiences from "./_components/Experiences";
 import Hero from "./_components/Hero";
 import Projects from "./_components/Projects";
@@ -13,6 +14,9 @@ export default function Home() {
         <Projects />
         <Skills />
         <Experiences />
+        <Contact action={async () => {
+          "use server"
+        }}/>
       </div>
     </>
   );
