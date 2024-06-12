@@ -17,6 +17,7 @@ export default function ExperienceDetails({
   return (
     <div>
       <AccordionItem
+        id={experience.id}
         value={experience.id}
         className="rounded-sm bg-slate-200 p-3"
       >

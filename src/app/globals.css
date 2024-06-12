@@ -113,12 +113,23 @@ input:-webkit-autofill:active {
   position: relative;
   overflow: hidden;
   height: calc(100vh - 72px);
-  @apply hero-layer;
+  @apply hero-layer-mobile;
+}
+
+.hero-layer-mobile {
+  background-image: url("../../public/hero-bg-mobile.svg");
 }
 
 .hero-layer {
   background-image: url("../../public/hero-bg.svg");
 }
+
+@media screen and (min-width: 640px) {
+  #hero {
+    @apply hero-layer;
+  }
+}
+
 
 .image-placeholder {
   aspect-ratio: 570.37/492.44;
@@ -154,4 +165,8 @@ input:-webkit-autofill:active {
   width: 100%;
   background-size: 100% auto;
   background-repeat: repeat-y;
+}
+
+.test {
+  min-height: calc(100vh - 72px);
 }
