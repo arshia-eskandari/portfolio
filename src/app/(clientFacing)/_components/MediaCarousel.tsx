@@ -21,7 +21,18 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
   const handleMouseMove = (event: React.MouseEvent) => {
     if (isDragging) {
       const dx = event.clientX - dragStartX;
-      setTranslateX(dx);
+      let newTranslateX = translateX + dx;
+
+      if (currentMediaIndex === 0 && newTranslateX > 0) {
+        newTranslateX = 0;
+      }
+
+      if (currentMediaIndex === media.length - 1 && newTranslateX < 0) {
+        newTranslateX = 0;
+      }
+
+      setTranslateX(newTranslateX);
+      setDragStartX(event.clientX);
     }
   };
 
@@ -30,9 +41,13 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
     const threshold = containerRef.current
       ? containerRef.current.offsetWidth / 4
       : 0;
-    if (translateX > threshold) {
+
+    if (translateX > threshold && currentMediaIndex > 0) {
       setCurrentMediaIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-    } else if (translateX < -threshold) {
+    } else if (
+      translateX < -threshold &&
+      currentMediaIndex < media.length - 1
+    ) {
       setCurrentMediaIndex((prevIndex) =>
         Math.min(prevIndex + 1, media.length - 1),
       );
