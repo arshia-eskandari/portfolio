@@ -1,6 +1,5 @@
 import { H2 } from "@/components/ui/Typography";
 import { getProjects } from "../_actions/projects";
-import ProjectCarousel from "./Project";
 import ProjectDisplay from "./Project";
 
 export default async function Projects() {

@@ -1,9 +1,14 @@
 "use client";
 import { Project } from "@prisma/client";
-import MediaCarousel from "./MediaCarousel";
 import { H3, H4, P } from "@/components/ui/Typography";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
+import dynamic from 'next/dynamic';
+
+// EXPLANATION: Importing MediaCarousel dynamically to avoid SSR as it uses browser-specific APIs like 'window'
+const MediaCarousel = dynamic(() => import('./MediaCarousel'), {
+  ssr: false,
+});
 
 export default function ProjectDisplay({
   project,
