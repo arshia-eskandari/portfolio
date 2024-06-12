@@ -6,7 +6,7 @@ import FlexibleImage from "./Image";
 export default async function About() {
   const about = await getAbout();
   return (
-    <div id="about" className="relative">
+    <div id="about" className="relative my-12">
       <H2 className="text-center">{about.title}</H2>
       <div
         // EXPLANATION: A grid and padding bottom of 100% are required to adjust the size of next images

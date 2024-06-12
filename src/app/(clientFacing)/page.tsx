@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <div className="mx-auto max-w-[1280px] py-10">
+      <div className="mx-auto max-w-[1280px] px-6">
         <About />
         <Projects />
         <Skills />

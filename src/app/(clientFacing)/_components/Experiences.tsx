@@ -6,7 +6,7 @@ import ExperienceDetails from "./Experience";
 export default async function Experiences () {
   const experiences = await getExperiences();
   return (
-    <div className="p-3">
+    <div className="p-3 my-12">
 
     <H2 className="text-center">Experiences</H2>
     <Accordion type="single" collapsible className="my-3 w-full">
