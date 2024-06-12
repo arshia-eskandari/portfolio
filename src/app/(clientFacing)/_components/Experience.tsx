@@ -45,15 +45,19 @@ export default function ExperienceDetails({
           {experience?.recommendationLetterUrls && (
             <>
               <P>Recommendation Letters</P>
-              {experience.recommendationLetterUrls.map((url, i) => (
-                <a
-                  key={url}
-                  href={url}
-                  // EXPLANATION: When clicking on the checkbox the modal should not appear
-                  onClick={(e) => e.stopPropagation()}
-                  className="flex"
-                >{`Recommendation Letter ${i + 1}`}</a>
-              ))}
+              <ul className="ml-6 list-disc">
+                {experience.recommendationLetterUrls.map((url, i) => (
+                  <li key={url}>
+                    <a
+                      key={url}
+                      href={url}
+                      // EXPLANATION: When clicking on the checkbox the modal should not appear
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex"
+                    >{`Recommendation Letter ${i + 1}`}</a>
+                  </li>
+                ))}
+              </ul>
             </>
           )}
         </AccordionContent>
