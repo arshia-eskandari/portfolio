@@ -37,7 +37,7 @@ export default function ProjectDisplay({
         index % 2 === 0 ? "" : "lg:flex-row-reverse",
       )}
     >
-      <div className="w-[45%] px-[5%]">
+      <div className={cn(index % 2 === 0 ? "w-1/2" :"w-[45%] mx-[5%]")}>
         <H3 className="font-bold">{projectTitle}</H3>
         <H4 className="mt-6">Objective</H4>
         <P>{objective}</P>
