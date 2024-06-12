@@ -38,11 +38,11 @@ export default function ProjectDisplay({
   return (
     <div
       className={cn(
-        "mx-auto my-8 flex w-full rounded border p-4 shadow-lg",
+        "mx-auto my-8 flex w-full rounded border p-4 shadow-lg flex-col lg:flex-row",
         index % 2 === 0 ? "" : "lg:flex-row-reverse",
       )}
     >
-      <div className={cn(index % 2 === 0 ? "w-1/2" :"w-[45%] mx-[5%]")}>
+      <div className={cn(index % 2 === 0 ? "lg:w-[45%] lg:mr-[5%]" :"lg:w-[45%] lg:mx-[5%]")}>
         <H3 className="font-bold">{projectTitle}</H3>
         <H4 className="mt-6">Objective</H4>
         <P>{objective}</P>
