@@ -1,3 +1,5 @@
+"use client";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Social, SocialNames } from "@prisma/client";
 import Image from "next/image";
@@ -7,20 +9,44 @@ export default function Socials({ socials }: { socials: Social[] }) {
   const github = socials.find((s) => s.name === SocialNames.GITHUB);
   const telegram = socials.find((s) => s.name === SocialNames.TELEGRAM);
   const email = socials.find((s) => s.name === SocialNames.EMAIL);
+
+  const [bottomMargin, setBottomMargin] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollableHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const scrolledFromTop = window.scrollY;
+
+      if (scrolledFromTop >= scrollableHeight) {
+        setBottomMargin(50);
+      } else {
+        setBottomMargin(0);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <div
       className={cn(
-        "fixed right-1 md:top-1/2 z-50 my-auto flex",
-        "md:-translate-y-1/2 transform md:flex-col rounded-md flex-row",
+        "fixed right-1 z-50 my-auto flex md:top-1/2",
+        "transform flex-row rounded-md md:-translate-y-1/2 md:flex-col",
         "border bg-[#FFFFFF50] shadow-lg",
-        "-translate-x-1/2 bottom-1"
+        "bottom-1 -translate-x-1/2",
       )}
+      style={{ marginBottom: `${bottomMargin}px` }}
     >
       {linkedin && (
-        <a href={linkedin.url} target="_blank">
+        <a href={linkedin.url} target="_blank" rel="noopener noreferrer">
           <Image
             src={"/linkedin.svg"}
-            alt="linkedin"
+            alt="LinkedIn"
             width={30}
             height={30}
             className="m-3 inline-block"
@@ -28,10 +54,10 @@ export default function Socials({ socials }: { socials: Social[] }) {
         </a>
       )}
       {github && (
-        <a href={github.url} target="_blank">
+        <a href={github.url} target="_blank" rel="noopener noreferrer">
           <Image
             src={"/github.svg"}
-            alt="github"
+            alt="GitHub"
             width={30}
             height={30}
             className="m-3 inline-block"
@@ -39,10 +65,10 @@ export default function Socials({ socials }: { socials: Social[] }) {
         </a>
       )}
       {telegram && (
-        <a href={telegram.url} target="_blank">
+        <a href={telegram.url} target="_blank" rel="noopener noreferrer">
           <Image
             src={"/telegram.svg"}
-            alt="telegram"
+            alt="Telegram"
             width={30}
             height={30}
             className="m-3 inline-block"
@@ -50,10 +76,13 @@ export default function Socials({ socials }: { socials: Social[] }) {
         </a>
       )}
       {email && (
-        <a href={`mailto:${email.url}`}>
+        <a
+          href={`mailto:${email.url}`}
+          className="flex items-center justify-center"
+        >
           <Image
             src={"/email.svg"}
-            alt="email"
+            alt="Email"
             width={30}
             height={30}
             className="m-3 inline-block"
