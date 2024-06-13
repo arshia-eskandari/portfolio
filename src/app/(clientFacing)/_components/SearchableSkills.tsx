@@ -15,7 +15,7 @@ export default function SearchableSkills({
 
   return (
     <div>
-      <div className="py-3 px-[1px]">
+      <div className="px-[1px] py-3 pb-6">
         <Input
           type="text"
           placeholder="Search skills here"
@@ -27,7 +27,10 @@ export default function SearchableSkills({
       <div className="flex flex-wrap justify-start gap-4">
         {filteredSkills.length > 0 ? (
           filteredSkills.map((skill, index) => (
-            <div key={index} className="rounded-lg bg-[#222B58] p-4 shadow text-white">
+            <div
+              key={index}
+              className="h-10 rounded-md bg-[#050041] px-4 py-2 text-white shadow"
+            >
               {skill}
             </div>
           ))

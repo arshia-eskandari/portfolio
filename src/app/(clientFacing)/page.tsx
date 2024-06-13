@@ -9,14 +9,17 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <div className="content">
+
       <div className="mx-auto max-w-[1280px] px-6">
         <About />
-        <Projects />
         <Skills />
+        <Projects />
         <Experiences />
         <Contact action={async () => {
           "use server"
         }}/>
+      </div>
       </div>
     </>
   );

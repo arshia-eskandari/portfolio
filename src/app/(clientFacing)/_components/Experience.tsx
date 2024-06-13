@@ -17,18 +17,19 @@ export default function ExperienceDetails({
   return (
     <div>
       <AccordionItem
-        id={experience.id}
+        id={`div-${experience.id}`}
         value={experience.id}
-        className="rounded-lg bg-[#222B58] p-3 my-6 text-white"
+        className="my-6 rounded-md bg-[#050041] p-3 text-white"
+        
       >
-        <AccordionTrigger className="no-underline">
+        <AccordionTrigger className="no-underline" id={experience.id} >
           {`${experience.jobTitle}  |  ${experience.company}  |  ${
             experience.location
           }  |  ${formatDate(experience.startDate)} - ${
             experience.endDate ? formatDate(experience.endDate) : "Present"
           }`}
         </AccordionTrigger>
-        <AccordionContent className="px-3">
+        <AccordionContent className="px-3" id={`content-${experience.id}`}>
           <P className="font-bold">Experience Details</P>
           <P>Achievements</P>
           <ul className="ml-6 list-disc">

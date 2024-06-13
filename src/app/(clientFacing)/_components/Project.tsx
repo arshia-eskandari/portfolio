@@ -3,10 +3,10 @@ import { Project } from "@prisma/client";
 import { H3, H4, P } from "@/components/ui/Typography";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 // EXPLANATION: Importing MediaCarousel dynamically to avoid SSR as it uses browser-specific APIs like 'window'
-const MediaCarousel = dynamic(() => import('./MediaCarousel'), {
+const MediaCarousel = dynamic(() => import("./MediaCarousel"), {
   ssr: false,
 });
 
@@ -28,21 +28,27 @@ export default function ProjectDisplay({
     media,
   } = project;
   const handleScrollToExperience = () => {
-    // Logic to scroll to a specific experience section
-    experienceId &&
-      document
-        .getElementById(experienceId)
-        ?.scrollIntoView({ behavior: "smooth" });
+    if (!experienceId) return;
+    const mainDiv = document.getElementById(`div-${experienceId}`);
+    const button = document.getElementById(experienceId);
+    if (button) {
+      button.click();
+    }
+    mainDiv?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <div
       className={cn(
-        "mx-auto my-6 flex w-full rounded border p-4 shadow-lg flex-col lg:flex-row",
+        "mx-auto my-6 flex w-full flex-col rounded border p-4 shadow-lg lg:flex-row",
         index % 2 === 0 ? "" : "lg:flex-row-reverse",
       )}
     >
-      <div className={cn(index % 2 === 0 ? "lg:w-[45%] lg:mr-[5%]" :"lg:w-[45%] lg:mx-[5%]")}>
+      <div
+        className={cn(
+          index % 2 === 0 ? "lg:mr-[5%] lg:w-[45%]" : "lg:mx-[5%] lg:w-[45%]",
+        )}
+      >
         <H3 className="font-bold">{projectTitle}</H3>
         <H4 className="mt-6">Objective</H4>
         <P>{objective}</P>
@@ -68,7 +74,10 @@ export default function ProjectDisplay({
         <div className="mt-4">
           <div className="flex flex-wrap gap-2">
             {projectTechnologies.map((tech, index) => (
-              <span key={index} className="rounded bg-gray-200 px-2 py-1">
+              <span
+                key={index}
+                className="h-10 rounded-md bg-[#050041] px-4 py-2 text-white shadow"
+              >
                 {tech}
               </span>
             ))}
