@@ -3,13 +3,13 @@ import { ErrorAlert } from "@/components/ui/ErrorAlert";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { Textarea } from "@/components/ui/Textarea";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { H2 } from "@/components/ui/Typography";
 import { Label } from "@/components/ui/Label";
 import { Input } from "@/components/ui/Input";
 import { Mailbox } from "lucide-react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { SuccessAlert } from "@/components/ui/SuccessAlert";
 
 export default function Contact({
   action,
@@ -25,7 +25,7 @@ export default function Contact({
     firstName: "",
     lastName: "",
     email: "",
-    message: "",
+    message: "This is a test message to see if this works or not.",
   });
   const [formErrors, setFormErrors] = useState<{
     firstName: string;
@@ -40,8 +40,8 @@ export default function Contact({
   });
   const [loading, setLoading] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
-  const router = useRouter();
   const [errorMssg, setErrorMssg] = useState<string>("");
+  const [successMssg, setSuccessMssg] = useState<string>("");
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const validateText = (text: string, lowerBound = 5, upperBound = 50) => {
@@ -108,14 +108,52 @@ export default function Contact({
     setLoading(false);
 
     if (response.status === 200 || response.status === 201) {
-      router.refresh();
+      console.log("reached with repsonse", response);
+      setForm({
+        firstName: "",
+        lastName: "",
+        email: "",
+        message: "",
+      });
+      setFormErrors({
+        firstName: "",
+        lastName: "",
+        email: "",
+        message: "",
+      });
+      setSuccessMssg(response.message);
     } else {
       setErrorMssg(response.message);
     }
   };
 
   useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+    if (successMssg !== "") {
+      timer = setTimeout(() => {
+        setSuccessMssg("");
+      }, 5000);
+    }
+    return () => {
+      timer && clearTimeout(timer);
+    };
+  }, [successMssg]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+    if (errorMssg !== "") {
+      timer = setTimeout(() => {
+        setErrorMssg("");
+      }, 5000);
+    }
+    return () => {
+      timer && clearTimeout(timer);
+    };
+  }, [errorMssg]);
+
+  useEffect(() => {
     if (errorMssg !== "") setErrorMssg("");
+    if (successMssg !== "") setSuccessMssg("");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -212,6 +250,7 @@ export default function Contact({
       </div>
 
       <ErrorAlert errorMssg={errorMssg} />
+      <SuccessAlert successMssg={successMssg} />
     </form>
   );
 }
