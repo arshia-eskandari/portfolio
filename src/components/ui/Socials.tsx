@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { Social, SocialNames } from "@prisma/client";
 import Image from "next/image";
 
@@ -7,7 +8,14 @@ export default function Socials({ socials }: { socials: Social[] }) {
   const telegram = socials.find((s) => s.name === SocialNames.TELEGRAM);
   const email = socials.find((s) => s.name === SocialNames.EMAIL);
   return (
-    <div className="fixed right-1 top-1/2 z-50 my-auto flex -translate-y-1/2 transform flex-col rounded-md border bg-[#FFFFFF50] shadow-lg">
+    <div
+      className={cn(
+        "fixed right-1 md:top-1/2 z-50 my-auto flex",
+        "md:-translate-y-1/2 transform md:flex-col rounded-md flex-row",
+        "border bg-[#FFFFFF50] shadow-lg",
+        "-translate-x-1/2 bottom-1"
+      )}
+    >
       {linkedin && (
         <a href={linkedin.url} target="_blank">
           <Image
