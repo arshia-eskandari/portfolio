@@ -10,23 +10,17 @@ export default function ProjectsWrapper({ projects }: { projects: Project[] }) {
   const endOfProjectsRef = useRef<HTMLDivElement>(null);
 
   const handleViewMore = () => {
-    setVisibleCount(projects.length); // Show all projects when clicking 'View More'
+    setVisibleCount(projects.length);
   };
 
   const handleViewLess = () => {
-    setVisibleCount(3); // Reset to showing the first three projects when clicking 'View Less'
+    setVisibleCount(3);
     scrollToEndOfProjects();
   };
 
   const scrollToEndOfProjects = () => {
     endOfProjectsRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
-  useEffect(() => {
-    if (visibleCount === 3) {
-      scrollToEndOfProjects(); // Automatically scroll to the end of projects when the count is reset to 3
-    }
-  }, [visibleCount]);
 
   return (
     <>
