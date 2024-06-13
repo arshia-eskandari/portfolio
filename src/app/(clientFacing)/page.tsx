@@ -10,16 +10,17 @@ export default function Home() {
     <>
       <Hero />
       <div className="content">
-
-      <div className="mx-auto max-w-[1280px] px-6">
-        <About />
-        <Skills />
-        <Projects />
-        <Experiences />
-        <Contact action={async () => {
-          "use server"
-        }}/>
-      </div>
+        <div className="mx-auto max-w-[1280px] px-6">
+          <About />
+          <Skills />
+          <Projects />
+          <Experiences />
+          <Contact
+            action={async () => {
+              "use server";
+            }}
+          />
+        </div>
       </div>
     </>
   );
