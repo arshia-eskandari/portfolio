@@ -28,11 +28,21 @@ export default function ProjectsWrapper({ projects }: { projects: Project[] }) {
     }
   }, [visibleCount]);
 
-  // TODO: Figure out scrolling after clicking "View Less"
   return (
     <>
-      <div ref={endOfProjectsRef}>
+      <div>
         {projects.slice(0, visibleCount).map((project, index) => {
+          if (projects.length > 3 && index === 2) {
+            return (
+              <div key={`div-${index}`} ref={endOfProjectsRef}>
+                <ProjectDisplay
+                  key={project.id}
+                  project={project}
+                  index={index}
+                />
+              </div>
+            );
+          }
           return (
             <ProjectDisplay key={project.id} project={project} index={index} />
           );
