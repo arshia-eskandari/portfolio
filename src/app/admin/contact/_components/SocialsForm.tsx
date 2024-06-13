@@ -130,7 +130,7 @@ export default function SocialsForm({
       <Label htmlFor="linkedinUrl" className="my-3 flex items-end">
         <Image
           src={"/linkedin.svg"}
-          alt="linkedin"
+          alt="Linkedin"
           width={15}
           height={15}
           className="mr-3 inline-block"
@@ -157,7 +157,7 @@ export default function SocialsForm({
       <Label htmlFor="githubUrl" className="my-3 flex items-end">
         <Image
           src={"/github.svg"}
-          alt="linkedin"
+          alt="Github"
           width={15}
           height={15}
           className="mr-3 inline-block"
@@ -184,7 +184,7 @@ export default function SocialsForm({
       <Label htmlFor="telegramUrl" className="my-3 flex items-end">
         <Image
           src={"/telegram.svg"}
-          alt="linkedin"
+          alt="Telegram"
           width={15}
           height={15}
           className="mr-3 inline-block"
@@ -210,7 +210,7 @@ export default function SocialsForm({
       <Label htmlFor="emailAddress" className="my-3 flex items-end">
         <Image
           src={"/email.svg"}
-          alt="linkedin"
+          alt="Email"
           width={15}
           height={15}
           className="mr-3 inline-block"
