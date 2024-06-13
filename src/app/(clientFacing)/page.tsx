@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <div className="content">
+      <div className="">
         <div className="mx-auto max-w-[1280px] px-6">
           <About />
           <Skills />

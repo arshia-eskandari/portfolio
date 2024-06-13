@@ -29,7 +29,7 @@ export default function SearchableSkills({
           filteredSkills.map((skill, index) => (
             <div
               key={index}
-              className="h-10 rounded-md bg-[#050041] px-4 py-2 text-white shadow"
+              className="flex h-10 items-center justify-center rounded-md bg-[#050041] px-4 py-2 text-sm font-medium text-white shadow"
             >
               {skill}
             </div>

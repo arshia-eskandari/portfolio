@@ -7,11 +7,11 @@ export default function Nav() {
     event: React.MouseEvent<HTMLAnchorElement>,
     id: string,
   ) => {
-    event.preventDefault(); // Prevent default anchor behavior
-    const url = new URL(window.location.toString()); // Get the current URL
-    url.hash = id; // Set the hash to the id
-    window.history.pushState({}, "", url); // Update the URL without reloading the page
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }); // Smooth scroll to the element
+    event.preventDefault();
+    const url = new URL(window.location.toString());
+    url.hash = id;
+    window.history.pushState({}, "", url);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (

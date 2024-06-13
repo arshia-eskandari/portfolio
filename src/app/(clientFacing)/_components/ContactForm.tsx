@@ -152,17 +152,17 @@ export default function Contact({
   return (
     <form
       id="contact"
-      className="my-12 flex flex-col rounded-md bg-[#5664AB] shadow-lg"
+      className="my-12 flex flex-col rounded border shadow-lg bg-[#FFFFFF50]"
       onSubmit={actionWithLoading}
     >
-      <H2 className="mb-6 pb-6 pt-6 text-center text-white">Contact</H2>
+      <H2 className="mb-6 pb-6 pt-6 text-center">Contact</H2>
 
       <div className="flex p-6">
         <div className="hidden w-1/2 items-center justify-center lg:flex">
-          <Mailbox className="text-white" width={300} height={300} />
+          <Mailbox className="text-primary" width={300} height={300} />
         </div>
         <div className="min-h-[240px] w-full lg:mr-[5%] lg:w-[45%]">
-          <Label htmlFor="firstName" className="my-3 block text-white">
+          <Label htmlFor="firstName" className="my-3 block ">
             First Name
           </Label>
           <Input
@@ -177,7 +177,7 @@ export default function Contact({
             <span className="input-error-message">{formErrors.firstName}</span>
           )}
 
-          <Label htmlFor="lastName" className="my-3 block text-white">
+          <Label htmlFor="lastName" className="my-3 block ">
             Last Name
           </Label>
           <Input
@@ -192,7 +192,7 @@ export default function Contact({
             <span className="input-error-message">{formErrors.lastName}</span>
           )}
 
-          <Label htmlFor="email" className="my-3 block text-white">
+          <Label htmlFor="email" className="my-3 block ">
             Email
           </Label>
           <Input
@@ -206,7 +206,7 @@ export default function Contact({
           {formErrors.email === "" ? null : (
             <span className="input-error-message">{formErrors.email}</span>
           )}
-          <Label htmlFor="text" className="my-3 block text-white">
+          <Label htmlFor="text" className="my-3 block ">
             Message
           </Label>
           <Textarea

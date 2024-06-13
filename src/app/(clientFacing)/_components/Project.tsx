@@ -40,7 +40,7 @@ export default function ProjectDisplay({
   return (
     <div
       className={cn(
-        "mx-auto my-6 flex w-full flex-col rounded border p-4 shadow-lg lg:flex-row",
+        "mx-auto my-6 flex w-full flex-col rounded border p-4 shadow-lg lg:flex-row bg-[#FFFFFF50]",
         index % 2 === 0 ? "" : "lg:flex-row-reverse",
       )}
     >
@@ -76,7 +76,7 @@ export default function ProjectDisplay({
             {projectTechnologies.map((tech, index) => (
               <span
                 key={index}
-                className="h-10 rounded-md bg-[#050041] px-4 py-2 text-white shadow"
+                className="h-10 rounded-md bg-[#050041] px-4 py-2 text-white shadow text-sm font-medium flex items-center justify-center"
               >
                 {tech}
               </span>
