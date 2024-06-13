@@ -124,10 +124,11 @@ export default function Contact({
 
   return (
     <form
+      id="contact"
       className="my-12 flex flex-col rounded-md bg-[#5664AB] shadow-lg"
       onSubmit={actionWithLoading}
     >
-      <H2 className="mb-6 pt-6 pb-6 text-center text-white">Contact</H2>
+      <H2 className="mb-6 pb-6 pt-6 text-center text-white">Contact</H2>
 
       <div className="flex p-6">
         <div className="hidden w-1/2 items-center justify-center lg:flex">

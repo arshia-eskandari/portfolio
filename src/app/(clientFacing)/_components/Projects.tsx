@@ -7,7 +7,7 @@ export default async function Projects() {
   const projects = await getProjects();
 
   return (
-    <div className="test my-12">
+    <div className="test my-12" id="projects">
       <H2 className="mb-6 pt-6 text-center">Projects</H2>
       <div>
         <ProjectsWrapper projects={projects} />

@@ -1,5 +1,7 @@
+import Footer from "@/components/ui/Footer";
 import { NavLink } from "@/components/ui/NavLink";
 import Navbar from "@/components/ui/Navbar";
+import Nav from "./_components/Nav";
 
 export default function Layout({
   children,
@@ -8,14 +10,9 @@ export default function Layout({
 }>) {
   return (
     <>
-      <Navbar>
-        <NavLink href="#projects">Projects</NavLink>
-        <NavLink href="#experiences">Experiences</NavLink>
-        <NavLink href="#about">About</NavLink>
-        <NavLink href="#skills">Skills</NavLink>
-        <NavLink href="#contact" variant="inverted">Contact</NavLink>
-      </Navbar>
+      <Nav />
       {children}
+      <Footer />
     </>
   );
 }
