@@ -32,7 +32,6 @@ export async function createContact(formData: FormData) {
         },
       },
     );
-    console.log(JSON.stringify(gRes.data));
     if (!gRes?.data?.score || gRes?.data?.score < 0.5) {
       throw new Error("Recaptcha verification failed");
     }
