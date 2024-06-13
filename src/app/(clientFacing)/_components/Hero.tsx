@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 export default async function Hero() {
   const hero = await getHero();
   return (
-    <main id="hero" className="flex justify-center text-white">
+    <main id="hero" className="flex justify-center text-white px-6">
       <div className="flex h-full w-full max-w-[1280px] flex-col items-center justify-center md:flex-row">
         <div className="">
           <H1 className="">{hero.title}</H1>
