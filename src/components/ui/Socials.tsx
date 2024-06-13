@@ -38,7 +38,7 @@ export default function Socials({ socials }: { socials: Social[] }) {
         "fixed right-1 z-50 my-auto flex md:top-1/2",
         "transform flex-row rounded-md md:-translate-y-1/2 md:flex-col",
         "border bg-[#FFFFFF50] shadow-lg",
-        "bottom-1 -translate-x-1/2",
+        "bottom-1 -translate-x-1/2 md:bottom-auto md:-translate-x-0",
       )}
       style={{ marginBottom: `${bottomMargin}px` }}
     >
