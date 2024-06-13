@@ -3,21 +3,13 @@ import { ErrorAlert } from "@/components/ui/ErrorAlert";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { Textarea } from "@/components/ui/Textarea";
 import { cn } from "@/lib/utils";
-import { About, Media } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectValue,
-  SelectTrigger,
-} from "@/components/ui/Select";
-import { H2, H4 } from "@/components/ui/Typography";
+import { H2 } from "@/components/ui/Typography";
 import { Label } from "@/components/ui/Label";
 import { Input } from "@/components/ui/Input";
-import { Mail, Mailbox } from "lucide-react";
+import { Mailbox } from "lucide-react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 export default function Contact({
   action,
@@ -50,6 +42,7 @@ export default function Contact({
   const [showSpinner, setShowSpinner] = useState(false);
   const router = useRouter();
   const [errorMssg, setErrorMssg] = useState<string>("");
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const validateText = (text: string, lowerBound = 5, upperBound = 50) => {
     return text.trim().length >= lowerBound && text.trim().length <= upperBound;
@@ -69,7 +62,7 @@ export default function Contact({
       email:
         type === "email" && !validateEmail(e.target.value)
           ? "Invalid email"
-          : type === "email" && validateText(e.target.value, 5, 150)
+          : type === "email" && validateEmail(e.target.value)
             ? ""
             : formErrors.email,
       firstName:
@@ -101,7 +94,16 @@ export default function Contact({
     setLoading(true);
     setShowSpinner(true);
     const form = event.currentTarget;
+    if (!executeRecaptcha) {
+      setErrorMssg("Something went wrong");
+      setLoading(false);
+      return;
+    }
+    const gRecaptchaToken = await executeRecaptcha(
+      "contactFormArshiaEskandari",
+    );
     const formData = new FormData(form);
+    formData.append("gRecaptchaToken", gRecaptchaToken);
     const response = await action(formData);
     setLoading(false);
 

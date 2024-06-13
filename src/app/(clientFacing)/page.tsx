@@ -1,5 +1,6 @@
+import { createContact } from "./_actions/contactForm";
 import About from "./_components/About";
-import Contact from "./_components/ContactForm";
+import ContactFormWrapper from "./_components/ContactFormWrapper";
 import Experiences from "./_components/Experiences";
 import Hero from "./_components/Hero";
 import Projects from "./_components/Projects";
@@ -15,11 +16,7 @@ export default function Home() {
           <Skills />
           <Projects />
           <Experiences />
-          <Contact
-            action={async () => {
-              "use server";
-            }}
-          />
+          <ContactFormWrapper action={createContact} />
         </div>
       </div>
     </>
