@@ -124,7 +124,7 @@ export async function updateProject(formData: FormData) {
         objective: objective?.trim(),
         keyResults: keyResults?.split(",")?.map((x) => x.trim()) || [],
         media: mediaArray,
-        experienceId,
+        experienceId: experienceId === "null" ? null : experienceId,
       },
     });
 
