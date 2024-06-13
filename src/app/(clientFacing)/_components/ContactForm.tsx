@@ -25,7 +25,7 @@ export default function Contact({
     firstName: "",
     lastName: "",
     email: "",
-    message: "This is a test message to see if this works or not.",
+    message: "",
   });
   const [formErrors, setFormErrors] = useState<{
     firstName: string;
@@ -58,32 +58,19 @@ export default function Contact({
     type: "email" | "firstName" | "lastName" | "message",
     e: ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLInputElement>,
   ) => {
-    setFormErrors({
-      email:
-        type === "email" && !validateEmail(e.target.value)
-          ? "Invalid email"
-          : type === "email" && validateEmail(e.target.value)
-            ? ""
-            : formErrors.email,
-      firstName:
-        type === "firstName" && !validateText(e.target.value)
-          ? "The about first name must be 5 to 50 characters"
-          : type === "firstName" && validateText(e.target.value)
-            ? ""
-            : formErrors.firstName,
-      lastName:
-        type === "lastName" && !validateText(e.target.value)
-          ? "The about last name must be 5 to 50 characters"
-          : type === "lastName" && validateText(e.target.value)
-            ? ""
-            : formErrors.lastName,
-      message:
-        type === "message" && !validateText(e.target.value, 50, 200)
-          ? "The about message must be 50 to 200 characters"
-          : type === "message" && validateText(e.target.value)
-            ? ""
-            : formErrors.message,
-    });
+    setFormErrors(prevErrors => ({
+      ...prevErrors,
+      [type]: (() => {
+        if (type === "email") {
+          return validateEmail(e.target.value) ? "" : "Invalid email";
+        } else if (type === "firstName" || type === "lastName") {
+          return validateText(e.target.value) ? "" : `The ${type} must be 5 to 50 characters`;
+        } else if (type === "message") {
+          return validateText(e.target.value, 50, 200) ? "" : "The message must be 50 to 200 characters";
+        }
+        return "";
+      })(),
+    }));
     const newForm = { ...form, [type]: e.target.value };
     setForm(newForm);
   };
