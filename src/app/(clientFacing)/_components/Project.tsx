@@ -31,7 +31,8 @@ export default function ProjectDisplay({
     if (!experienceId) return;
     const mainDiv = document.getElementById(`div-${experienceId}`);
     const button = document.getElementById(experienceId);
-    if (button) {
+    const openData = button?.dataset.state;
+    if (button && openData === "closed") {
       button.click();
     }
     mainDiv?.scrollIntoView({ behavior: "smooth" });
