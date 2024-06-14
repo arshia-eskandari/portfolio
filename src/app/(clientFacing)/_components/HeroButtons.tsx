@@ -16,7 +16,7 @@ export default function HeroButtons() {
   };
 
   return (
-    <div>
+    <div className="mt-6">
       <a
         href="#about"
         className={cn(
