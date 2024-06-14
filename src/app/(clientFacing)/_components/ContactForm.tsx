@@ -58,15 +58,19 @@ export default function Contact({
     type: "email" | "firstName" | "lastName" | "message",
     e: ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLInputElement>,
   ) => {
-    setFormErrors(prevErrors => ({
+    setFormErrors((prevErrors) => ({
       ...prevErrors,
       [type]: (() => {
         if (type === "email") {
           return validateEmail(e.target.value) ? "" : "Invalid email";
         } else if (type === "firstName" || type === "lastName") {
-          return validateText(e.target.value) ? "" : `The ${type} must be 5 to 50 characters`;
+          return validateText(e.target.value)
+            ? ""
+            : `The ${type} must be 5 to 50 characters`;
         } else if (type === "message") {
-          return validateText(e.target.value, 50, 200) ? "" : "The message must be 50 to 200 characters";
+          return validateText(e.target.value, 50, 200)
+            ? ""
+            : "The message must be 50 to 200 characters";
         }
         return "";
       })(),
@@ -152,7 +156,7 @@ export default function Contact({
   return (
     <form
       id="contact"
-      className="my-12 flex flex-col rounded border shadow-lg bg-[#FFFFFF50]"
+      className="my-12 flex flex-col rounded border bg-[#FFFFFF50] shadow-lg"
       onSubmit={actionWithLoading}
     >
       <H2 className="mb-6 pb-6 pt-6 text-center">Contact</H2>
@@ -169,7 +173,12 @@ export default function Contact({
             type="text"
             id="firstName"
             name="firstName"
-            className="w-full"
+            className={cn(
+              "w-full",
+              formErrors.firstName === ""
+                ? ""
+                : "input-error ring-0 focus-visible:ring-0",
+            )}
             value={form.firstName}
             onChange={(e) => onInputChange("firstName", e)}
           />
@@ -184,7 +193,12 @@ export default function Contact({
             type="text"
             id="lastName"
             name="lastName"
-            className="w-full"
+            className={cn(
+              "w-full",
+              formErrors.lastName === ""
+                ? ""
+                : "input-error ring-0 focus-visible:ring-0",
+            )}
             value={form.lastName}
             onChange={(e) => onInputChange("lastName", e)}
           />
@@ -199,7 +213,12 @@ export default function Contact({
             type="text"
             id="email"
             name="email"
-            className="w-full"
+            className={cn(
+              "w-full",
+              formErrors.email === ""
+                ? ""
+                : "input-error ring-0 focus-visible:ring-0",
+            )}
             value={form.email}
             onChange={(e) => onInputChange("email", e)}
           />
