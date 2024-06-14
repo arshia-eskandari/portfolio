@@ -107,7 +107,7 @@ export default function ExperiencesForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pdfMedia]);
 
-  const validateText = (text: string, lowerBound = 5, upperBound = 1000) => {
+  const validateText = (text: string, lowerBound = 5, upperBound = 1500) => {
     return (
       text.replace(/ /g, "").length >= lowerBound &&
       text.replace(/ /g, "").length <= upperBound
