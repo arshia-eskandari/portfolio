@@ -2,7 +2,6 @@
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
-import Image from "next/image";
 import Logo from "@/assets/Logo";
 
 export default function Navbar({ children }: { children: ReactNode }) {
@@ -77,6 +76,9 @@ export default function Navbar({ children }: { children: ReactNode }) {
 
       {hidden && (
         <div
+          onClick={(e) => {
+            setIsOpen(false);
+          }}
           className={cn(
             "absolute left-0 right-0 top-0 flex w-full translate-y-[60px]",
             "flex-col bg-primary p-3 transition-all duration-500 ease-in-out md:hidden",
