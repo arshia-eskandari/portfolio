@@ -40,7 +40,7 @@ export default function ProjectDisplay({
   return (
     <div
       className={cn(
-        "mx-auto my-6 flex w-full flex-col rounded border p-4 shadow-lg lg:flex-row bg-[#FFFFFF50]",
+        "mx-auto my-6 flex w-full flex-col rounded border bg-[#FFFFFF50] p-4 shadow-lg lg:flex-row",
         index % 2 === 0 ? "" : "lg:flex-row-reverse",
       )}
     >
@@ -59,24 +59,27 @@ export default function ProjectDisplay({
           ))}
         </ul>
         <H4 className="my-6">Links</H4>
-        <div className="flex flex-wrap justify-start">
+        <ul className="">
           {urlTitles.map((title, index) => (
-            <a
-              key={index}
-              href={urls[index]}
-              className="mt-2 text-blue-600 hover:underline"
-            >
-              {title}
-            </a>
+            <li key={`li-${index}`}>
+              <a
+                key={index}
+                href={urls[index]}
+                className="text-blue-600 hover:underline"
+                target="_blank"
+              >
+                {title}
+              </a>
+            </li>
           ))}
-        </div>
+        </ul>
         <H4 className="my-6">Technologies Used</H4>
         <div className="mt-4">
           <div className="flex flex-wrap gap-2">
             {projectTechnologies.map((tech, index) => (
               <span
                 key={index}
-                className="h-10 rounded-md bg-[#050041] px-4 py-2 text-white shadow text-sm font-medium flex items-center justify-center"
+                className="flex h-10 items-center justify-center rounded-md bg-[#050041] px-4 py-2 text-sm font-medium text-white shadow"
               >
                 {tech}
               </span>
