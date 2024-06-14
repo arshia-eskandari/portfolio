@@ -13,10 +13,11 @@ export default async function About() {
             backgroundImage: `url(${
               about.imageUrl ? about.imageUrl : "./placeholder.svg"
             })`,
-            backgroundSize: "cover",
+            backgroundSize: "contain",
             backgroundPosition: "center",
             height: "100%",
             width: "100%",
+            backgroundRepeat: "no-repeat"
           }}
           className="rounded-md"
         ></div>
