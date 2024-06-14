@@ -54,7 +54,7 @@ export default function ExperienceDetails({
                       href={url}
                       // EXPLANATION: When clicking on the checkbox the modal should not appear
                       onClick={(e) => e.stopPropagation()}
-                      className="flex"
+                      className="flex underline"
                     >{`Recommendation Letter ${i + 1}`}</a>
                   </li>
                 ))}
