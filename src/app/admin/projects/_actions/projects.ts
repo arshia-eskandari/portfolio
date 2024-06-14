@@ -56,7 +56,7 @@ const updateSchema = z.object({
   urlTitles: z.string().max(1000).optional(),
   urls: z.string().max(1000).optional(),
   projectTechnologies: z.string().max(1000).optional(),
-  objective: z.string().max(150).optional(),
+  objective: z.string().max(200).optional(),
   keyResults: z.string().max(1000).optional(),
   experienceId: z.string().max(1000).optional(),
   media: z.string().max(1500).optional(),
@@ -68,6 +68,7 @@ export async function updateProject(formData: FormData) {
       Object.fromEntries(formData.entries()),
     );
     if (!result.success) {
+      console.log(JSON.stringify(result.error));
       return {
         status: 400,
         message: "Invalid project details",
