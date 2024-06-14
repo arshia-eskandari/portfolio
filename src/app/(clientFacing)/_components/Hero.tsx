@@ -1,6 +1,5 @@
 import { getHero } from "../_actions/hero";
 import { H1, P } from "@/components/ui/Typography";
-import { Button } from "@/components/ui/Button";
 import HeroButtons from "./HeroButtons";
 
 export default async function Hero() {
