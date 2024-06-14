@@ -10,7 +10,9 @@ export default async function About() {
       <div className="mt-3 grid w-full grid-cols-1 gap-0 lg:grid-cols-2 lg:gap-[5%]">
         <div
           style={{
-            backgroundImage: `url(./placeholder.svg)`,
+            backgroundImage: `url(${
+              about.imageUrl ? about.imageUrl : "./placeholder.svg"
+            })`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             height: "100%",

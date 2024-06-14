@@ -22,10 +22,14 @@ export default function AboutForm({
   about,
   action,
   pdfMedia,
+  imageMedia,
 }: {
-  about: About | { id: null; title: null; text: null; resumeUrl: null };
+  about:
+    | About
+    | { id: null; title: null; text: null; resumeUrl: null; imageUrl: null };
   action: (formData: FormData) => Promise<any>;
   pdfMedia: Media[];
+  imageMedia: Media[];
 }) {
   const [form, setForm] = useState<{ title: string; text: string }>({
     title: "",
@@ -43,7 +47,7 @@ export default function AboutForm({
   const router = useRouter();
   const [errorMssg, setErrorMssg] = useState<string>("");
 
-  const validateText = (text: string, lowerBound = 5, upperBound = 1000) => {
+  const validateText = (text: string, lowerBound = 5, upperBound = 1500) => {
     return text.trim().length >= lowerBound && text.trim().length <= upperBound;
   };
 
@@ -60,7 +64,7 @@ export default function AboutForm({
             : formErrors.title,
       text:
         type === "text" && !validateText(e.target.value)
-          ? "The about text must be 5 to 1000 characters"
+          ? "The about text must be 5 to 1500 characters"
           : type === "text" && validateText(e.target.value)
             ? ""
             : formErrors.text,
@@ -141,6 +145,29 @@ export default function AboutForm({
           <SelectGroup>
             <SelectItem value="null">Select Resume</SelectItem>
             {pdfMedia.map(({ name, url }) => (
+              <SelectItem value={url} key={name}>
+                {name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      <Label htmlFor="imageUrl" className="my-3 block">
+        Image
+      </Label>
+      <Select
+        name="imageUrl"
+        defaultValue={
+          imageMedia?.find((m) => m.url === about.imageUrl)?.url || "null"
+        }
+      >
+        <SelectTrigger className="my-3 w-[180px]" id="imageUrl">
+          <SelectValue placeholder="Select Resume" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectItem value="null">Select Image</SelectItem>
+            {imageMedia.map(({ name, url }) => (
               <SelectItem value={url} key={name}>
                 {name}
               </SelectItem>

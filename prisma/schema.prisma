@@ -23,6 +23,7 @@ model About {
   title     String?
   text      String
   resumeUrl String?
+  imageUrl  String?
 }
 
 enum Status {

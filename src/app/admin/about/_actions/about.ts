@@ -5,18 +5,33 @@ import { z } from "zod";
 const addSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(5).max(150),
-  text: z.string().min(10).max(1000),
+  text: z.string().min(10).max(1500),
   resumeUrl: z.string().optional(),
+  imageUrl: z.string().optional(),
 });
 
 export async function getAbout() {
   try {
     const about = await db.about.findFirst();
 
-    return about || { id: null, title: null, text: null, resumeUrl: null };
+    return (
+      about || {
+        id: null,
+        title: null,
+        text: null,
+        resumeUrl: null,
+        imageUrl: null,
+      }
+    );
   } catch (error) {
     console.log("🚀 ~ getAbout ~ error:", error);
-    return { id: null, title: null, text: null, resumeUrl: null };
+    return {
+      id: null,
+      title: null,
+      text: null,
+      resumeUrl: null,
+      imageUrl: null,
+    };
   }
 }
 
@@ -29,7 +44,7 @@ export async function addAbout(formData: FormData) {
         message: "Invalid about text or resume url",
       };
     }
-    const { id, title, text, resumeUrl } = result.data;
+    const { id, title, text, resumeUrl, imageUrl } = result.data;
     if (!(await db.media.findFirst({ where: { url: resumeUrl } }))) {
       return {
         status: 400,
@@ -42,6 +57,7 @@ export async function addAbout(formData: FormData) {
           title,
           text,
           resumeUrl,
+          imageUrl,
         },
       });
       return {
@@ -57,6 +73,7 @@ export async function addAbout(formData: FormData) {
         title,
         text,
         resumeUrl,
+        imageUrl,
       },
     });
     return {
