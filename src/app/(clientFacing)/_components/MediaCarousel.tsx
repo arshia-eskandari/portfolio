@@ -186,6 +186,7 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
                   width={details.isIphone ? "330px" : "100%"}
                   height="100%"
                   style={{ backgroundColor: "black", alignSelf: "center" }}
+                  onError={(e) => console.log(e)}
                 />
               </div>
             )}
