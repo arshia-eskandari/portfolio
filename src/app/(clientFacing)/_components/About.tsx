@@ -9,6 +9,7 @@ export default async function About() {
       <H2 className="mb-6 pb-6 pt-6 text-center">{about.title}</H2>
       <div className="mt-3 grid w-full grid-cols-1 gap-0 lg:grid-cols-2 lg:gap-[5%]">
         <div
+          className="order-last lg:order-none"
           style={{
             backgroundImage: `url(${
               about.imageUrl ? about.imageUrl : "./placeholder.svg"
@@ -17,9 +18,9 @@ export default async function About() {
             backgroundPosition: "center",
             height: "100%",
             width: "100%",
-            backgroundRepeat: "no-repeat"
+            backgroundRepeat: "no-repeat",
+            minHeight: "400px",
           }}
-          className="rounded-md"
         ></div>
         <div className="flex h-full flex-col items-start justify-start">
           <P className=" block">{about.text}</P>
