@@ -75,7 +75,7 @@ export default function ProjectDisplay({
           ))}
         </ul>
         <H4 className="my-6">Technologies Used</H4>
-        <div className="mt-4">
+        <div className="mb-6">
           <div className="flex flex-wrap gap-2">
             {projectTechnologies.map((tech, index) => (
               <span
@@ -88,7 +88,7 @@ export default function ProjectDisplay({
           </div>
         </div>
         {experienceId && (
-          <Button onClick={handleScrollToExperience} className="my-6">
+          <Button onClick={handleScrollToExperience} className="mb-6">
             Related Experience
           </Button>
         )}
