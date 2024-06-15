@@ -56,7 +56,7 @@ const updateSchema = z.object({
   urlTitles: z.string().max(1000).optional(),
   urls: z.string().max(1000).optional(),
   projectTechnologies: z.string().max(1000).optional(),
-  objective: z.string().max(200).optional(),
+  objective: z.string().max(250).optional(),
   keyResults: z.string().max(1000).optional(),
   experienceId: z.string().max(1000).optional(),
   media: z.string().max(1500).optional(),

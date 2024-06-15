@@ -152,9 +152,9 @@ export default function ProjectsForm({
             ? ""
             : formErrors.projectTechnologies,
       objective:
-        type === "objective" && !validateText(e.target.value, 5, 150)
+        type === "objective" && !validateText(e.target.value, 5, 250)
           ? "The objective must be 5 to 150 characters"
-          : type === "objective" && validateText(e.target.value, 5, 150)
+          : type === "objective" && validateText(e.target.value, 5, 250)
             ? ""
             : formErrors.objective,
       keyResults:
