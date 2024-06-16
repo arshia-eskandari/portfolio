@@ -23,7 +23,7 @@ export default async function About() {
           }}
         ></div>
         <div className="flex h-full flex-col items-start justify-start">
-          <P className=" block">{about.text}</P>
+          <P className="block">{about.text}</P>
           {about?.resumeUrl && (
             <a
               href={about?.resumeUrl}

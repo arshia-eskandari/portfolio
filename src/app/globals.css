@@ -167,3 +167,9 @@ input:-webkit-autofill:active {
   background-size: cover;
   background-repeat: repeat-y;
 }
+
+@media screen and (max-width: 599px) {
+  input, select, textarea, label {
+    font-size: 16px  !important;
+  }
+}

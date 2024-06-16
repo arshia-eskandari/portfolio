@@ -9,7 +9,7 @@ export default async function Hero() {
       <div className="flex h-full w-full max-w-[1280px] flex-col items-center justify-center md:flex-row">
         <div className="">
           <H1 className="">{hero.title}</H1>
-          <P className=" my-3 block break-all">{hero.text}</P>
+          <P className="my-3 block">{hero.text}</P>
           <HeroButtons />
         </div>
         <div className="flex w-full justify-center md:w-1/2 lg:justify-end">

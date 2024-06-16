@@ -153,6 +153,23 @@ export default function Contact({
     setShowSpinner(false);
   };
 
+  useEffect(() => {
+    const handleFocusIn = () => {
+        document.querySelector('meta[name=viewport]')?.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');
+    };
+    const handleFocusOut = () => {
+        document.querySelector('meta[name=viewport]')?.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=1');
+    };
+
+    document.addEventListener('focusin', handleFocusIn);
+    document.addEventListener('focusout', handleFocusOut);
+
+    return () => {
+        document.removeEventListener('focusin', handleFocusIn);
+        document.removeEventListener('focusout', handleFocusOut);
+    };
+}, []);
+
   return (
     <form
       id="contact"
