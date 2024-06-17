@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 import React, { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 
@@ -14,11 +15,14 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
   const [translateX, setTranslateX] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const [details, setDetails] = useState({ browser: "", isIphone: false });
+  const [mediaDimensions, setMediaDimensions] = useState({
+    width: 550,
+    height: 500,
+  });
 
   useEffect(() => {
     const userAgent = navigator.userAgent;
 
-    // Detecting the browser
     let browser = "Other";
     if (/chrome|chromium|crios/i.test(userAgent)) {
       browser = "Chrome";
@@ -33,10 +37,47 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
       browser = "Edge";
     }
 
-    // Detecting if the device is an iPhone
     const isIphone = /iPhone/i.test(userAgent);
 
     setDetails({ browser, isIphone });
+
+    function adjustMediaSize() {
+      const screenWidth = window.innerWidth;
+      let width = 300;
+
+      if (screenWidth <= 280) {
+        width = 150;
+      } else if (screenWidth <= 375) {
+        width = 270;
+      } else if (screenWidth <= 430) {
+        width = 320;
+      } else if (screenWidth <= 540) {
+        width = 400;
+      } else if (screenWidth <= 630) {
+        width = 500;
+      } else if (screenWidth <= 730) {
+        width = 600;
+      } else if (screenWidth <= 830) {
+        width = 670;
+      } else if (screenWidth <= 930) {
+        width = 750;
+      } else if (screenWidth <= 1000) {
+        width = 850;
+      } else if (screenWidth <= 1200) {
+        width = 430;
+      } else {
+        width = 550;
+      }
+
+      setMediaDimensions({ width, height: 500 });
+    }
+
+    adjustMediaSize();
+    window.addEventListener("resize", adjustMediaSize);
+
+    return () => {
+      window.removeEventListener("resize", adjustMediaSize);
+    };
   }, []);
 
   const handleMouseDown = (event: React.MouseEvent) => {
@@ -166,24 +207,37 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        {media.map((mediaUrl) => (
+        {media.map((mediaUrl, index) => (
           <div key={mediaUrl} className="h-[500px] min-w-full flex-shrink-0">
             {mediaUrl.match(/\.(jpeg|jpg|png)$/i) ? (
-              <div
-                style={{
-                  backgroundImage: `url(${mediaUrl})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  height: "100%",
-                  width: "100%",
-                }}
-              ></div>
+              // <div
+              //   style={{
+              //     backgroundImage: `url(${mediaUrl})`,
+              //     backgroundSize: "cover",
+              //     backgroundPosition: "center",
+              //     height: "100%",
+              //     width: "300px",
+              //   }}
+              // ></div>
+              <div className="flex h-full items-center justify-center">
+                <Image
+                  src={mediaUrl}
+                  width={mediaDimensions.width}
+                  height={mediaDimensions.height}
+                  objectFit="cover"
+                  className="self-center"
+                  alt={
+                    mediaUrl?.split("/")?.pop()?.split(".")[0] ||
+                    `image-${index}`
+                  }
+                />
+              </div>
             ) : (
               <div className="flex h-full w-full items-center justify-center">
                 <ReactPlayer
                   url={mediaUrl}
                   controls={true}
-                  width={details.isIphone ? "300px" : "100%"}
+                  width={mediaDimensions.width}
                   height="100%"
                   style={{ backgroundColor: "black", alignSelf: "center" }}
                   onError={(e) => console.log(e)}
@@ -194,13 +248,13 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
         ))}
       </div>
       <button
-        className="group absolute left-0 top-1/2 z-10 hidden h-2/3 -translate-y-1/2 transform p-2 pr-6 text-white shadow-lg lg:block"
+        className="group absolute left-0 top-1/2 z-10 hidden h-2/3 -translate-y-1/2 transform p-2 pr-6 text-white lg:block"
         onClick={handlePrev}
       >
         <ChevronLeft className="transition-transform duration-300 ease-in-out group-hover:scale-[1.2] group-hover:brightness-125" />
       </button>
       <button
-        className="group absolute right-0 top-1/2 z-10 hidden h-2/3 -translate-y-1/2 transform p-2 pl-6 text-white shadow-lg lg:block"
+        className="group absolute right-0 top-1/2 z-10 hidden h-2/3 -translate-y-1/2 transform p-2 pl-6 text-white lg:block"
         onClick={handleNext}
       >
         <ChevronRight className="transition-transform duration-300 ease-in-out group-hover:scale-[1.2] group-hover:brightness-125" />
