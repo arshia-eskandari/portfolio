@@ -1,10 +1,9 @@
-// Somewhere in your project files
 import { H2 } from "@/components/ui/Typography";
-import { getSkills } from "../_actions/skills";
+import { getClientSkills } from "../_actions/skills";
 import SearchableSkills from "./SearchableSkills";
 
 export default async function Skills() {
-  const skills = await getSkills();
+  const skills = await getClientSkills();
   const skillsArray = skills.skills || [];
 
   return (

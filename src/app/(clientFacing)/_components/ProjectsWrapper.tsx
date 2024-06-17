@@ -1,7 +1,6 @@
 "use client";
-import { H2 } from "@/components/ui/Typography";
 import ProjectDisplay from "./Project";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Project } from "@prisma/client";
 import { Button } from "@/components/ui/Button";
 

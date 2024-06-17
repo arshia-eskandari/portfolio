@@ -1,9 +1,9 @@
-import { getHero } from "../_actions/hero";
+import { getClientHero } from "../_actions/hero";
 import { H1, P } from "@/components/ui/Typography";
 import HeroButtons from "./HeroButtons";
 
 export default async function Hero() {
-  const hero = await getHero();
+  const hero = await getClientHero();
   return (
     <main id="hero" className="flex justify-center px-6 text-white">
       <div className="flex h-full w-full max-w-[1280px] flex-col items-center justify-center md:flex-row">

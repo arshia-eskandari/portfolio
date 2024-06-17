@@ -1,6 +1,4 @@
 "use client";
-
-import { NavLink } from "@/components/ui/NavLink";
 import { cn } from "@/lib/utils";
 
 export default function HeroButtons() {

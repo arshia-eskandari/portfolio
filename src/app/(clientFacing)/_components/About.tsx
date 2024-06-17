@@ -1,9 +1,9 @@
 import { H2, P } from "@/components/ui/Typography";
-import { getAbout } from "../_actions/about";
+import { getClientAbout } from "../_actions/about";
 import { cn } from "@/lib/utils";
 
 export default async function About() {
-  const about = await getAbout();
+  const about = await getClientAbout();
   return (
     <div id="about" className="relative my-12">
       <H2 className="mb-6 pb-6 pt-6 text-center">{about.title}</H2>

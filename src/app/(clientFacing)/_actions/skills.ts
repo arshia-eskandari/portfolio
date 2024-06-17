@@ -1,12 +1,19 @@
 import db from "@/db/db";
+import { cache } from "@/lib/cache";
 
-export async function getSkills() {
-  try {
-    const skills = await db.skills.findFirst();
+const getClientSkills = cache(
+  async () => {
+    try {
+      const skills = await db.skills.findFirst();
 
-    return skills || { id: null, skills: null };
-  } catch (error) {
-    console.log("🚀 ~ getSkills ~ error:", error);
-    return { id: null, skills: null };
-  }
-}
+      return skills || { id: null, skills: null };
+    } catch (error) {
+      console.log("🚀 ~ getClientSkills ~ error:", error);
+      return { id: null, skills: null };
+    }
+  },
+  ["/", "getClientSkills"],
+  { revalidate: 60 * 60 * 6 },
+);
+
+export { getClientSkills };

@@ -14,6 +14,8 @@ import {
 import { logout } from "./_actions/logout";
 import { cn } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 export default function AdminLayout({
   children,
 }: Readonly<{

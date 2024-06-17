@@ -1,12 +1,19 @@
 import db from "@/db/db";
+import { cache } from "@/lib/cache";
 
-export async function getHero() {
-  try {
-    const hero = await db.hero.findFirst();
+const getClientHero = cache(
+  async () => {
+    try {
+      const hero = await db.hero.findFirst();
 
-    return hero || { id: null, text: null, title: null };
-  } catch (error) {
-    console.log("🚀 ~ getHero ~ error:", error);
-    return { id: null, text: null, title: null };
-  }
-}
+      return hero || { id: null, text: null, title: null };
+    } catch (error) {
+      console.log("🚀 ~ getClientHero ~ error:", error);
+      return { id: null, text: null, title: null };
+    }
+  },
+  ["/", "getClientHero"],
+  { revalidate: 60 * 60 * 6 },
+);
+
+export { getClientHero };

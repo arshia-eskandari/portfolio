@@ -1,10 +1,9 @@
 import { H2 } from "@/components/ui/Typography";
-import { getProjects } from "../_actions/projects";
-import ProjectDisplay from "./Project";
+import { getClientProjects } from "../_actions/projects";
 import ProjectsWrapper from "./ProjectsWrapper";
 
 export default async function Projects() {
-  const projects = await getProjects();
+  const projects = await getClientProjects();
 
   return (
     <div className="test my-12" id="projects">
