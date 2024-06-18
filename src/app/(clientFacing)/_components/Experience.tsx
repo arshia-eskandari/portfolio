@@ -44,7 +44,7 @@ export default function ExperienceDetails({
               return <li key={a}>{capitalizeFirstLetter(a)}</li>;
             })}
           </ul>
-          {experience?.recommendationLetterUrls && (
+          {experience?.recommendationLetterUrls?.length > 0 && (
             <>
               <P>Recommendation Letters</P>
               <ul className="ml-6 list-disc">

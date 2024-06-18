@@ -109,7 +109,10 @@ export async function updateExperience(formData: FormData) {
             .filter((r) => r !== "") || [],
         startDate: new Date(startDate),
         endDate: endDate === "" ? null : new Date(endDate),
-        recommendationLetterUrls: recommendationLetterUrls?.split(",") || [],
+        recommendationLetterUrls:
+          recommendationLetterUrls !== ""
+            ? recommendationLetterUrls?.split(",") || []
+            : [],
       },
     });
     return {
