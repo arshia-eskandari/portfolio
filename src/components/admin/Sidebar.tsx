@@ -13,7 +13,6 @@ export function Sidebar({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const handleResize = () => {
-      console.log("called handleResize");
       if (window.innerWidth >= mdBreakpoint) {
         setMd(true);
         setIsOpen(true);
@@ -23,6 +22,7 @@ export function Sidebar({ children }: { children: ReactNode }) {
       }
     };
 
+    handleResize();
     window.addEventListener("resize", handleResize);
 
     return () => {
