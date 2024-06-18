@@ -4,7 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/Accordion";
-import { H4, P } from "@/components/ui/Typography";
+import { P } from "@/components/ui/Typography";
 import { capitalizeFirstLetter } from "@/lib/string";
 import { formatDate } from "@/lib/time";
 import { Experience } from "@prisma/client";
@@ -20,13 +20,14 @@ export default function ExperienceDetails({
         id={`div-${experience.id}`}
         value={experience.id}
         className="my-6 rounded-md bg-[#050041] p-3 text-white"
-        
       >
-        <AccordionTrigger className="no-underline" id={experience.id} >
+        <AccordionTrigger className="no-underline" id={experience.id}>
           {`${experience.jobTitle}  |  ${experience.company}  |  ${
             experience.location
-          }  |  ${formatDate(experience.startDate)} - ${
-            experience.endDate ? formatDate(experience.endDate) : "Present"
+          }  |  ${formatDate(new Date(experience.startDate))} - ${
+            experience.endDate
+              ? formatDate(new Date(experience.endDate))
+              : "Present"
           }`}
         </AccordionTrigger>
         <AccordionContent className="px-3" id={`content-${experience.id}`}>
