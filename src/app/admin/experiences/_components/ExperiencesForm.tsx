@@ -242,11 +242,17 @@ export default function ExperiencesForm({
                   setErrorMssg("");
                   setDeleteLoading(true);
                   setShowDeleteSpinner(true);
-                  const response = await deleteAction(experience.id);
-                  if (response.status === 200 || response.status === 201) {
-                    router.refresh();
-                  } else {
-                    setErrorMssg(response.message);
+                  if (
+                    window.confirm(
+                      `Are you sure you want to delete ${experience.jobTitle} at ${experience.company}??`,
+                    )
+                  ) {
+                    const response = await deleteAction(experience.id);
+                    if (response.status === 200 || response.status === 201) {
+                      router.refresh();
+                    } else {
+                      setErrorMssg(response.message);
+                    }
                   }
                 }}
               >

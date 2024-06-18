@@ -235,11 +235,17 @@ export default function ProjectsForm({
                   setErrorMssg("");
                   setDeleteLoading(true);
                   setShowDeleteSpinner(true);
-                  const response = await deleteAction(project.id);
-                  if (response.status === 200 || response.status === 201) {
-                    router.refresh();
-                  } else {
-                    setErrorMssg(response.message);
+                  if (
+                    window.confirm(
+                      `Are you sure you want to delete ${project.projectTitle}?`,
+                    )
+                  ) {
+                    const response = await deleteAction(project.id);
+                    if (response.status === 200 || response.status === 201) {
+                      router.refresh();
+                    } else {
+                      setErrorMssg(response.message);
+                    }
                   }
                 }}
               >
