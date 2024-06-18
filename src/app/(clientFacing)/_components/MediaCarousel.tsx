@@ -1,5 +1,6 @@
+import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import Image from "next/image";
 import React, { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
@@ -54,8 +55,12 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
   };
 
   const handleImageClick = (url: string) => {
-    setSelectedUrl(url);
-    setIsVisible(true);
+    {
+      if (!isDragging) {
+        setSelectedUrl(url);
+        setIsVisible(true);
+      }
+    }
   };
 
   const handleMouseDown = (event: React.MouseEvent) => {
@@ -188,15 +193,7 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
         {media.map((mediaUrl, index) => (
           <div key={mediaUrl} className="h-[500px] min-w-full flex-shrink-0">
             {mediaUrl.match(/\.(jpeg|jpg|png)$/i) ? (
-              <div
-                className="flex h-full items-center justify-center hover:cursor-pointer"
-                onClick={() => {
-                  if (!isDragging) {
-                    setSelectedUrl(mediaUrl);
-                    setIsVisible(true);
-                  }
-                }}
-              >
+              <div className="group relative flex h-full items-center justify-center hover:cursor-pointer">
                 <Image
                   // EXPLANATION: This removes the drag conflict for images
                   draggable="false"
@@ -210,6 +207,20 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
                     `image-${index}`
                   }
                 />
+                <Button
+                  onClick={() => {
+                    handleImageClick(mediaUrl);
+                  }}
+                  className={cn(
+                    "absolute bottom-5 left-1/2 mx-auto -translate-x-1/2 opacity-0 transition-opacity",
+                    "border border-primary duration-300 group-hover:opacity-100",
+                    "top-1/2 -translate-y-1/2",
+                  )}
+                  variant="outline"
+                >
+                  View Image
+                  <Eye className="ml-3" />
+                </Button>
               </div>
             ) : (
               <div className="flex h-full w-full items-center justify-center">
