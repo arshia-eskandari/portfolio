@@ -18,8 +18,9 @@ export default function HeroButtons() {
       <a
         href="#about"
         className={cn(
-          "h-10 px-4 py-2 text-sm font-medium mr-3 rounded-md",
+          "mr-3 h-10 rounded-md px-4 py-2 text-sm font-medium",
           "bg-primary text-primary-foreground hover:bg-primary/90",
+          "transition-colors duration-300",
         )}
         onClick={(e) => handleScrollToExperience(e, "about")}
       >
@@ -28,8 +29,9 @@ export default function HeroButtons() {
       <a
         href="#contact"
         className={cn(
-          "h-10 px-4 py-2 text-sm font-medium rounded-md",
+          "h-10 rounded-md px-4 py-2 text-sm font-medium",
           "bg-primary text-primary-foreground hover:bg-primary/90",
+          "transition-colors duration-500",
         )}
         onClick={(e) => handleScrollToExperience(e, "contact")}
       >

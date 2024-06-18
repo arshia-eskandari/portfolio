@@ -4,7 +4,7 @@ import { ComponentProps } from "react";
 
 interface NavLinkProps extends Omit<ComponentProps<typeof Link>, "className"> {
   icon?: React.ReactNode;
-  variant?: "inverted"
+  variant?: "inverted";
 }
 
 export function NavLink({ icon, variant, ...props }: NavLinkProps) {
@@ -13,9 +13,12 @@ export function NavLink({ icon, variant, ...props }: NavLinkProps) {
       className={cn(
         "focus-visible:bg-secondary focus-visible:text-secondary",
         "hover:bg-secondary hover:text-secondary-foreground",
-        "flex items-center rounded-sm py-2 px-4 justify-center",
+        "flex items-center justify-center rounded-sm px-4 py-2",
         "md:ml-3 ",
-        variant === "inverted" ? "bg-secondary text-secondary-foreground hover:bg-white" : ""
+        "transition-colors duration-300",
+        variant === "inverted"
+          ? "bg-secondary text-secondary-foreground hover:bg-white"
+          : "",
       )}
       {...props}
     >
