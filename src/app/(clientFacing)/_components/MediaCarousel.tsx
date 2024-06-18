@@ -14,71 +14,49 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [translateX, setTranslateX] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [details, setDetails] = useState({ browser: "", isIphone: false });
-  const [mediaDimensions, setMediaDimensions] = useState({
-    width: 550,
-    height: 500,
-  });
+  const [width, setWidth] = useState(0);
+  const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const userAgent = navigator.userAgent;
-
-    let browser = "Other";
-    if (/chrome|chromium|crios/i.test(userAgent)) {
-      browser = "Chrome";
-    } else if (
-      /safari/i.test(userAgent) &&
-      !/chrome|chromium|crios/i.test(userAgent)
-    ) {
-      browser = "Safari";
-    } else if (/firefox|fxios/i.test(userAgent)) {
-      browser = "Firefox";
-    } else if (/edg/i.test(userAgent)) {
-      browser = "Edge";
-    }
-
-    const isIphone = /iPhone/i.test(userAgent);
-
-    setDetails({ browser, isIphone });
-
-    function adjustMediaSize() {
-      const screenWidth = window.innerWidth;
-      let width = 300;
-
-      if (screenWidth <= 280) {
-        width = 150;
-      } else if (screenWidth <= 375) {
-        width = 270;
-      } else if (screenWidth <= 430) {
-        width = 320;
-      } else if (screenWidth <= 540) {
-        width = 400;
-      } else if (screenWidth <= 630) {
-        width = 500;
-      } else if (screenWidth <= 730) {
-        width = 600;
-      } else if (screenWidth <= 830) {
-        width = 670;
-      } else if (screenWidth <= 930) {
-        width = 750;
-      } else if (screenWidth <= 1000) {
-        width = 850;
-      } else if (screenWidth <= 1200) {
-        width = 430;
-      } else {
-        width = 550;
+    const handleResize = () => {
+      if (containerRef.current) {
+        setWidth(containerRef.current.offsetWidth);
       }
+    };
 
-      setMediaDimensions({ width, height: 500 });
-    }
+    handleResize();
 
-    adjustMediaSize();
-    window.addEventListener("resize", adjustMediaSize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener("resize", adjustMediaSize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const closeModal = () => {
+    setIsVisible(false);
+    setTimeout(() => {
+      setSelectedUrl(null);
+    }, 300); // Match the duration of the fadeOut animation
+  };
+
+  const renderUrlContent = (url: string) => {
+    return (
+      <Image
+        src={url}
+        alt={`expanded-${url?.split("/")?.pop()?.split(".")[0]}`}
+        width={800}
+        height={600}
+        style={{ objectFit: "contain" }}
+      />
+    );
+  };
+
+  const handleImageClick = (url: string) => {
+    setSelectedUrl(url);
+    setIsVisible(true);
+  };
 
   const handleMouseDown = (event: React.MouseEvent) => {
     setDragStartX(event.clientX);
@@ -210,20 +188,21 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
         {media.map((mediaUrl, index) => (
           <div key={mediaUrl} className="h-[500px] min-w-full flex-shrink-0">
             {mediaUrl.match(/\.(jpeg|jpg|png)$/i) ? (
-              // <div
-              //   style={{
-              //     backgroundImage: `url(${mediaUrl})`,
-              //     backgroundSize: "cover",
-              //     backgroundPosition: "center",
-              //     height: "100%",
-              //     width: "300px",
-              //   }}
-              // ></div>
-              <div className="flex h-full items-center justify-center">
+              <div
+                className="flex h-full items-center justify-center hover:cursor-pointer"
+                onClick={() => {
+                  if (!isDragging) {
+                    setSelectedUrl(mediaUrl);
+                    setIsVisible(true);
+                  }
+                }}
+              >
                 <Image
+                  // EXPLANATION: This removes the drag conflict for images
+                  draggable="false"
                   src={mediaUrl}
-                  width={mediaDimensions.width}
-                  height={mediaDimensions.height}
+                  width={width}
+                  height={500}
                   objectFit="cover"
                   className="self-center"
                   alt={
@@ -237,7 +216,7 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
                 <ReactPlayer
                   url={mediaUrl}
                   controls={true}
-                  width={mediaDimensions.width}
+                  width={width}
                   height="100%"
                   style={{ backgroundColor: "black", alignSelf: "center" }}
                   onError={(e) => console.log(e)}
@@ -262,6 +241,18 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
       <div className="absolute left-5 top-5 z-20 text-white">
         {currentMediaIndex + 1}/{media.length}
       </div>
+      {selectedUrl && (
+        <div
+          className={`fixed inset-0 z-[2000] flex items-center justify-center bg-black bg-opacity-75 ${
+            isVisible ? "animate-fade-in" : "animate-fade-out"
+          }`}
+          onClick={closeModal}
+        >
+          <div className="relative" onClick={(e) => e.stopPropagation()}>
+            {renderUrlContent(selectedUrl)}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
