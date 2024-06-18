@@ -41,13 +41,14 @@ export default function ProjectDisplay({
   return (
     <div
       className={cn(
-        "mx-auto my-6 flex w-full flex-col rounded border bg-[#FFFFFF50] p-4 shadow-lg lg:flex-row",
+        "mx-auto my-6 flex w-full flex-col rounded border bg-[#FFFFFF50] p-4 shadow-lg lg:flex-row lg:justify-between",
         index % 2 === 0 ? "" : "lg:flex-row-reverse",
       )}
     >
       <div
         className={cn(
-          index % 2 === 0 ? "lg:mr-[5%] lg:w-[45%]" : "lg:mx-[5%] lg:w-[45%]",
+          // index % 2 === 0 ? "lg:mr-[5%] lg:w-[45%]" : "lg:mx-[5%] lg:w-[45%]",
+          "lg:w-[45%]"
         )}
       >
         <H3 className="font-bold">{projectTitle}</H3>
