@@ -4,6 +4,7 @@ import { H3, H4, P } from "@/components/ui/Typography";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
+import { SquareChevronDown } from "lucide-react";
 
 // EXPLANATION: Importing MediaCarousel dynamically to avoid SSR as it uses browser-specific APIs like 'window'
 const MediaCarousel = dynamic(() => import("./MediaCarousel"), {
@@ -48,7 +49,7 @@ export default function ProjectDisplay({
       <div
         className={cn(
           // index % 2 === 0 ? "lg:mr-[5%] lg:w-[45%]" : "lg:mx-[5%] lg:w-[45%]",
-          "lg:w-[45%]"
+          "lg:w-[45%]",
         )}
       >
         <H3 className="font-bold">{projectTitle}</H3>
@@ -91,6 +92,7 @@ export default function ProjectDisplay({
         {experienceId && (
           <Button onClick={handleScrollToExperience} className="mb-6">
             Related Experience
+            <SquareChevronDown className="ml-3"/>
           </Button>
         )}
       </div>
