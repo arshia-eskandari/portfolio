@@ -19,6 +19,7 @@ import {
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { Textarea } from "@/components/ui/Textarea";
 import { H4 } from "@/components/ui/Typography";
+import { SENTENCE_SEPARATOR } from "@/config/separator";
 import { cn } from "@/lib/utils";
 import { Project, Media, Experience } from "@prisma/client";
 import { X } from "lucide-react";
@@ -90,7 +91,7 @@ export default function ProjectsForm({
       projectTechnologies: projectTechnologies.join(","),
       projectTitle,
       objective,
-      keyResults: keyResults.join(","),
+      keyResults: keyResults.join(SENTENCE_SEPARATOR),
       urls: urls.join(","),
     });
   }, [project]);
@@ -403,7 +404,7 @@ export default function ProjectsForm({
             name="keyResults"
             value={form.keyResults}
             onChange={(e) => onInputChange("keyResults", e)}
-            placeholder="Enter key results in comma-separated format"
+            placeholder="Enter key results separating them by ( | )"
             className={cn(
               formErrors.keyResults === ""
                 ? ""

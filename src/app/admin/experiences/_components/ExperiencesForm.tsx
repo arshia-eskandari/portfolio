@@ -12,6 +12,7 @@ import { SearchInput } from "@/components/ui/SearchInput";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { Textarea } from "@/components/ui/Textarea";
 import { H4 } from "@/components/ui/Typography";
+import { SENTENCE_SEPARATOR } from "@/config/separator";
 import { formatDate } from "@/lib/time";
 import { cn } from "@/lib/utils";
 import { Experience, Media } from "@prisma/client";
@@ -85,8 +86,8 @@ export default function ExperiencesForm({
       endDate,
     } = experience;
     setForm({
-      achievements: achievements.join(","),
-      responsibilities: responsibilities.join(","),
+      achievements: achievements.join(SENTENCE_SEPARATOR),
+      responsibilities: responsibilities.join(SENTENCE_SEPARATOR),
       jobTitle,
       company,
       location,
@@ -345,7 +346,7 @@ export default function ExperiencesForm({
             name="achievements"
             value={form.achievements}
             onChange={(e) => onInputChange("achievements", e)}
-            placeholder="Enter achievements in comma-separated format"
+            placeholder="Enter achievements separating them by ( | )"
             className={cn(
               formErrors.achievements === ""
                 ? ""
@@ -366,7 +367,7 @@ export default function ExperiencesForm({
             name="responsibilities"
             value={form.responsibilities}
             onChange={(e) => onInputChange("responsibilities", e)}
-            placeholder="Enter responsibilities in comma-separated format"
+            placeholder="Enter responsibilities separating them by ( | )"
             className={cn(
               formErrors.responsibilities === ""
                 ? ""

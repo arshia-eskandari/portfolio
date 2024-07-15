@@ -1,4 +1,5 @@
 "use server";
+import { SENTENCE_SEPARATOR } from "@/config/separator";
 import db from "@/db/db";
 import { z } from "zod";
 
@@ -123,7 +124,8 @@ export async function updateProject(formData: FormData) {
             : [],
         projectTitle: projectTitle?.trim(),
         objective: objective?.trim(),
-        keyResults: keyResults?.split(",")?.map((x) => x.trim()) || [],
+        keyResults:
+          keyResults?.split(SENTENCE_SEPARATOR)?.map((x) => x.trim()) || [],
         media: mediaArray,
         experienceId: experienceId === "null" ? null : experienceId,
       },

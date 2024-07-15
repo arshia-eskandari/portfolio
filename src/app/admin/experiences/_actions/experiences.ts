@@ -1,4 +1,5 @@
 "use server";
+import { SENTENCE_SEPARATOR } from "@/config/separator";
 import db from "@/db/db";
 import { addDays } from "date-fns";
 import { z } from "zod";
@@ -99,12 +100,12 @@ export async function updateExperience(formData: FormData) {
         location: location.trim(),
         achievements:
           achievements
-            ?.split(",")
+            ?.split(SENTENCE_SEPARATOR)
             .map((a) => a.trim())
             .filter((a) => a !== "") || [],
         responsibilities:
           responsibilities
-            ?.split(",")
+            ?.split(SENTENCE_SEPARATOR)
             .map((r) => r.trim())
             .filter((r) => r !== "") || [],
         startDate: new Date(startDate),
