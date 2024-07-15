@@ -96,6 +96,7 @@ export default function LoginForm({
           name="email"
           value={form.email}
           onChange={(e) => onInputChange("email", e)}
+          placeholder="email"
           className={cn(formErrors.email === "" ? "" : "input-error")}
         />
         {formErrors.email === "" ? null : (
@@ -106,6 +107,7 @@ export default function LoginForm({
           name="password"
           value={form.password}
           onChange={(e) => onInputChange("password", e)}
+          placeholder="password"
           className={cn(formErrors.password === "" ? "" : "input-error")}
         />
         {formErrors.password === "" ? null : (
