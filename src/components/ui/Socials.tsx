@@ -39,11 +39,11 @@ export default function Socials({ socials }: { socials: Social[] }) {
         "transform flex-row rounded-md md:-translate-y-1/2 md:flex-col",
         "border bg-[#FFFFFF50] shadow-lg",
         "bottom-1 -translate-x-1/2 md:bottom-auto md:-translate-x-0",
-        "left-1/2 md:left-auto"
+        "left-1/2 w-[calc(90px+4.5rem)] md:left-auto md:w-auto",
       )}
       style={{ marginBottom: `${bottomMargin}px` }}
     >
-      {linkedin && (
+      {linkedin?.url && (
         <a href={linkedin.url} target="_blank" rel="noopener noreferrer">
           <Image
             src={"/linkedin.svg"}
@@ -54,7 +54,7 @@ export default function Socials({ socials }: { socials: Social[] }) {
           />
         </a>
       )}
-      {github && (
+      {github?.url && (
         <a href={github.url} target="_blank" rel="noopener noreferrer">
           <Image
             src={"/github.svg"}
@@ -65,7 +65,7 @@ export default function Socials({ socials }: { socials: Social[] }) {
           />
         </a>
       )}
-      {telegram && (
+      {telegram?.url && (
         <a href={telegram.url} target="_blank" rel="noopener noreferrer">
           <Image
             src={"/telegram.svg"}
@@ -76,7 +76,7 @@ export default function Socials({ socials }: { socials: Social[] }) {
           />
         </a>
       )}
-      {email && (
+      {email?.url && (
         <a
           href={`mailto:${email.url}`}
           className="flex items-center justify-center"
