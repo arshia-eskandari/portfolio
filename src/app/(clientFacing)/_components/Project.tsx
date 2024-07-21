@@ -41,6 +41,7 @@ export default function ProjectDisplay({
 
   return (
     <div
+      id={`project-${index + 1}`}
       className={cn(
         "mx-auto my-6 flex w-full flex-col rounded border bg-[#FFFFFF50] p-4 shadow-lg lg:flex-row lg:justify-between",
         index % 2 === 0 ? "" : "lg:flex-row-reverse",
@@ -92,7 +93,7 @@ export default function ProjectDisplay({
         {experienceId && (
           <Button onClick={handleScrollToExperience} className="mb-6">
             Related Experience
-            <SquareChevronDown className="ml-3"/>
+            <SquareChevronDown className="ml-3" />
           </Button>
         )}
       </div>

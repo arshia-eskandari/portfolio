@@ -238,18 +238,18 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
         ))}
       </div>
       <button
-        className="group absolute left-0 top-1/2 z-10 hidden h-2/3 -translate-y-1/2 transform p-2 pr-6 text-white lg:block"
+        className="left-button group absolute left-0 top-1/2 z-10 hidden h-2/3 -translate-y-1/2 transform p-2 pr-6 text-white lg:block"
         onClick={handlePrev}
       >
         <ChevronLeft className="transition-transform duration-300 ease-in-out group-hover:scale-[1.2] group-hover:brightness-125" />
       </button>
       <button
-        className="group absolute right-0 top-1/2 z-10 hidden h-2/3 -translate-y-1/2 transform p-2 pl-6 text-white lg:block"
+        className="right-button group absolute right-0 top-1/2 z-10 hidden h-2/3 -translate-y-1/2 transform p-2 pl-6 text-white lg:block"
         onClick={handleNext}
       >
         <ChevronRight className="transition-transform duration-300 ease-in-out group-hover:scale-[1.2] group-hover:brightness-125" />
       </button>
-      <div className="absolute left-5 top-5 z-20 text-white">
+      <div className="absolute left-5 top-5 z-20 text-white" id="media-index">
         {currentMediaIndex + 1}/{media.length}
       </div>
       {selectedUrl && (
