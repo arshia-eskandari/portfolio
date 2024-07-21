@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.583.0",
@@ -42,6 +43,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.19",
+    "cypress": "^13.13.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "postcss": "^8",
