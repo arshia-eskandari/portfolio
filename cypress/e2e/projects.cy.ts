@@ -1,6 +1,6 @@
 describe("Skills Section Tests", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/#projects");
+    cy.visit("/#projects");
   });
 
   it("Ensures that project titles and details are not empty", () => {

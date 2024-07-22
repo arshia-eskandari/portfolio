@@ -14,7 +14,7 @@ const ABOUT_BODY =
 
 describe("About Section Tests", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/#about");
+    cy.visit("/#about");
   });
 
   it("Successfully loads about content", () => {

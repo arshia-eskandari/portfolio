@@ -2,7 +2,7 @@ describe("Nav Tests", () => {
   const sections = ["about", "experiences", "skills", "contact"];
 
   beforeEach(() => {
-    cy.visit("http://localhost:3000");
+    cy.visit("/");
   });
 
   it("Successfully loads nav content", () => {
@@ -14,19 +14,19 @@ describe("Nav Tests", () => {
     );
   });
 
-  const testNavigation = (device) => {
+  const testNavigation = (device: any = "") => {
     if (device) {
       cy.viewport(device);
     }
     if (device === "iphone-6") {
       return sections.forEach((section) => {
         cy.get(`nav>div>a[href*="#${section}"]`).click();
-        cy.url().should("eq", `http://localhost:3000/#${section}`);
+        cy.url().should("include", `/#${section}`);
       });
     }
     sections.forEach((section) => {
       cy.get(`nav div div a[href*="#${section}"]`).click();
-      cy.url().should("eq", `http://localhost:3000/#${section}`);
+      cy.url().should("include", `/#${section}`);
     });
   };
 

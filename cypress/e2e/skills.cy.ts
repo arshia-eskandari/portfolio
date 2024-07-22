@@ -1,6 +1,6 @@
 describe("Skills Section Tests", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/#skills");
+    cy.visit("/#skills");
   });
 
   it("Successfully loads skills content", () => {

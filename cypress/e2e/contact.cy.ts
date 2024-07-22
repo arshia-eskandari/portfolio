@@ -1,6 +1,6 @@
 describe("Contact Section Tests", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/#contact");
+    cy.visit("/#contact");
   });
   it("Fills and submits the form successfully", () => {
     cy.get('#contact input[name="firstName"]').type("Arshia");

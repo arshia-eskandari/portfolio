@@ -1,6 +1,6 @@
 describe("Hero Section Tests", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000");
+    cy.visit("/");
   });
 
   it("Successfully loads hero content", () => {
@@ -14,11 +14,11 @@ describe("Hero Section Tests", () => {
 
   it("Scrolls to the about section", () => {
     cy.get('#hero a[href*="#about"]').click();
-    cy.url().should("eq", "http://localhost:3000/#about");
+    cy.url().should("include", "/#about");
   });
 
   it("Scrolls to the contact section", () => {
     cy.get('#hero a[href*="#contact"]').click();
-    cy.url().should("eq", "http://localhost:3000/#contact");
+    cy.url().should("include", "/#contact");
   });
 });

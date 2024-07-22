@@ -1,6 +1,6 @@
 describe("Experiences Section Tests", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/#experiences");
+    cy.visit("/#experiences");
   });
   it("Opens and closes the accordion correctly", () => {
     cy.get("#experiences>div>div:nth-child(1)>div")
