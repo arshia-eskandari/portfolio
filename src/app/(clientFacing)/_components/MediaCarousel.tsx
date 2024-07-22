@@ -166,7 +166,7 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ media }) => {
 
   return (
     <div
-      className="relative h-[500px] overflow-hidden rounded-sm bg-black lg:w-1/2"
+      className="relative h-[500px] overflow-hidden rounded-sm bg-black lg:w-1/2 media-carousel"
       ref={containerRef}
     >
       <div

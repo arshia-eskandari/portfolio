@@ -1,10 +1,10 @@
 describe("Skills Section Tests", () => {
   beforeEach(() => {
-    cy.viewport(1200, 800);
     cy.visit("http://localhost:3000/#projects");
   });
 
-  it("ensures that project titles and details are not empty", () => {
+  it("Ensures that project titles and details are not empty", () => {
+    cy.viewport(1200, 800);
     cy.get("h3.font-bold").each(($el) => {
       expect($el.text().trim()).not.to.be.empty;
     });
@@ -42,7 +42,8 @@ describe("Skills Section Tests", () => {
       });
   });
 
-  it("allows navigation through next and previous buttons", () => {
+  it("Allows navigation through next and previous buttons", () => {
+    cy.viewport(1200, 800);
     cy.get("#projects #project-1 #media-index").should("contain", "1");
 
     cy.get("#projects #project-1 .right-button").click();
@@ -52,7 +53,8 @@ describe("Skills Section Tests", () => {
     cy.get("#projects #project-1 #media-index").should("contain", "1");
   });
 
-  it("loops correctly from first to last item and back", () => {
+  it("Loops correctly from first to last item and back", () => {
+    cy.viewport(1200, 800);
     cy.get("#projects #project-1 #media-index").should("contain", "1");
 
     cy.get("#projects #project-1 .left-button").click();
@@ -60,5 +62,21 @@ describe("Skills Section Tests", () => {
 
     cy.get("#projects #project-1 .right-button").click();
     cy.get("#projects #project-1 #media-index").should("contain", "1");
+  });
+
+  it("Swipes correctly", () => {
+    cy.viewport("iphone-6");
+
+    cy.get("#projects #project-1 .media-carousel")
+      .scrollIntoView()
+      .should("be.visible")
+      .wait(500)
+      .trigger("mousedown", { which: 1 })
+      .trigger("mousemove", "right")
+      .trigger("mousemove", "left")
+      .wait(0)
+      .trigger("mouseup");
+
+    cy.get("#projects #project-1 #media-index").should("contain", "2");
   });
 });
