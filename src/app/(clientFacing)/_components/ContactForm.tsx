@@ -66,11 +66,13 @@ export default function Contact({
         } else if (type === "firstName" || type === "lastName") {
           return validateText(e.target.value)
             ? ""
-            : `The ${type} must be 5 to 50 characters`;
+            : `${
+                type === "firstName" ? "First name" : "Last Name"
+              } must be 5 to 50 characters`;
         } else if (type === "message") {
           return validateText(e.target.value, 50, 200)
             ? ""
-            : "The message must be 50 to 200 characters";
+            : "Message must be 50 to 200 characters";
         }
         return "";
       })(),
@@ -155,20 +157,30 @@ export default function Contact({
 
   useEffect(() => {
     const handleFocusIn = () => {
-        document.querySelector('meta[name=viewport]')?.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');
+      document
+        .querySelector("meta[name=viewport]")
+        ?.setAttribute(
+          "content",
+          "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0",
+        );
     };
     const handleFocusOut = () => {
-        document.querySelector('meta[name=viewport]')?.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=1');
+      document
+        .querySelector("meta[name=viewport]")
+        ?.setAttribute(
+          "content",
+          "width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=1",
+        );
     };
 
-    document.addEventListener('focusin', handleFocusIn);
-    document.addEventListener('focusout', handleFocusOut);
+    document.addEventListener("focusin", handleFocusIn);
+    document.addEventListener("focusout", handleFocusOut);
 
     return () => {
-        document.removeEventListener('focusin', handleFocusIn);
-        document.removeEventListener('focusout', handleFocusOut);
+      document.removeEventListener("focusin", handleFocusIn);
+      document.removeEventListener("focusout", handleFocusOut);
     };
-}, []);
+  }, []);
 
   return (
     <form
@@ -242,7 +254,7 @@ export default function Contact({
           {formErrors.email === "" ? null : (
             <span className="input-error-message">{formErrors.email}</span>
           )}
-          <Label htmlFor="text" className="my-3 block ">
+          <Label htmlFor="message" className="my-3 block ">
             Message
           </Label>
           <Textarea

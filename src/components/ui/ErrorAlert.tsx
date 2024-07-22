@@ -9,7 +9,7 @@ export function ErrorAlert({ errorMssg }: { errorMssg: string }) {
         <Alert
           variant="destructive"
           className={cn(
-            "fixed bg-red-600 text-white",
+            "error-alert fixed bg-red-600 text-white",
             "left-1/2 top-[3rem] w-11/12 -translate-x-1/2 -translate-y-1/2",
             "z-[1001] md:bottom-5 md:left-5 md:top-auto md:w-1/2 md:-translate-x-0 md:-translate-y-0",
           )}
