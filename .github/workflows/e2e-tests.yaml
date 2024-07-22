@@ -1,6 +1,31 @@
 name: End-to-end tests
-on: push
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
+  wait-for-vercel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Wait for Vercel deployment
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          max_timeout: 600
+          check_interval: 10
+
+      - name: Run tests
+        run: |
+          echo "Deployment URL: ${{ steps.waitFor200.outputs.url }}"
+
   cypress-run:
     runs-on: ubuntu-22.04
     steps:
