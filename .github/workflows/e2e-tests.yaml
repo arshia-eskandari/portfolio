@@ -1,31 +1,10 @@
-name: Run Cypress tests
-
-on:
-  push:
-    branches:
-      - main
-      - "feature/*"
-
+name: End-to-end tests
+on: push
 jobs:
-  e2e-cypress:
-    name: E2E Cypress
-    runs-on: ubuntu-latest
+  cypress-run:
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Wait for Vercel Preview
-        uses: patrickedqvist/wait-for-vercel-preview@v1.2.0
-        id: waitForVercelPreview
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 300
-          environment: Preview
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run Cypress Tests
-        uses: cypress-io/github-action@v2
-        env:
-          CYPRESS_BASE_URL: ${{ steps.waitForVercelPreview.outputs.url }}
+        uses: actions/checkout@v4
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
