@@ -12,21 +12,14 @@ jobs:
   wait-for-vercel:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Wait for Vercel deployment
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.2
+      - name: Waiting for 200 from the Vercel Preview
+        uses: amerfarooq/wait-for-vercel-preview@v1.0.0
+        id: waitFor200
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 600
-          check_interval: 10
-          headers: |
-            x-vercel-protection-bypass: ${{ secrets.VERCEL_PROTECTION_BYPASS }}
-
-      - name: Run tests
-        run: |
-          echo "Deployment URL: ${{ steps.waitFor200.outputs.url }}"
+          max_timeout: 60
+      # access preview url
+      - run: echo ${{steps.waitFor200.outputs.url}}
 
   cypress-run:
     runs-on: ubuntu-22.04
