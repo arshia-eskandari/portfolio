@@ -20,7 +20,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           max_timeout: 300
-          environment: preview
+          environment: Preview
 
       - name: Install dependencies
         run: npm ci
