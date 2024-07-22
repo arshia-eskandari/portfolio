@@ -9,6 +9,7 @@ export default defineConfig({
   },
 
   e2e: {
+    baseUrl: "https://arshiaeskandari.com",
     setupNodeEvents(on, config) {},
   },
 });
