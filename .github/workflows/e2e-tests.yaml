@@ -12,8 +12,8 @@ jobs:
   wait-for-vercel:
     runs-on: ubuntu-latest
     steps:
-      - name: Waiting for 200 from the Vercel Preview
-        uses: amerfarooq/wait-for-vercel-preview@v1.0.0
+      - name: Wait for Vercel Preview With Bypass Protection
+        uses: amerfarooq/wait-for-vercel-preview-and-bypass-protection@v1.0.1
         id: waitFor200
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
