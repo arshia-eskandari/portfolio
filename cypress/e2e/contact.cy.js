@@ -10,7 +10,7 @@ describe("Contact Section Tests", () => {
       "This is from cypress e2e testing to test the contact form functionality.",
     );
     cy.get("#contact button").click();
-    cy.get("#contact .error-alert").should("be.visible"); // Due to Google reCAPTCHA
+    cy.get("#contact .success-alert").should("be.visible");
   });
 
   it("Fills and submits the form unsuccessfully", () => {

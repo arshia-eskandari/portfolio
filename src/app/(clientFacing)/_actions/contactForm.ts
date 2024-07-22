@@ -13,6 +13,7 @@ const addSchema = z.object({
 
 export async function createContact(formData: FormData) {
   try {
+    const enableReCaptcha = process.env.NEXT_PUBLIC_ENABLE_RECAPTCHA === "true";
     const result = addSchema.safeParse(Object.fromEntries(formData.entries()));
     if (!result.success) {
       return {
@@ -22,18 +23,20 @@ export async function createContact(formData: FormData) {
     }
     const { firstName, lastName, email, message, gRecaptchaToken } =
       result.data;
-    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-    const gRes = await axios.post(
-      "https://www.google.com/recaptcha/api/siteverify",
-      `secret=${secretKey}&response=${gRecaptchaToken}`,
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+    if (enableReCaptcha) {
+      const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+      const gRes = await axios.post(
+        "https://www.google.com/recaptcha/api/siteverify",
+        `secret=${secretKey}&response=${gRecaptchaToken}`,
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
         },
-      },
-    );
-    if (!gRes?.data?.score || gRes?.data?.score < 0.5) {
-      throw new Error("Recaptcha verification failed");
+      );
+      if (!gRes?.data?.score || gRes?.data?.score < 0.5) {
+        throw new Error("Recaptcha verification failed");
+      }
     }
 
     await db.contact.create({

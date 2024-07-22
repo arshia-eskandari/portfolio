@@ -16,6 +16,7 @@ export default function Contact({
 }: {
   action: (formData: FormData) => Promise<any>;
 }) {
+  const enableReCaptcha = process.env.NEXT_PUBLIC_ENABLE_RECAPTCHA === "true";
   const [form, setForm] = useState<{
     firstName: string;
     lastName: string;
@@ -92,9 +93,9 @@ export default function Contact({
       setLoading(false);
       return;
     }
-    const gRecaptchaToken = await executeRecaptcha(
-      "contactFormArshiaEskandari",
-    );
+    const gRecaptchaToken = enableReCaptcha
+      ? await executeRecaptcha("contactFormArshiaEskandari")
+      : "dev-token";
     const formData = new FormData(form);
     formData.append("gRecaptchaToken", gRecaptchaToken);
     const response = await action(formData);
