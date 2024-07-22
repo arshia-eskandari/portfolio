@@ -21,6 +21,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           max_timeout: 600
           check_interval: 10
+          headers: |
+            x-vercel-protection-bypass: ${{ secrets.VERCEL_PROTECTION_BYPASS }}
 
       - name: Run tests
         run: |
