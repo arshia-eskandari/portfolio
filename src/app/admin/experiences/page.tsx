@@ -12,8 +12,10 @@ import DefaultExperienceForm from "./_components/DefaultExperienceForm";
 import { sortExperiences } from "@/lib/experiences";
 
 export default async function Experiences() {
-  const pdfMedia = await getPDFMedia();
-  const experiences = await getExperiences();
+  const [pdfMedia, experiences] = await Promise.all([
+    getPDFMedia(),
+    getExperiences(),
+  ]);
   return (
     <div className="">
       <H2>Experiences</H2>

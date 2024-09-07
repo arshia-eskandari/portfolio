@@ -5,8 +5,7 @@ import SocialsForm from "./_components/SocialsForm";
 import { getContacts, updateContacts } from "./_action/contact";
 
 export default async function AdminContact() {
-  const socials = await getSocials();
-  const contacts = await getContacts();
+  const [socials, contacts] = await Promise.all([getSocials(), getContacts()]);
   return (
     <div className="">
       <H2>Contact</H2>

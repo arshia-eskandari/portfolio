@@ -4,9 +4,11 @@ import { getImageMedia, getPDFMedia } from "./_actions/media";
 import AboutForm from "./_components/AboutForm";
 
 export default async function AdminHero() {
-  const about = await getAbout();
-  const pdfMedia = await getPDFMedia();
-  const imageMedia = await getImageMedia();
+  const [about, pdfMedia, imageMedia] = await Promise.all([
+    getAbout(),
+    getPDFMedia(),
+    getImageMedia(),
+  ]);
   return (
     <div className="">
       <H2>About</H2>

@@ -12,9 +12,11 @@ import {
 import DefaultProjectForm from "./_components/DefaultProjectForm";
 
 export default async function Experiences() {
-  const media = await getMedia();
-  const experiences = await getExperiences();
-  const projects = await getProjects();
+  const [media, experiences, projects] = await Promise.all([
+    getMedia(),
+    getExperiences(),
+    getProjects(),
+  ]);
   return (
     <div className="">
       <H2>Experiences</H2>

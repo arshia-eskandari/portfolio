@@ -7,8 +7,10 @@ import Link from "next/link";
 import RevalidateButton from "@/components/admin/RevalidateButton";
 
 export default async function AdminDashboard() {
-  const user = await getUser();
-  const pendingContacts = await getPendingContacts();
+  const [user, pendingContacts] = await Promise.all([
+    getUser(),
+    getPendingContacts(),
+  ]);
   return (
     <div className="">
       <H2>{`Welcome Back ${capitalizeFirstLetter(

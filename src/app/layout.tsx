@@ -11,11 +11,13 @@ import { getClientProjects } from "./(clientFacing)/_actions/projects";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const hero = await getClientHero();
-  const about = await getClientAbout();
-  const skills = await getClientSkills();
-  const experiences = await getClientExperiences();
-  const projects = await getClientProjects();
+  const [hero, about, skills, experiences, projects] = await Promise.all([
+    getClientHero(),
+    getClientAbout(),
+    getClientSkills(),
+    getClientExperiences(),
+    getClientProjects(),
+  ]);
   const keywords = [...(skills.skills || [])];
   experiences.forEach((e) => keywords.push(e.company, e.location, e.jobTitle));
   projects.forEach((p) => keywords.push(p.projectTitle));
