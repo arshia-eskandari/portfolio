@@ -72,7 +72,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    @apply content
+    @apply content;
   }
 }
 
@@ -106,14 +106,27 @@ input:-webkit-autofill:active {
   background-repeat: no-repeat;
 }
 
+@keyframes moveHero {
+  0% {
+    background-position-y: 0;
+  }
+  50% {
+    background-position-y: 100%;
+  }
+  100% {
+    background-position-y: 0;
+  }
+}
+
 #hero {
   width: 100%;
-  aspect-ratio:  960/540;
+  aspect-ratio: 960/540;
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
   overflow: hidden;
   height: calc(100vh - 72px);
+  animation: moveHero 17s linear infinite;
   @apply hero-layer-mobile;
 }
 
@@ -130,7 +143,6 @@ input:-webkit-autofill:active {
     @apply hero-layer;
   }
 }
-
 
 .image-placeholder {
   aspect-ratio: 570.37/492.44;
@@ -161,15 +173,72 @@ input:-webkit-autofill:active {
   @apply text-black md:text-white lg:text-black;
 }
 
+@keyframes moveBackground {
+  0% {
+    background-position-y: 0;
+  }
+  50% {
+    background-position-y: 100%;
+  }
+  100% {
+    background-position-y: 0;
+  }
+}
+
 .content {
-  background-image: url("../../public/content-bg-2.svg");
+  background-image: url("../../public/content-bg-3.svg");
   width: 100%;
   background-size: cover;
   background-repeat: repeat-y;
+  animation: moveBackground 180s linear infinite;
 }
 
 @media screen and (max-width: 599px) {
-  input, select, textarea, label {
-    font-size: 16px  !important;
+  input,
+  select,
+  textarea,
+  label {
+    font-size: 16px !important;
   }
+
+  .content {
+    background-size: 100%;
+    animation: moveBackground 360s linear infinite;
+  }
+}
+
+.animated-button {
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.shine {
+  position: relative;
+}
+
+.shine::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  top: 0;
+  left: -100%;
+  transition: left 0.5s;
+  animation-fill-mode: forwards;
+  z-index: 99999;
+}
+
+.shine:hover::before {
+  left: 100%;
+}
+
+.shine:not(:hover)::before {
+  opacity: 0;
 }
