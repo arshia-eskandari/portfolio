@@ -108,7 +108,7 @@ export function Sidebar({ children }: { children: ReactNode }) {
       )}
     >
       <button
-        className="flex h-12 w-12 items-center justify-center self-end rounded bg-gray-200 p-2 text-foreground md:hidden"
+        className="flex h-12 w-12 items-center justify-center self-end rounded-2xl bg-gray-200 p-2 text-foreground md:hidden"
         onClick={toggleSidebar}
       >
         {isOpen ? <X /> : <Menu />}
@@ -143,7 +143,7 @@ export function NavLink({ icon, ...props }: NavLinkProps) {
       className={cn(
         "focus-visible:bg-secondary focus-visible:text-secondary",
         "hover:bg-secondary hover:text-secondary-foreground",
-        "flex items-center rounded-sm p-4",
+        "flex items-center rounded-2xl p-4",
         pathname === props.href && "bg-background text-foreground", // Fixed comparison
       )}
       {...props}
@@ -185,7 +185,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         onClick={toggleDropdown}
         className={cn(
           "flex w-full items-center justify-between",
-          "rounded-sm p-4",
+          "rounded-2xl p-4",
           "bg-primary text-primary-foreground",
           "hover:bg-secondary hover:text-secondary-foreground",
         )}

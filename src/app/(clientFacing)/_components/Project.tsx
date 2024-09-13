@@ -4,7 +4,7 @@ import { H3, H4, P } from "@/components/ui/Typography";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
-import { SquareChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 // EXPLANATION: Importing MediaCarousel dynamically to avoid SSR as it uses browser-specific APIs like 'window'
 const MediaCarousel = dynamic(() => import("./MediaCarousel"), {
@@ -30,20 +30,27 @@ export default function ProjectDisplay({
   } = project;
   const handleScrollToExperience = () => {
     if (!experienceId) return;
-    const mainDiv = document.getElementById(`div-${experienceId}`);
     const button = document.getElementById(experienceId);
     const openData = button?.dataset.state;
+
     if (button && openData === "closed") {
       button.click();
+
+      setTimeout(() => {
+        const mainDiv = document.getElementById(`div-${experienceId}`);
+        mainDiv?.scrollIntoView({ behavior: "smooth" });
+      }, 200); // add delay for the any open accordion item to fully close
+    } else {
+      const mainDiv = document.getElementById(`div-${experienceId}`);
+      mainDiv?.scrollIntoView({ behavior: "smooth" });
     }
-    mainDiv?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <div
       id={`project-${index + 1}`}
       className={cn(
-        "mx-auto my-6 flex w-full flex-col rounded border bg-[#FFFFFF50] p-4 shadow-lg lg:flex-row lg:justify-between",
+        "mx-auto my-6 flex w-full flex-col rounded-2xl border bg-[#FFFFFF50] p-4 shadow-lg lg:flex-row lg:justify-between",
         index % 2 === 0 ? "" : "lg:flex-row-reverse",
       )}
     >
@@ -83,7 +90,7 @@ export default function ProjectDisplay({
             {projectTechnologies.map((tech, index) => (
               <span
                 key={index}
-                className="flex h-10 items-center justify-center rounded-md bg-[#050041] px-4 py-2 text-sm font-medium text-white shadow"
+                className="animated-button shine flex h-10 items-center justify-center rounded-2xl bg-[#050041] px-4 py-2 text-sm font-medium text-white shadow"
               >
                 {tech}
               </span>
@@ -93,7 +100,7 @@ export default function ProjectDisplay({
         {experienceId && (
           <Button onClick={handleScrollToExperience} className="mb-6">
             Related Experience
-            <SquareChevronDown className="ml-3" />
+            <ChevronDown className="ml-3" />
           </Button>
         )}
       </div>

@@ -36,7 +36,7 @@ export default function Socials({ socials }: { socials: Social[] }) {
     <div
       className={cn(
         "fixed right-1 z-50 my-auto flex md:top-1/2",
-        "transform flex-row rounded-md md:-translate-y-1/2 md:flex-col",
+        "transform flex-row rounded-2xl md:-translate-y-1/2 md:flex-col",
         "border bg-[#FFFFFF50] shadow-lg",
         "bottom-1 -translate-x-1/2 md:bottom-auto md:-translate-x-0",
         "left-1/2 w-[calc(90px+4.5rem)] md:left-auto md:w-auto",
@@ -44,49 +44,64 @@ export default function Socials({ socials }: { socials: Social[] }) {
       style={{ marginBottom: `${bottomMargin}px` }}
     >
       {linkedin?.url && (
-        <a href={linkedin.url} target="_blank" rel="noopener noreferrer">
+        <a
+          href={linkedin.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="animated-button shine m-3 rounded-sm"
+        >
           <Image
             src={"/linkedin.svg"}
             alt="LinkedIn"
             width={30}
             height={30}
-            className="m-3 inline-block"
+            className="inline-block"
           />
         </a>
       )}
       {github?.url && (
-        <a href={github.url} target="_blank" rel="noopener noreferrer">
+        <a
+          href={github.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="animated-button shine m-3 rounded-[50%]"
+        >
           <Image
             src={"/github.svg"}
             alt="GitHub"
             width={30}
             height={30}
-            className="m-3 inline-block"
+            className="inline-block"
           />
         </a>
       )}
       {telegram?.url && (
-        <a href={telegram.url} target="_blank" rel="noopener noreferrer">
+        <a
+          href={telegram.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="animated-button shine m-3 rounded-sm"
+        >
           <Image
             src={"/telegram.svg"}
             alt="Telegram"
             width={30}
             height={30}
-            className="m-3 inline-block"
+            className="inline-block"
           />
         </a>
       )}
       {email?.url && (
         <a
           href={`mailto:${email.url}`}
-          className="flex items-center justify-center"
+          className="animated-button shine m-3 flex items-center justify-center rounded-sm"
         >
           <Image
             src={"/email.svg"}
             alt="Email"
             width={30}
             height={30}
-            className="m-3 inline-block"
+            className="inline-block"
           />
         </a>
       )}

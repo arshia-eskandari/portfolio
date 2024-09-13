@@ -21,7 +21,7 @@ export default function SearchableSkills({
           placeholder="Search skills here"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full rounded border"
+          className="w-full rounded-2xl border"
         />
       </div>
       <div className="flex flex-wrap justify-start gap-4">
@@ -29,7 +29,7 @@ export default function SearchableSkills({
           filteredSkills.map((skill, index) => (
             <div
               key={index}
-              className="flex h-10 items-center justify-center rounded-md bg-[#050041] px-4 py-2 text-sm font-medium text-white shadow"
+              className="animated-button shine flex h-10 items-center justify-center rounded-2xl bg-[#050041] px-4 py-2 text-sm font-medium text-white shadow"
             >
               {skill}
             </div>

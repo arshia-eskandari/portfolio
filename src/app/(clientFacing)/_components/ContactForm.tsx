@@ -186,7 +186,7 @@ export default function Contact({
   return (
     <form
       id="contact"
-      className="my-12 flex flex-col rounded border bg-[#FFFFFF50] shadow-lg"
+      className="my-12 flex flex-col rounded-2xl border bg-[#FFFFFF50] shadow-lg"
       onSubmit={actionWithLoading}
     >
       <H2 className="mb-6 pb-6 pt-6 text-center">Contact</H2>
@@ -201,6 +201,7 @@ export default function Contact({
           </Label>
           <Input
             type="text"
+            placeholder="John"
             id="firstName"
             name="firstName"
             className={cn(
@@ -221,6 +222,7 @@ export default function Contact({
           </Label>
           <Input
             type="text"
+            placeholder="Doe"
             id="lastName"
             name="lastName"
             className={cn(
@@ -241,6 +243,7 @@ export default function Contact({
           </Label>
           <Input
             type="text"
+            placeholder="johndoe@example.com"
             id="email"
             name="email"
             className={cn(

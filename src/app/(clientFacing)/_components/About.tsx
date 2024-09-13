@@ -29,11 +29,11 @@ export default async function About() {
               href={about?.resumeUrl}
               className={cn(
                 "inline-flex items-center justify-center whitespace-nowrap",
-                "rounded-md text-sm font-medium ring-offset-background transition-colors",
+                "rounded-2xl text-sm font-medium ring-offset-background transition-colors",
                 " focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 "focus-visible:ring-offset-2 disabled:pointer-events-none",
                 "bg-primary text-primary-foreground hover:bg-primary/90",
-                "mt-3 h-10 px-4 py-2",
+                "animated-button shine mt-3 h-10 px-4 py-2",
               )}
             >
               Download Resume

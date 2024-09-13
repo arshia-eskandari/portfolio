@@ -79,7 +79,7 @@ export default function AdminLayout({
             className={cn(
               "focus-visible:bg-secondary focus-visible:text-secondary",
               "hover:bg-secondary hover:text-secondary-foreground",
-              "flex items-center rounded-sm p-4",
+              "flex items-center rounded-2xl p-4",
               "w-full",
             )}
           >

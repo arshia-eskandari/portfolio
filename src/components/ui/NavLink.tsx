@@ -11,11 +11,11 @@ export function NavLink({ icon, variant, ...props }: NavLinkProps) {
   return (
     <Link
       className={cn(
-        "focus-visible:bg-secondary focus-visible:text-secondary",
-        "hover:bg-secondary hover:text-secondary-foreground",
-        "flex items-center justify-center rounded-sm px-4 py-2",
-        "md:ml-3 ",
-        "transition-colors duration-300",
+        "animated-button shine focus-visible:bg-secondary focus-visible:text-secondary",
+        // "hover:bg-secondary hover:text-secondary-foreground",
+        "flex items-center justify-center rounded-2xl px-4 py-2",
+        "md:ml-3",
+        "transition-colors duration-500",
         variant === "inverted"
           ? "bg-secondary text-secondary-foreground hover:bg-white"
           : "",

@@ -19,7 +19,7 @@ export default function ExperienceDetails({
       <AccordionItem
         id={`div-${experience.id}`}
         value={experience.id}
-        className="my-6 rounded-md bg-[#050041] p-3 text-white"
+        className="animated-button shine my-6 rounded-2xl bg-[#050041] p-3 text-white"
       >
         <AccordionTrigger className="no-underline" id={experience.id}>
           {`${experience.jobTitle}  |  ${experience.company}  |  ${
