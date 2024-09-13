@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
-import Logo from "@/assets/Logo";
+import Logo from "@/assets/Logo2";
 
 export default function Navbar({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,11 +33,11 @@ export default function Navbar({ children }: { children: ReactNode }) {
         "relative z-[1000] flex w-full flex-col bg-primary p-3 px-4 text-primary-foreground",
         "md:flex-row md:items-center md:justify-between",
         "transition-all duration-300 ease-in-out",
-        isOpen ? "h-auto py-3" : "h-[72px] py-3",
+        isOpen ? "h-auto py-3" : "h-[108px] py-3",
       )}
     >
       <div className="flex w-full items-center justify-between">
-        <button className="flex h-[48px] w-[48px] items-center justify-center">
+        <button className="flex h-[84px] w-[84px] items-center justify-center">
           <Logo />
         </button>
         <button
@@ -80,7 +80,7 @@ export default function Navbar({ children }: { children: ReactNode }) {
             setIsOpen(false);
           }}
           className={cn(
-            "absolute left-0 right-0 top-0 flex w-full translate-y-[60px]",
+            "absolute left-0 right-0 top-0 flex w-full translate-y-[108px]",
             "flex-col bg-primary p-3 transition-all duration-500 ease-in-out md:hidden",
             isOpen
               ? "opacity-1 max-h-screen"
