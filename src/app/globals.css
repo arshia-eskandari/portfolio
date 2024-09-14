@@ -126,7 +126,7 @@ input:-webkit-autofill:active {
   position: relative;
   overflow: hidden;
   height: calc(100vh - 72px);
-  animation: moveHero 17s linear infinite;
+  /* animation: moveHero 17s linear infinite; */
   @apply hero-layer-mobile;
 }
 
@@ -190,7 +190,7 @@ input:-webkit-autofill:active {
   width: 100%;
   background-size: cover;
   background-repeat: repeat-y;
-  animation: moveBackground 180s linear infinite;
+  /* animation: moveBackground 180s linear infinite; */
 }
 
 @media screen and (max-width: 599px) {
@@ -253,4 +253,12 @@ input:-webkit-autofill:active {
   .shine:focus::before {
     left: 100%;
   }
+}
+
+.hero-animation {
+  animation: moveHero 17s linear infinite;
+}
+
+.content-animation {
+  animation: moveBackground 180s linear infinite;
 }
