@@ -235,10 +235,22 @@ input:-webkit-autofill:active {
   z-index: 99999;
 }
 
-.shine:hover::before {
-  left: 100%;
+@media (hover: hover) {
+  .shine:hover::before {
+    left: 100%;
+  }
+
+  .shine:not(:hover)::before {
+    opacity: 0;
+  }
 }
 
-.shine:not(:hover)::before {
-  opacity: 0;
+@media (hover: none) {
+  .shine {
+    transition: left 0.05s;
+  }
+  .shine:active::before,
+  .shine:focus::before {
+    left: 100%;
+  }
 }
