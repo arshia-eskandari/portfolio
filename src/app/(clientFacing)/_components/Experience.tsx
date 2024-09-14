@@ -7,19 +7,40 @@ import {
 import { P } from "@/components/ui/Typography";
 import { capitalizeFirstLetter } from "@/lib/string";
 import { formatDate } from "@/lib/time";
+import { cn } from "@/lib/utils";
 import { Experience } from "@prisma/client";
+import { useState } from "react";
 
 export default function ExperienceDetails({
   experience,
 }: {
   experience: Experience;
 }) {
+  const [additionalClasses, setAdditionalClasses] = useState(
+    "animated-button shine",
+  );
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    const ariaLabel = event.currentTarget.dataset.state;
+
+    if (ariaLabel === "open") {
+      setAdditionalClasses("");
+    } else {
+      setAdditionalClasses("animated-button shine");
+    }
+  };
+
   return (
     <div>
       <AccordionItem
         id={`div-${experience.id}`}
         value={experience.id}
-        className="animated-button shine my-6 rounded-2xl bg-[#050041] p-3 text-white"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchStart}
+        className={cn(
+          "sm:animated-button sm:shine my-6 rounded-2xl bg-[#050041] p-3 text-white",
+          additionalClasses,
+        )}
       >
         <AccordionTrigger className="no-underline" id={experience.id}>
           {`${experience.jobTitle}  |  ${experience.company}  |  ${
