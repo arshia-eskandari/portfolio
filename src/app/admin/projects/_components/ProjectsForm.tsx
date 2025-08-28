@@ -32,12 +32,14 @@ export default function ProjectsForm({
   deleteAction,
   media,
   experiences,
+  order,
 }: {
   project: Project;
   action: (formData: FormData) => Promise<any>;
   deleteAction: (id: string) => Promise<any>;
   media: Media[];
   experiences: Experience[];
+  order: number;
 }) {
   const [loading, setLoading] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
@@ -52,6 +54,7 @@ export default function ProjectsForm({
     objective: string;
     keyResults: string;
     urls: string;
+    order: number;
   }>({
     urlTitles: "",
     projectTechnologies: "",
@@ -59,6 +62,7 @@ export default function ProjectsForm({
     objective: "",
     keyResults: "",
     urls: "",
+    order: 0,
   });
   const [formErrors, setFormErrors] = useState<{
     urlTitles: string;
@@ -67,6 +71,7 @@ export default function ProjectsForm({
     objective: string;
     keyResults: string;
     urls: string;
+    order: number;
   }>({
     urlTitles: "",
     projectTechnologies: "",
@@ -74,6 +79,7 @@ export default function ProjectsForm({
     objective: "",
     keyResults: "",
     urls: "",
+    order: 0,
   });
   const [mediaMap, setMediaMap] = useState<Map<Media, boolean>>(new Map());
 
@@ -93,6 +99,7 @@ export default function ProjectsForm({
       objective,
       keyResults: keyResults.join(SENTENCE_SEPARATOR),
       urls: urls.join(","),
+      order: project.order,
     });
   }, [project]);
 
@@ -124,7 +131,8 @@ export default function ProjectsForm({
       | "projectTechnologies"
       | "projectTitle"
       | "objective"
-      | "keyResults",
+      | "keyResults"
+      | "order",
     e: ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLInputElement>,
   ) => {
     setFormErrors({
@@ -164,6 +172,7 @@ export default function ProjectsForm({
           : type === "keyResults" && validateText(e.target.value, 5, 1000)
             ? ""
             : formErrors.keyResults,
+      order: formErrors.order,
     });
     const newForm = { ...form, [type]: e.target.value };
     setForm(newForm);
@@ -413,6 +422,24 @@ export default function ProjectsForm({
           />
           {formErrors.keyResults === "" ? null : (
             <span className="input-error-message">{formErrors.keyResults}</span>
+          )}
+          <Label htmlFor="order" className="my-3 block">
+            Order
+          </Label>
+          <Input
+            id="order"
+            name="order"
+            type="number"
+            value={form.order}
+            onChange={(e) => onInputChange("order", e)}
+            className={cn(
+              formErrors.order === 0
+                ? ""
+                : "input-error ring-0 focus-visible:ring-0",
+            )}
+          />
+          {formErrors.order === 0 ? null : (
+            <span className="input-error-message">{formErrors.order}</span>
           )}
         </AccordionContent>
       </AccordionItem>

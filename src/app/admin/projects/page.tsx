@@ -22,7 +22,7 @@ export default async function Experiences() {
       <H2>Experiences</H2>
       <DefaultProjectForm action={addDefaultProject} />
       <Accordion type="single" collapsible className="my-3 w-full">
-        {projects.map((project) => (
+        {projects.toSorted((a, b) => (a.order || 0) - (b.order || 0)).map((project) => (
           <ProjectsForm
             media={media}
             experiences={experiences}
@@ -30,6 +30,7 @@ export default async function Experiences() {
             deleteAction={deleteProject}
             project={project}
             key={project.id}
+            order={project.order}
           />
         ))}
       </Accordion>

@@ -24,7 +24,7 @@ export default function ProjectsWrapper({ projects }: { projects: Project[] }) {
   return (
     <>
       <div>
-        {projects.slice(0, visibleCount).map((project, index) => {
+        {projects.toSorted((a, b) => (a.order || 0) - (b.order || 0)).slice(0, visibleCount).map((project, index) => {
           if (projects.length > 3 && index === 2) {
             return (
               <div key={`div-${index}`} ref={endOfProjectsRef}>

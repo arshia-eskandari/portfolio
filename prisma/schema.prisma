@@ -69,6 +69,7 @@ model Project {
   keyResults          String[]
   experienceId        String?
   media               String[]
+  order               Int
 }
 
 model Skills {

@@ -26,6 +26,7 @@ export async function addDefaultProject() {
         keyResults: [],
         experienceId: "",
         media: [],
+        order: 0,
       },
     });
     return {
