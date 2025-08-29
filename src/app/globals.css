@@ -186,11 +186,26 @@ input:-webkit-autofill:active {
 }
 
 .content {
-  background-image: url("../../public/content-bg-3.svg");
   width: 100%;
-  background-size: cover;
-  background-repeat: repeat-y;
-  /* animation: moveBackground 180s linear infinite; */
+  background: linear-gradient(
+    to bottom,
+    #FFC04C 0%,
+    #ffdd88 40%,
+    #fff6e0 100%
+  );
+  background-attachment: fixed;
+}
+
+@media (max-width: 768px) {
+  .content {
+    background-attachment: scroll;
+    animation: mobileGradientShift 20s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes mobileGradientShift {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 0% 50%; }
 }
 
 @media screen and (max-width: 599px) {
