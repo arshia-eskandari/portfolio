@@ -64,9 +64,12 @@ export default function ProjectDisplay({
         <H4 className="mt-6">Objective</H4>
         <P>{objective}</P>
         <H4 className="my-6">Key Results</H4>
-        <ul>
+        <ul className="list-none space-y-1">
           {keyResults.map((result, index) => (
-            <li key={index}>{result}</li>
+            <li key={index} className="flex items-start gap-2">
+              <span className="shrink-0">-</span>
+              <span>{result}</span>
+            </li>
           ))}
         </ul>
         <H4 className="my-6">Links</H4>

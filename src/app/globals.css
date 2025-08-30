@@ -76,6 +76,7 @@
   }
 }
 
+/* Autofill fixes */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -84,37 +85,37 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: hsl(var(--foreground)) !important;
 }
 
+/* Inputs */
 .input-error {
   @apply border border-rose-500;
 }
-
 .input-error-message {
   @apply text-sm text-rose-500;
 }
 
+/* Buttons */
 .admin-button {
-  @apply bg-secondary text-primary;
+  @apply bg-secondary text-primary transition-colors duration-200;
 }
-
 .admin-button:hover {
-  @apply hover:bg-white;
+  @apply bg-white;
 }
 
+/* Decorative background */
 .wavy-background {
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 1200 120"><path fill="%232193b0" fill-opacity="0.1" d="M0,64L120,80C240,96,480,128,720,122.7C960,117,1200,75,1320,53.3L1440,32L1440,120L1320,120C1200,120,960,120,720,120C480,120,240,120,120,120L0,120Z"></path><path fill="%236dd5ed" fill-opacity="0.2" d="M0,32L120,48C240,64,480,96,720,90.7C960,85,1200,43,1320,21.3L1440,0L1440,120L1320,120C1200,120,960,120,720,120C480,120,240,120,120,120L0,120Z"></path></svg>');
   background-size: cover;
   background-repeat: no-repeat;
 }
 
+/* Hero */
 @keyframes moveHero {
-  0% {
+  0%,
+  100% {
     background-position-y: 0;
   }
   50% {
     background-position-y: 100%;
-  }
-  100% {
-    background-position-y: 0;
   }
 }
 
@@ -126,24 +127,24 @@ input:-webkit-autofill:active {
   position: relative;
   overflow: hidden;
   height: calc(100vh - 72px);
-  /* animation: moveHero 17s linear infinite; */
   @apply hero-layer-mobile;
 }
 
 .hero-layer-mobile {
   background-image: url("../../public/hero-bg-mobile.svg");
 }
-
 .hero-layer {
   background-image: url("../../public/hero-bg.svg");
 }
 
-@media screen and (min-width: 640px) {
+/* Switch hero bg on tablet+ */
+@media (min-width: 640px) {
   #hero {
     @apply hero-layer;
   }
 }
 
+/* Placeholders */
 .image-placeholder {
   aspect-ratio: 570.37/492.44;
   background-repeat: no-repeat;
@@ -152,76 +153,76 @@ input:-webkit-autofill:active {
   align-self: center;
   @apply placeholder-layer;
 }
-
-@media screen and (min-width: 768px) {
-  .image-placeholder {
-    background-size: contain;
-  }
-}
-
-@media screen and (min-width: 1024px) {
-  .image-placeholder {
-    background-size: contain;
-  }
-}
-
 .placeholder-layer {
   background-image: url("../../public/hero-logo-2.svg");
 }
 
-.hero-text {
-  @apply text-black md:text-white lg:text-black;
+/* Scale image placeholder better */
+@media (min-width: 768px) {
+  .image-placeholder {
+    background-size: contain;
+  }
+}
+@media (min-width: 1024px) {
+  .image-placeholder {
+    background-size: contain;
+  }
 }
 
+/* Hero text adaptive */
+.hero-text {
+  @apply text-black transition-colors duration-300 sm:text-white lg:text-black;
+}
+
+/* Content background */
 @keyframes moveBackground {
-  0% {
+  0%,
+  100% {
     background-position-y: 0;
   }
   50% {
     background-position-y: 100%;
   }
-  100% {
-    background-position-y: 0;
-  }
 }
 
 .content {
   width: 100%;
-  background: linear-gradient(
-    to bottom,
-    #FFC04C 0%,
-    #ffdd88 40%,
-    #fff6e0 100%
-  );
+  background: linear-gradient(to bottom, #ffc04c 0%, #ffdd88 40%, #fff6e0 100%);
   background-attachment: fixed;
+  animation: moveBackground 180s linear infinite;
 }
 
+/* Mobile adjustments */
 @media (max-width: 768px) {
   .content {
     background-attachment: scroll;
-    animation: mobileGradientShift 20s ease-in-out infinite alternate;
+    animation: mobileGradientShift 25s ease-in-out infinite alternate;
   }
 }
 
 @keyframes mobileGradientShift {
-  0%   { background-position: 0% 0%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-@media screen and (max-width: 599px) {
+/* Small screen optimizations */
+@media (max-width: 599px) {
   input,
   select,
   textarea,
   label {
     font-size: 16px !important;
   }
-
   .content {
-    background-size: 100%;
-    animation: moveBackground 360s linear infinite;
+    background-size: 100% auto;
   }
 }
 
+/* Buttons with shine effect */
 .animated-button {
   transition: all 0.3s;
   position: relative;
@@ -231,7 +232,6 @@ input:-webkit-autofill:active {
 .shine {
   position: relative;
 }
-
 .shine::before {
   content: "";
   position: absolute;
@@ -240,13 +240,12 @@ input:-webkit-autofill:active {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.6),
+    rgba(255, 255, 255, 0.4),
     transparent
   );
   top: 0;
   left: -100%;
-  transition: left 0.5s;
-  animation-fill-mode: forwards;
+  transition: left 0.6s ease-in-out;
   z-index: 99999;
 }
 
@@ -254,26 +253,26 @@ input:-webkit-autofill:active {
   .shine:hover::before {
     left: 100%;
   }
-
   .shine:not(:hover)::before {
     opacity: 0;
   }
 }
-
 @media (hover: none) {
-  .shine {
-    transition: left 0.05s;
-  }
   .shine:active::before,
   .shine:focus::before {
     left: 100%;
   }
 }
 
+/* Subtle background/hero animations */
 .hero-animation {
   animation: moveHero 17s linear infinite;
 }
-
 .content-animation {
   animation: moveBackground 180s linear infinite;
+}
+
+.border-b {
+  border-bottom-width: 3px;
+  border-color: white;
 }
