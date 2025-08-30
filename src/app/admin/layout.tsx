@@ -10,6 +10,7 @@ import {
   MonitorStop,
   PieChart,
   LogOut,
+  BookCheck
 } from "lucide-react";
 import { logout } from "./_actions/logout";
 import { cn } from "@/lib/utils";
@@ -66,6 +67,12 @@ export default function AdminLayout({
             icon={<CircleUserRound className="mr-2 h-4 w-4" />}
           >
             Contact
+          </NavLink>
+          <NavLink
+            href="/admin/articles"
+            icon={<BookCheck className="mr-2 h-4 w-4" />}
+          >
+            Articles
           </NavLink>
         </Dropdown>
         <form
