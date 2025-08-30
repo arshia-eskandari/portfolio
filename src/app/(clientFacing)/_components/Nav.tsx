@@ -1,8 +1,12 @@
 "use client";
+import { usePathname, useRouter } from "next/navigation";
 import { NavLink } from "@/components/ui/NavLink";
 import Navbar from "@/components/ui/Navbar";
 
 export default function Nav() {
+  const pathname = usePathname();
+  const router = useRouter();
+
   const handleScrollToExperience = (
     event: React.MouseEvent<HTMLAnchorElement>,
     id: string,
@@ -14,6 +18,24 @@ export default function Nav() {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // If we're on /articles, show a single "Home" link that navigates back to /
+  if (pathname === "/articles") {
+    return (
+      <Navbar>
+        <NavLink
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            router.push("/");
+          }}
+        >
+          Home
+        </NavLink>
+      </Navbar>
+    );
+  }
+
+  // Default nav (for / and other routes)
   return (
     <Navbar>
       <NavLink
