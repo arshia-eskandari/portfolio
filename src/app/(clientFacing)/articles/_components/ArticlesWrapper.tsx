@@ -11,7 +11,7 @@ export default function ArticlesWrapper({ articles }: { articles: ArticleType[] 
   const INITIAL_VISIBLE = 3;
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortAsc, setSortAsc] = useState(false); // false => newest first (desc), true => oldest first (asc)
+  const [sortAsc, setSortAsc] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const toggleSort = () => setSortAsc((s) => !s);
