@@ -3,79 +3,12 @@ import type { Article } from "@prisma/client";
 import { H3, H4, P } from "@/components/ui/Typography";
 import { cn } from "@/lib/utils";
 import { getArticles } from "./_actions/articles";
+import ArticlesWrapper from "./_components/ArticlesWrapper";
 
 export default async function Articles() {
   const articles: Article[] = (await getArticles()) || [];
 
-  const sorted = articles.slice().sort((a, b) => {
-    const aTime = (a as any).publishedAt
-      ? new Date((a as any).publishedAt).getTime()
-      : 0;
-    const bTime = (b as any).publishedAt
-      ? new Date((b as any).publishedAt).getTime()
-      : 0;
-    return bTime - aTime;
-  });
-
-  const formatDate = (d?: string | Date | null) =>
-    d ? new Date(d).toLocaleString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "";
-
   return (
-    <div className="mx-auto max-w-4xl p-6">
-      <H3 className="mb-4">Articles</H3>
-      <div className="space-y-6">
-        {sorted.map((article) => {
-          const title = (article as any).title ?? "Untitled";
-          const excerpt =
-            (article as any).excerpt ?? (article as any).summary ?? "";
-          const slug = (article as any).slug ?? article.id;
-          const createdAt = (article as any).createdAt;
-          const updatedAt = (article as any).updatedAt;
-
-          return (
-            <article
-              key={article.id}
-              className={cn(
-                "rounded-2xl border bg-[#FFFFFF50] p-4 shadow-lg",
-                "flex flex-col gap-4",
-              )}
-            >
-              <div className="flex items-start justify-between">
-                <div>
-                  <H4 className="font-bold">{title}</H4>
-
-                  {/* Created / Updated timestamps shown neatly beneath the title */}
-                  <div className="mt-1 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                    {createdAt && (
-                      <time dateTime={String(createdAt)}>
-                        Created {formatDate(createdAt)}
-                      </time>
-                    )}
-                    {updatedAt && (
-                      <time dateTime={String(updatedAt)}>
-                        Updated {formatDate(updatedAt)}
-                      </time>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  {/* Removed "Open" link as requested; keep "Read" button */}
-                  <button
-                    // onClick={() => {}}
-                    className="animated-button shine rounded-2xl bg-[#050041] px-4 py-2 text-sm font-medium text-white shadow"
-                    aria-label={`Read ${title}`}
-                  >
-                    Read
-                  </button>
-                </div>
-              </div>
-
-              {excerpt && <P>{excerpt}</P>}
-            </article>
-          );
-        })}
-      </div>
-    </div>
+    <ArticlesWrapper articles={articles} />
   );
 }
