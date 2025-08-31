@@ -12,11 +12,11 @@ export default async function Layout({
 }>) {
   const socials = await getClientSocials();
   return (
-    <>
+    <div className="flex min-h-dvh flex-col">
       <Nav />
       <Socials socials={socials} />
       {children}
       <Footer />
-    </>
+    </div>
   );
 }

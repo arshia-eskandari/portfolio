@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { Article as ArticleType } from "@prisma/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -8,16 +8,11 @@ import { Article as ArticleCard } from "./Article";
 import { Search, SortAsc, SortDesc } from "lucide-react";
 
 export default function ArticlesWrapper({ articles }: { articles: ArticleType[] }) {
-  const [visibleCount, setVisibleCount] = useState(3);
+  const INITIAL_VISIBLE = 3;
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortAsc, setSortAsc] = useState(false); // false => newest first (desc), true => oldest first (asc)
-  const endOfArticlesRef = useRef<HTMLDivElement | null>(null);
-
-  const handleViewMore = () => setVisibleCount(articles.length);
-  const handleViewLess = () => {
-    setVisibleCount(3);
-    endOfArticlesRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   const toggleSort = () => setSortAsc((s) => !s);
 
@@ -39,11 +34,32 @@ export default function ArticlesWrapper({ articles }: { articles: ArticleType[] 
     return sorted.filter((a) => a.title.toLowerCase().includes(term));
   }, [searchTerm, sorted]);
 
+  useEffect(() => {
+    if (filtered.length === 0) {
+      setVisibleCount(0);
+      return;
+    }
+    if (filtered.length <= INITIAL_VISIBLE) {
+      setVisibleCount(filtered.length);
+      return;
+    }
+    setVisibleCount((current) => Math.min(Math.max(current, INITIAL_VISIBLE), filtered.length));
+  }, [filtered.length]);
+
+  const handleViewMore = () => {
+    setVisibleCount((current) => Math.min(filtered.length, current + INITIAL_VISIBLE));
+  };
+
+  const handleViewLess = () => {
+    setVisibleCount(INITIAL_VISIBLE);
+    containerRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   const visibleArticles = filtered.slice(0, visibleCount);
 
   return (
     <>
-      <div className="mx-auto flex min-h-[calc(100vh-156px)] max-w-[1280px] flex-col px-6">
+      <div ref={containerRef} className="mx-auto flex max-w-[1280px] flex-col px-6">
         <H2 className="mb-6 pb-6 pt-6 text-center">Articles</H2>
 
         <div className="flex w-full items-center justify-start pb-6 sm:justify-end">
@@ -89,16 +105,14 @@ export default function ArticlesWrapper({ articles }: { articles: ArticleType[] 
           ))}
         </div>
 
-        <div className="mt-4 flex justify-center space-x-4">
-          {visibleCount >= filtered.length && (
+        <div className="my-4 flex justify-center space-x-4">
+          {visibleCount > INITIAL_VISIBLE && (
             <Button onClick={handleViewLess}>View Less</Button>
           )}
           {visibleCount < filtered.length && (
             <Button onClick={handleViewMore}>View More</Button>
           )}
         </div>
-
-        <div ref={endOfArticlesRef} />
       </div>
     </>
   );
