@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import Logo from "@/assets/Logo2Mobile";
+import Link from "next/link";
 
 export default function Navbar({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,9 +38,9 @@ export default function Navbar({ children }: { children: ReactNode }) {
       )}
     >
       <div className="flex w-full items-center justify-between">
-        <button className="flex h-[48px] w-[48px] items-center justify-center">
+        <Link href="/" className="flex h-[48px] w-[48px] items-center justify-center">
           <Logo />
-        </button>
+        </Link>
         <button
           className={cn(
             "flex h-12 w-12 items-center justify-center",
