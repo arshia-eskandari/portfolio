@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { cache, Suspense } from "react";
+import { Suspense } from "react";
 import db from "@/db/db";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
@@ -9,21 +9,24 @@ import dateFmt from "@/lib/date";
 
 type Props = { params: { slug: string } };
 
-const getArticleBySlug = cache((slug: string) =>
-  db.article.findUnique({ where: { slug } }),
-);
+async function getArticleBySlug(slug: string) {
+  return db.article.findUnique({ where: { slug } });
+}
 
 export default async function ArticlePage({ params }: Props) {
-  const slug = decodeURIComponent(params.slug);
+  const slug = params.slug;
+
   const article = await getArticleBySlug(slug);
-  if (!article) return notFound();
+  if (!article) {
+    console.error("Article not found for slug:", slug);
+    return notFound();
+  }
 
   const renderDates = () => {
     const createdISO = new Date(article.createdAt).toISOString();
     const updatedISO = new Date(article.updatedAt).toISOString();
     const createdStr = dateFmt.format(new Date(createdISO));
     const updatedStr = dateFmt.format(new Date(updatedISO));
-
     const same = createdStr === updatedStr;
 
     return (
