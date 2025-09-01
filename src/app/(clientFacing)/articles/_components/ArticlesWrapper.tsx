@@ -155,7 +155,7 @@ export default function ArticlesWrapper({
             className="cursor-pointer rounded-xl border bg-white p-4 hover:bg-slate-50"
           >
             <Link
-              href={`/articles/${encodeURIComponent(article.slug)}`}
+              href={`/articles/${article.slug}`}
               prefetch
             >
               <h3 className="text-lg font-semibold">{article.title}</h3>
