@@ -105,18 +105,43 @@ export default async function ArticlePage({ params }: Props) {
       return (
         <>
           <p className="text-sm text-muted-foreground">
-            Published on{" "}
-            {createdAtStr}
+            Published on {createdAtStr}
           </p>
           {createdAtStr == updatedAtStr ? null : (
             <p className="text-sm text-muted-foreground">
-              Updated on{" "}
-              {updatedAtStr}
+              Updated on {updatedAtStr}
             </p>
           )}
         </>
       );
-    }
+    };
+
+    let renderImage = () => {
+      const { banner } = article as any;
+      if (!banner) return null;
+
+      return (
+        <figure
+          className="relative mx-auto my-6 w-full max-w-[70ch] print:max-w-[70ch]"
+          style={{
+            aspectRatio: "16/9",
+          }}
+        >
+          <Image
+            src={banner}
+            alt={`${article.title} banner`}
+            fill
+            className="object-cover object-center"
+            sizes="(min-width: 1024px) 70ch, (min-width: 640px) min(70ch, 100vw - 2rem), 100vw"
+            priority={false}
+            quality={90}
+            placeholder="blur"
+            blurDataURL="blur"
+            draggable={false}
+          />
+        </figure>
+      );
+    };
 
     return (
       <div className="mx-auto my-0 w-full max-w-[70ch] overflow-x-hidden rounded-none border bg-[#FFFFFF50] p-4 shadow-lg sm:my-6 sm:rounded-2xl">
@@ -124,8 +149,9 @@ export default async function ArticlePage({ params }: Props) {
           <h1 className="mb-3 text-2xl font-semibold sm:text-3xl">
             {(article as any).title}
           </h1>
+          {renderImage()}
           {renderDates()}
-          
+
           <article
             className="prose prose-base sm:prose-lg lg:prose-xl prose-slate dark:prose-invert
                        prose-code:before:content-none prose-code:after:content-none
