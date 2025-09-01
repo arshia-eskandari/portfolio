@@ -1,5 +1,6 @@
 "use server";
 import db from "@/db/db";
+import generateArticleSlug from "@/lib/slug";
 import { z } from "zod";
 
 export async function getArticles() {
@@ -14,12 +15,27 @@ export async function getArticles() {
 
 export async function addDefaultArticle() {
   try {
-    await db.article.create({
+    const tempSlug = generateArticleSlug({ title: "Title" }, { suffixLength: 12 });
+
+    const created = await db.article.create({
       data: {
         title: "Title",
         content: "Content",
+        slug: tempSlug,
       },
     });
+
+    const finalSlug = generateArticleSlug(
+      { title: created.title, id: created.id, createdAt: created.createdAt },
+    );
+
+    if (finalSlug !== created.slug) {
+      await db.article.update({
+        where: { id: created.id },
+        data: { slug: finalSlug },
+      });
+    }
+
     return {
       status: 201,
       message: "Default article successfully created",
@@ -33,7 +49,6 @@ export async function addDefaultArticle() {
 const updateSchema = z.object({
   id: z.string().max(1000),
   title: z.string().min(1).max(300),
-  // very large max to allow super long content
   content: z.string().min(0).max(10_000_000),
   banner: z.string().optional(),
 });
@@ -50,18 +65,27 @@ export async function updateArticle(formData: FormData) {
 
     const { id, title, content, banner } = result.data;
 
-    if (!(await db.article.findFirst({ where: { id } }))) {
+    const existing = await db.article.findUnique({ where: { id } });
+    if (!existing) {
       return {
         status: 404,
         message: "Article not found",
       };
     }
 
+    const trimmedTitle = title.trim();
+
+    const newSlug = generateArticleSlug(
+      { id: existing.id, createdAt: existing.createdAt, title: trimmedTitle }
+    );
+
     await db.article.update({
       where: { id },
       data: {
-        title: title.trim(),
+        title: trimmedTitle,
         content,
+        banner,
+        slug: newSlug,
       },
     });
 

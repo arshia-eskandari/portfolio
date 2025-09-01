@@ -34,7 +34,9 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
     "react-google-recaptcha-v3": "^1.10.1",
+    "react-markdown": "^10.1.0",
     "react-player": "^2.16.0",
+    "remark-gfm": "^4.0.1",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"

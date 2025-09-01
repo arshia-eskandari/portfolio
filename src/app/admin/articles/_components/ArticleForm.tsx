@@ -78,9 +78,9 @@ export default function ArticleForm({
           ? ""
           : formErrors.title,
       content:
-        type === "content" && !validateText(value, 10, 5000)
+        type === "content" && !validateText(value, 1, 10_000_000)
           ? "The content must be 10 to 5000 characters"
-          : type === "content" && validateText(value, 10, 5000)
+          : type === "content" && validateText(value, 1, 10_000_000)
           ? ""
           : formErrors.content,
     });
