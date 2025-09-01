@@ -22,6 +22,7 @@ export async function addDefaultArticle() {
         title: "Title",
         content: "Content",
         slug: tempSlug,
+        tags: [],
       },
     });
 
@@ -51,6 +52,7 @@ const updateSchema = z.object({
   title: z.string().min(1).max(300),
   content: z.string().min(0).max(10_000_000),
   banner: z.string().optional(),
+  tags: z.string().min(1).max(300),
 });
 
 export async function updateArticle(formData: FormData) {
@@ -63,7 +65,7 @@ export async function updateArticle(formData: FormData) {
       };
     }
 
-    const { id, title, content, banner } = result.data;
+    const { id, title, content, banner, tags } = result.data;
 
     const existing = await db.article.findUnique({ where: { id } });
     if (!existing) {
@@ -86,6 +88,7 @@ export async function updateArticle(formData: FormData) {
         content,
         banner,
         slug: newSlug,
+        tags: tags.split(",").map(tag => tag.trim()),
       },
     });
 

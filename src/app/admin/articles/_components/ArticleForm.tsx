@@ -35,15 +35,21 @@ export default function ArticleForm({
   const [showDeleteSpinner, setShowDeleteSpinner] = useState(false);
   const router = useRouter();
   const [errorMssg, setErrorMssg] = useState<string>("");
-  const [form, setForm] = useState<{ title: string; content: string }>({
+  const [form, setForm] = useState<{
+    title: string;
+    content: string;
+    tags: string;
+  }>({
     title: "",
     content: "",
+    tags: "",
   });
-  const [formErrors, setFormErrors] = useState<{ title: string; content: string }>(
-    { title: "", content: "" },
-  );
+  const [formErrors, setFormErrors] = useState<{
+    title: string;
+    content: string;
+    tags: string;
+  }>({ title: "", content: "", tags: "" });
 
-  // selected single banner image
   const [selectedImage, setSelectedImage] = useState<Media | null>(null);
 
   useEffect(() => {
@@ -51,6 +57,7 @@ export default function ArticleForm({
     setForm({
       title: article.title ?? "",
       content: article.content ?? "",
+      tags: article.tags.join(",") ?? "",
     });
   }, [article]);
 
@@ -66,7 +73,7 @@ export default function ArticleForm({
   };
 
   const onInputChange = (
-    type: "title" | "content",
+    type: "title" | "content" | "tags",
     e: ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLInputElement>,
   ) => {
     const value = e.target.value;
@@ -75,14 +82,20 @@ export default function ArticleForm({
         type === "title" && !validateText(value, 5, 200)
           ? "The title must be 5 to 200 characters"
           : type === "title" && validateText(value, 5, 200)
-          ? ""
-          : formErrors.title,
+            ? ""
+            : formErrors.title,
       content:
         type === "content" && !validateText(value, 1, 10_000_000)
           ? "The content must be 10 to 5000 characters"
           : type === "content" && validateText(value, 1, 10_000_000)
-          ? ""
-          : formErrors.content,
+            ? ""
+            : formErrors.content,
+      tags:
+        type === "tags" && !validateText(value, 1, 300)
+          ? "The tags must be 1 to 300 characters"
+          : type === "tags" && validateText(value, 1, 300)
+            ? ""
+            : formErrors.tags,
     });
     setForm({ ...form, [type]: value });
   };
@@ -98,7 +111,6 @@ export default function ArticleForm({
     formData.append("title", form.title);
     formData.append("content", form.content);
     formData.append("id", article.id);
-    // append banner (single image url or empty string)
     formData.append("banner", selectedImage ? selectedImage.url : "");
 
     const response = await action(formData);
@@ -112,13 +124,13 @@ export default function ArticleForm({
   };
 
   const onTransitionEnd = () => {
-    // Hide spinner only after the fade-out transition
     setShowSpinner(false);
     setShowDeleteSpinner(false);
   };
 
-  // available images for selection (exclude currently selected one)
-  const availableImages = imageMedia ? imageMedia.filter((m) => selectedImage?.id !== m.id) : [];
+  const availableImages = imageMedia
+    ? imageMedia.filter((m) => selectedImage?.id !== m.id)
+    : [];
 
   return (
     <form onSubmit={actionWithLoading}>
@@ -143,7 +155,11 @@ export default function ArticleForm({
                   setErrorMssg("");
                   setDeleteLoading(true);
                   setShowDeleteSpinner(true);
-                  if (window.confirm(`Are you sure you want to delete "${article.title}"?`)) {
+                  if (
+                    window.confirm(
+                      `Are you sure you want to delete "${article.title}"?`,
+                    )
+                  ) {
                     const response = await deleteAction(article.id);
                     if (response?.status === 200 || response?.status === 201) {
                       router.refresh();
@@ -193,12 +209,29 @@ export default function ArticleForm({
             value={form.content}
             onChange={(e) => onInputChange("content", e)}
             placeholder="Enter article content"
-            className={cn(formErrors.content === "" ? "" : "input-error ring-0 focus-visible:ring-0")}
+            className={cn(
+              formErrors.content === ""
+                ? ""
+                : "input-error ring-0 focus-visible:ring-0",
+            )}
           />
           {formErrors.content ? (
             <span className="input-error-message">{formErrors.content}</span>
           ) : null}
-
+          <Label htmlFor="tags" className="my-3 block">
+            Tags
+          </Label>
+          <Input
+            type="text"
+            id="tags"
+            name="tags"
+            className="w-full lg:w-1/2"
+            value={form.tags}
+            onChange={(e) => onInputChange("tags", e)}
+          />
+          {formErrors.tags ? (
+            <span className="input-error-message">{formErrors.tags}</span>
+          ) : null}
           <Label htmlFor="banner" className="my-3 block">
             Banner Image
           </Label>

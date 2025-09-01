@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import db from "@/db/db";
 import Image from "next/image";
+import { H4 } from "@/components/ui/Typography";
 
 type Props = { params: { slug: string } };
 
@@ -104,14 +105,17 @@ export default async function ArticlePage({ params }: Props) {
       const updatedAtStr = new Date(updatedAt).toLocaleDateString();
       return (
         <>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm italic text-muted-foreground">
             Published on {createdAtStr}
+            {createdAtStr !== updatedAtStr && (
+              <>
+                {" · "}
+                <span className="text-sm text-muted-foreground">
+                  Updated on {updatedAtStr}
+                </span>
+              </>
+            )}
           </p>
-          {createdAtStr == updatedAtStr ? null : (
-            <p className="text-sm text-muted-foreground">
-              Updated on {updatedAtStr}
-            </p>
-          )}
         </>
       );
     };
@@ -147,10 +151,19 @@ export default async function ArticlePage({ params }: Props) {
       <div className="mx-auto my-0 w-full max-w-[70ch] overflow-x-hidden rounded-none border bg-[#FFFFFF50] p-4 shadow-lg sm:my-6 sm:rounded-2xl">
         <main className="mx-auto w-full max-w-[70ch] px-4 py-8 sm:px-6 sm:py-10">
           <h1 className="mb-3 text-2xl font-semibold sm:text-3xl">
-            {(article as any).title}
+            {article.title}
           </h1>
-          {renderImage()}
           {renderDates()}
+          {renderImage()}
+          {article.tags && article.tags.length > 0 && (
+            <div className="flex">
+              {article.tags.map((tag) => (
+                <span key={tag} className="mr-2">
+                  {`#${tag}`}
+                </span>
+              ))}
+            </div>
+          )}
 
           <article
             className="prose prose-base sm:prose-lg lg:prose-xl prose-slate dark:prose-invert
