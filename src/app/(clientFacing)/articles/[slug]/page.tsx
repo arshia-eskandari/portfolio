@@ -1,28 +1,28 @@
 import { notFound } from "next/navigation";
 import db from "@/db/db";
 
-type Props = {
-  params: { slug: string };
-};
+type Props = { params: { slug: string } };
 
 export default async function ArticlePage({ params }: Props) {
   const slug = decodeURIComponent(params.slug);
 
-  const article = await db.article.findUnique({
-    where: { slug },
-  });
-
+  const article = await db.article.findUnique({ where: { slug } });
   if (!article) return notFound();
 
   return await (async () => {
     const ReactMarkdownModule = await import("react-markdown");
     const ReactMarkdown = ReactMarkdownModule.default;
+
     const remarkGfmModule = await import("remark-gfm");
     const remarkGfm = remarkGfmModule?.default ?? remarkGfmModule;
 
+    // 🔹 NEW: syntax highlighting (zero config)
+    const rehypeHighlightModule = await import("rehype-highlight");
+    const rehypeHighlight =
+      rehypeHighlightModule.default ?? rehypeHighlightModule;
+
     const content = (article as any).content ?? (article as any).body ?? "";
 
-    // Light-weight Markdown element overrides to improve styling with Tailwind (prose)
     const components = {
       a: ({ href, children }: any) => (
         <a
@@ -37,7 +37,7 @@ export default async function ArticlePage({ params }: Props) {
         </a>
       ),
       img: ({ src, alt }: any) => (
-        // allow responsive / lazy images; keep simple <img> to avoid extra Next.js Image config here
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={src}
           alt={alt ?? ""}
@@ -65,24 +65,30 @@ export default async function ArticlePage({ params }: Props) {
       td: ({ children }: any) => (
         <td className="border px-3 py-2 align-top">{children}</td>
       ),
-      code: ({ node, inline, className, children, ...props }: any) => {
-        const language = (className || "").replace("language-", "");
-        if (inline) {
+
+      // inside components:
+      code: ({ className, children, ...props }: any) => {
+        const isBlock = /\blanguage-/.test(className || "");
+        if (!isBlock) {
           return (
-            <code className="rounded bg-slate-100 px-1 font-mono text-sm dark:bg-slate-800">
+            <code
+              className="whitespace-pre-wrap break-words rounded bg-slate-900 px-1 py-0.5 font-mono text-sm text-slate-100"
+              {...props}
+            >
               {children}
             </code>
           );
         }
+
         return (
-          <pre className="my-4 overflow-auto rounded-md bg-slate-900 text-slate-100">
-            <code className={className ?? "language-text"} {...props}>
+          <pre className="my-4 overflow-auto rounded-md bg-slate-100 p-0 dark:bg-slate-900">
+            <code className={`hljs ${className ?? ""} block p-4`} {...props}>
               {children}
             </code>
           </pre>
         );
       },
-      // optional: slightly larger headings inside article for better rhythm
+
       h1: ({ children }: any) => (
         <h1 className="my-4 text-2xl font-semibold">{children}</h1>
       ),
@@ -95,23 +101,33 @@ export default async function ArticlePage({ params }: Props) {
     };
 
     return (
-      <main className="mx-auto max-w-2xl px-6 py-10">
-        <h1 className="mb-3 text-3xl font-semibold">{article.title}</h1>
-        <p className="text-sm text-muted-foreground">
-          {new Date(article.createdAt).toLocaleDateString()}
-        </p>
+      <div className="mx-auto my-6 flex w-full max-w-[1280px] flex-col rounded-2xl border bg-[#FFFFFF50] p-4 px-6 shadow-lg">
+        <main className="mx-auto px-6 py-10">
+          <h1 className="mb-3 text-3xl font-semibold">
+            {(article as any).title}
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            {new Date((article as any).createdAt).toLocaleDateString()}
+          </p>
 
-        <article className="prose prose-slate prose-lg dark:prose-invert mt-6 max-w-none">
-          <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
-            {content}
-          </ReactMarkdown>
-        </article>
-      </main>
+          <article
+            className="prose prose-slate prose-lg dark:prose-invert prose-code:before:content-none prose-code:after:content-none
+                     prose-code:break-words mt-6 max-w-none"
+          >
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeHighlight]}
+              components={components}
+            >
+              {content}
+            </ReactMarkdown>
+          </article>
+        </main>
+      </div>
     );
   })();
 }
 
-// Let new slugs work at runtime (when you don't prebuild with generateStaticParams)
-export const dynamicParams = true; // default is true, but being explicit helps
-export const revalidate = 60; // optional ISR if the content changes
-export const fetchCache = "force-no-store"; // always fetch fresh data
+export const dynamicParams = true;
+export const revalidate = 60;
+export const fetchCache = "force-no-store";
