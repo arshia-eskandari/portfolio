@@ -39,7 +39,7 @@ export default function Navbar({ children }: { children: ReactNode }) {
     >
       <div className="flex w-full items-center justify-between">
         <Link href="/" className="flex h-[48px] w-[48px] items-center justify-center">
-          <Logo />
+          <Logo className="block h-full w-full pointer-events-none" />
         </Link>
         <button
           className={cn(

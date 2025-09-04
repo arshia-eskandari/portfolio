@@ -1,11 +1,12 @@
 import React from "react";
 
-function Logo2Mobile() {
+function Logo2Mobile({ className }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="571"
       height="493"
+      className={className}
       fill="none"
       viewBox="0 0 571 493"
     >
