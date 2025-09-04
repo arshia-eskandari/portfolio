@@ -15,7 +15,10 @@ import { H2 } from "@/components/ui/Typography";
 import { Search, SortAsc, SortDesc } from "lucide-react";
 import dateFmt from "@/lib/date";
 
-type ListArticle = Pick<ArticleType, "id" | "slug" | "title" | "createdAt" | "updatedAt">;
+type ListArticle = Pick<
+  ArticleType,
+  "id" | "slug" | "title" | "createdAt" | "updatedAt" | "tags"
+>;
 
 export default function ArticlesWrapper({
   articles,
@@ -51,9 +54,20 @@ export default function ArticlesWrapper({
   }, [articles, sortAsc]);
 
   const filtered = useMemo(() => {
-    const term = deferredSearch.trim().toLowerCase();
-    if (!term) return sorted;
-    return sorted.filter((a) => a.title.toLowerCase().includes(term));
+    const raw = deferredSearch.trim().toLowerCase();
+    if (!raw) return sorted;
+
+    const terms = raw.split(/[\s,]+/).filter(Boolean);
+
+    const matches = (a: ListArticle) => {
+      const title = (a.title ?? "").toLowerCase();
+      const tags = (a.tags ?? []).map((t) => (t ?? "").toLowerCase());
+      return terms.some(
+        (t) => title.includes(t) || tags.some((tag) => tag.includes(t)),
+      );
+    };
+
+    return sorted.filter(matches);
   }, [deferredSearch, sorted]);
 
   useEffect(() => {
@@ -129,7 +143,7 @@ export default function ArticlesWrapper({
           <Input
             id="article-search-input"
             type="text"
-            placeholder="Search articles..."
+            placeholder="Search title or tags..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.currentTarget.value)}
             className="flex-1 rounded-l-2xl border-0 ring-0 focus-visible:ring-0"
@@ -154,10 +168,7 @@ export default function ArticlesWrapper({
             key={article.id}
             className="cursor-pointer rounded-xl border bg-white p-4 hover:bg-slate-50"
           >
-            <Link
-              href={`/articles/${article.slug}`}
-              prefetch
-            >
+            <Link href={`/articles/${article.slug}`} prefetch>
               <h3 className="text-lg font-semibold">{article.title}</h3>
               {renderDate(article)}
             </Link>
